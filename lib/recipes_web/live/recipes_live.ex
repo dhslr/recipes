@@ -1,4 +1,4 @@
-defmodule RecipesWeb.UserSettingsLive do
+defmodule RecipesWeb.RecipesLive do
   use RecipesWeb, :live_view
 
 
@@ -13,6 +13,7 @@ defmodule RecipesWeb.UserSettingsLive do
         </.link>
       </li>
     </ul>
+
     """
   end
 
