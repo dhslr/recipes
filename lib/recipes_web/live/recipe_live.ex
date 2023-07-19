@@ -5,14 +5,16 @@ defmodule RecipesWeb.RecipeLive do
     assigns = assign(assigns, :form_data, to_form(Recipes.change_recipe(assigns.recipe)))
 
     ~H"""
-    <.header class="text-center">
+    <.header class="text-center my-3">
       <h1><%= @recipe.title %></h1>
     </.header>
 
-    <h3><%= gettext("Ingredients") %></h3>
-    <.ingredients_list ingredients={@recipe.ingredients} />
-    <.photos photos={@recipe.photos} />
-    <div class="p-1 shadow mt-2"><%= @recipe.description %></div>
+    <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
+    <.photos photos={@recipe.photos} class="my-3" />
+
+    <.sub_header text={gettext("Preparation")} class="my-3" />
+    <div class="my-3 shadow"><%= @recipe.description %></div>
+
     <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
     """
   end
@@ -25,9 +27,12 @@ defmodule RecipesWeb.RecipeLive do
     {:ok, socket}
   end
 
+  attr :class, :string, default: ""
+  attr :photos, :list, required: true
+
   defp photos(assigns) do
     ~H"""
-    <ul>
+    <ul class={[@class]}>
       <li :for={photo <- @photos}>
         <img src={~p"/photos/#{photo.filename}"} />
       </li>
@@ -35,15 +40,37 @@ defmodule RecipesWeb.RecipeLive do
     """
   end
 
+  attr :class, :string, default: ""
+  attr :ingredients, :list, required: true
+
   defp ingredients_list(assigns) do
     ~H"""
-    <ul>
-      <li :for={ingredient <- @ingredients}>
-        <span class="font-medium"><%= ingredient.food.name %></span>
-        <span><%= ingredient.quantity %></span>
-        <span><%= ingredient.description %></span>
-      </li>
-    </ul>
+    <.sub_header text={gettext("Ingredients")} />
+
+    <div class={["text-center", @class]}>
+      <ul class="inline-block">
+        <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
+          <span class="font-medium text-left"><%= ingredient.food.name %></span>
+          <span class="text-right">
+            <span><%= ingredient.quantity %></span>
+            <span><%= ingredient.description %></span>
+          </span>
+        </li>
+      </ul>
+    </div>
+    """
+  end
+
+  attr :class, :string, default: ""
+  attr :text, :string, required: true
+
+  defp sub_header(assigns) do
+    ~H"""
+    <div class={["flex justify-evenly gap-6 items-center", @class]}>
+      <div class="border border-solid h-[1px] flex-1"></div>
+      <h3 class="text-center"><%= @text %></h3>
+      <div class="border border-solid h-[1px] flex-1"></div>
+    </div>
     """
   end
 end

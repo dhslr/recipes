@@ -23,5 +23,4 @@ defmodule RecipesWeb.RecipeEditComponent do
     </.simple_form>
     """
   end
-
 end

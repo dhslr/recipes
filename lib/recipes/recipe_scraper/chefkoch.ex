@@ -1,5 +1,4 @@
 defmodule Recipes.Datacraper.Chefkoch do
-
   @moduledoc """
   Scaper to scrape recipes from chefkoch
   """
@@ -35,10 +34,12 @@ defmodule Recipes.Datacraper.Chefkoch do
 
   defp to_scraped_recipe(chefkoch_recipe = %{}) do
     Logger.debug("Scraped recipe #{inspect(chefkoch_recipe)}")
+
     ingredients =
       chefkoch_recipe["recipeIngredient"]
       |> Enum.with_index(1)
       |> Enum.map(&transform_ingredient/1)
+
     Logger.debug("Scraped ingredients #{inspect(ingredients)}")
     servings = parse_serving(chefkoch_recipe["recipeYield"])
     Logger.debug("Scraped servings: #{inspect(servings)}")
