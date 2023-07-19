@@ -2,6 +2,7 @@ defmodule RecipesTest do
   use Recipes.DataCase
 
   alias Recipes.Data
+  import Recipes.RecipesFixtures
 
   describe "food" do
     alias Data.Food
@@ -9,15 +10,6 @@ defmodule RecipesTest do
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
-
-    def food_fixture(attrs \\ %{}) do
-      {:ok, food} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Recipes.create_food()
-
-      food
-    end
 
     test "list_food/0 returns all food" do
       food = food_fixture()
@@ -73,15 +65,6 @@ defmodule RecipesTest do
     @valid_attrs %{description: "some description", title: "some title"}
     @update_attrs %{description: "some updated description", title: "some updated title"}
     @invalid_attrs %{description: nil, title: nil}
-
-    def recipe_fixture(attrs \\ %{}) do
-      {:ok, recipe} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Recipes.create_recipe()
-
-      recipe
-    end
 
     test "list_recipes/0 returns all recipes" do
       recipe = recipe_fixture()
