@@ -11,9 +11,7 @@ defmodule RecipesWeb.RecipeLive do
 
     <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
     <.photos photos={@recipe.photos} class="my-3" />
-
-    <.sub_header text={gettext("Preparation")} class="my-3" />
-    <div class="my-3 shadow"><%= @recipe.description %></div>
+    <.description description={@recipe.description} class="my-3" />
 
     <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
     """
@@ -28,11 +26,24 @@ defmodule RecipesWeb.RecipeLive do
   end
 
   attr :class, :string, default: ""
+  attr :description, :string, required: true
+
+  def description(assigns) do
+    {:ok, html_doc, []} = Earmark.as_html(assigns.description, compact_output: true, eex: true)
+    assigns = assign(assigns, :description, html_doc)
+
+    ~H"""
+    <.sub_header text={gettext("Preparation")} class="my-3" />
+    <div class={[@class]} data-test="description"><%= raw(@description) %></div>
+    """
+  end
+
+  attr :class, :string, default: ""
   attr :photos, :list, required: true
 
   defp photos(assigns) do
     ~H"""
-    <ul class={[@class]}>
+    <ul class={[@class]} data-test="photos">
       <li :for={photo <- @photos}>
         <img src={~p"/photos/#{photo.filename}"} />
       </li>
@@ -47,7 +58,7 @@ defmodule RecipesWeb.RecipeLive do
     ~H"""
     <.sub_header text={gettext("Ingredients")} />
 
-    <div class={["text-center", @class]}>
+    <div class={["text-center", @class]} data-test="ingredients">
       <ul class="inline-block">
         <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
           <span class="font-medium text-left"><%= ingredient.food.name %></span>
