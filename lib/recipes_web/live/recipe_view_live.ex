@@ -1,4 +1,4 @@
-defmodule RecipesWeb.RecipeLive do
+defmodule RecipesWeb.RecipeViewLive do
   use RecipesWeb, :live_view
 
   def render(assigns) do

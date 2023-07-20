@@ -1,5 +1,5 @@
-defmodule RecipesWeb.RecipeEditComponent do
-  use RecipesWeb, :live_component
+defmodule RecipesWeb.RecipeEditLive do
+  use RecipesWeb, :live_view
 
   def render(assigns) do
     assigns = assign(assigns, :form_data, to_form(Recipes.change_recipe(assigns.recipe)))
@@ -22,5 +22,13 @@ defmodule RecipesWeb.RecipeEditComponent do
       </:actions>
     </.simple_form>
     """
+  end
+
+  def mount(params, _session, socket) do
+    socket =
+      socket
+      |> assign(:recipe, Recipes.get_recipe!(params["id"]))
+
+    {:ok, socket}
   end
 end

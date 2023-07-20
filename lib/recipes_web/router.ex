@@ -70,7 +70,8 @@ defmodule RecipesWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       live "/recipes", RecipesLive
-      live "/recipes/:id", RecipeLive, :show
+      live "/recipes/:id", RecipeViewLive
+      live "/recipes/:id/edit", RecipeEditLive
     end
   end
 
