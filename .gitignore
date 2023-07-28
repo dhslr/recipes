@@ -37,3 +37,6 @@ npm-debug.log
 
 # Ignore photos directory
 /priv/static/photos/
+
+# Ignore env file
+.env

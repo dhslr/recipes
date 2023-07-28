@@ -2,20 +2,35 @@ version: '2'
 
 services:
 
-  postgres:
-    image: postgres
+  db:
+    image: postgres:13.4
     restart: unless-stopped
-    ports:
-      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: recipes
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_USER
 
-  adminer:
-    image: adminer
-    restart: unless-stopped
+  app:
+    build: .
     links:
-      - postgres
+      - db
+    restart: unless-stopped
     ports:
-      - 8786:8080
+      - 4000
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=${PHX_HOST}
+      - LETSENCRYPT_HOST=${PHX_HOST}
+      - PHX_HOST
+      - DATABASE_URL
+      - SECRET_KEY_BASE
+    volumes:
+      - photos:/app/lib/recipes-0.1.1/priv/static/photos
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+volumes:
+  photos:
