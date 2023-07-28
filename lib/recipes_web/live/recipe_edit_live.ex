@@ -17,6 +17,17 @@ defmodule RecipesWeb.RecipeEditLive do
     >
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
+      <h4><%= gettext("Ingredients") %></h4>
+      <div data-test="ingredients" class="ml-3">
+        <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
+          <div class="columns-3">
+            <span><%= ingredient.data.food.name %></span>
+            <.input type="text" field={ingredient[:quantity]} />
+            <.input type="text" field={ingredient[:description]} />
+          </div>
+        </.inputs_for>
+      </div>
+
       <:actions>
         <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
@@ -31,4 +42,15 @@ defmodule RecipesWeb.RecipeEditLive do
 
     {:ok, socket}
   end
+
+  def handle_event("validate_recipe", _, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("update_recipe", params, socket) do
+    {:ok, recipe} = Recipes.update_recipe(socket.assigns.recipe, params["recipe"])
+
+    {:noreply, assign(socket, recipe: recipe)}
+  end
+
 end

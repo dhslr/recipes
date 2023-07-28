@@ -8,7 +8,7 @@ defmodule Recipes.Data.Recipe do
     field :kcal, :integer
     field :servings, :integer
 
-    has_many :ingredients, Recipes.Data.Ingredient
+    has_many :ingredients, Recipes.Data.Ingredient, on_delete: :delete_all, on_replace: :delete
     has_many :photos, Recipes.Data.Photo
     timestamps()
   end
@@ -17,6 +17,7 @@ defmodule Recipes.Data.Recipe do
   def changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:title, :description, :kcal, :servings])
+    |> cast_assoc(:ingredients, with: &Recipes.Data.Ingredient.changeset/2)
     |> validate_required([:title])
   end
 end

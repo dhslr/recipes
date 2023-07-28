@@ -2,11 +2,13 @@ defmodule RecipesTest do
   use Recipes.DataCase
 
   alias Recipes.Data
+  alias Data.Food
+  alias Data.Recipe
+  alias Data.Ingredient
+
   import Recipes.RecipesFixtures
 
   describe "food" do
-    alias Data.Food
-
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
@@ -60,8 +62,6 @@ defmodule RecipesTest do
   end
 
   describe "recipes" do
-    alias Data.Recipe
-
     @valid_attrs %{description: "some description", title: "some title"}
     @update_attrs %{description: "some updated description", title: "some updated title"}
     @invalid_attrs %{description: nil, title: nil}
@@ -108,6 +108,64 @@ defmodule RecipesTest do
     test "change_recipe/1 returns a recipe changeset" do
       recipe = recipe_fixture()
       assert %Ecto.Changeset{} = Recipes.change_recipe(recipe)
+    end
+
+    test "create recipe with ingredients" do
+      assert {:ok, %Recipe{} = recipe} =
+               Recipes.create_recipe(
+                 Map.put(@valid_attrs, :ingredients, [
+                   %{food: %{name: "Flour"}, quantity: 100.0, description: "g"},
+                   %{food: %{name: "Sugar"}, quantity: 100.0, description: "g"}
+                 ])
+               )
+
+      assert [
+               %Ingredient{food: %Food{name: "Flour"}, quantity: 100.0, description: "g"},
+               %Ingredient{food: %Food{name: "Sugar"}, quantity: 100.0, description: "g"}
+             ] = recipe.ingredients
+    end
+
+    test "update recipe with ingredients" do
+      assert {:ok, %Recipe{} = recipe} =
+               Recipes.create_recipe(
+                 Map.put(@valid_attrs, :ingredients, [
+                   %{food: %{name: "Flour"}, quantity: 100.0, description: "g"},
+                   %{food: %{name: "Sugar"}, quantity: 100.0, description: "g"}
+                 ])
+               )
+
+      [ingredient1, ingredient2] = recipe.ingredients
+
+      {:ok, recipe} =
+        Recipes.update_recipe(recipe, %{
+          ingredients: [
+            %{
+              id: ingredient1.id,
+              food: %{id: ingredient1.food.id, name: "Flour"},
+              quantity: 200.0,
+              description: "g"
+            }
+          ]
+        })
+
+      assert [
+               %Ingredient{food: %Food{name: "Flour"}, quantity: 200.0, description: "g"}
+             ] = recipe.ingredients
+    end
+
+    test "create recipes with same food re uses food entity" do
+      assert {:ok, %Recipe{} = recipe_1} =
+               Recipes.create_recipe(
+                 Map.put(@valid_attrs, :ingredients, [
+                   %{food: %{name: "Sugar"}, quantity: 100.0, description: "g"}
+                 ])
+               )
+
+      assert {:ok, %Recipe{} = recipe_2} =
+               Recipes.create_recipe(%{
+                 title: "some other name",
+                 ingredients: [%{food: %{name: "Sugar"}, quantity: 2.0, description: "g"}]
+               })
     end
   end
 end
