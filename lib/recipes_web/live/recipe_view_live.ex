@@ -44,8 +44,8 @@ defmodule RecipesWeb.RecipeViewLive do
   defp photos(assigns) do
     ~H"""
     <ul class={[@class]} data-test="photos">
-      <li :for={photo <- @photos}>
-        <img src={~p"/photos/#{photo.filename}"} />
+      <li :for={_photo <- @photos}>
+        <%!-- <img src={~p"/photos/#{photo.filename()}"} /> --%>
       </li>
     </ul>
     """
