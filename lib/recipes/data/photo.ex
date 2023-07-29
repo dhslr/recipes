@@ -4,7 +4,6 @@ defmodule Recipes.Data.Photo do
 
   schema "photos" do
     field :caption, :string
-    field :data, :binary
     belongs_to :recipe, Recipes.Data.Recipe
 
     timestamps()
