@@ -1,5 +1,6 @@
 defmodule RecipesWeb.RecipeEditLiveTest do
   use RecipesWeb.ConnCase
+  alias Recipes.Data
 
   import Phoenix.LiveViewTest
   import Recipes.AccountsFixtures
@@ -22,21 +23,22 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       conn: conn,
       user: user
     } do
-      recipe = recipe_fixture(%{title: "Cake",
-      ingredients: [
-        %{
-          food: %{name: "Flour"},
-          quantity: 100,
-          description: "g"
-
-        },
-        %{
-          food: %{name: "Sugar"},
-          quantity: 50,
-          description: "g"
-        }
-      ],
-      })
+      recipe =
+        recipe_fixture(%{
+          title: "Cake",
+          ingredients: [
+            %{
+              food: %{name: "Flour"},
+              quantity: 100,
+              description: "g"
+            },
+            %{
+              food: %{name: "Sugar"},
+              quantity: 50,
+              description: "g"
+            }
+          ]
+        })
 
       {:ok, lv, html} =
         conn
@@ -65,7 +67,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert %Recipes.Data.Recipe{
                title: "New Title",
                description: "New description"
-             } = Recipes.get_recipe!(recipe.id)
+             } = Data.get_recipe!(recipe.id)
     end
 
     test "update ingredients", %{
@@ -97,7 +99,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       |> form("#recipe_form", ingredients: %{})
       |> render_submit()
 
-      assert [] == Recipes.get_recipe!(recipe.id).ingredients
+      assert [] == Data.get_recipe!(recipe.id).ingredients
     end
   end
 end

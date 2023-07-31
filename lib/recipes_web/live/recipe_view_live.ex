@@ -1,8 +1,9 @@
 defmodule RecipesWeb.RecipeViewLive do
   use RecipesWeb, :live_view
+  alias Recipes.Data
 
   def render(assigns) do
-    assigns = assign(assigns, :form_data, to_form(Recipes.change_recipe(assigns.recipe)))
+    assigns = assign(assigns, :form_data, to_form(Data.change_recipe(assigns.recipe)))
 
     ~H"""
     <.header class="text-center my-3">
@@ -20,7 +21,7 @@ defmodule RecipesWeb.RecipeViewLive do
   def mount(params, _session, socket) do
     socket =
       socket
-      |> assign(:recipe, Recipes.get_recipe!(params["id"]))
+      |> assign(:recipe, Data.get_recipe!(params["id"]))
 
     {:ok, socket}
   end
