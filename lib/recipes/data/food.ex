@@ -5,7 +5,7 @@ defmodule Recipes.Data.Food do
 
   schema "food" do
     field :name, :string
-    has_many :ingredients, Recipes.Data.Ingredient
+    has_many :ingredients, Recipes.Data.Ingredient, on_delete: :delete_all
 
     timestamps()
   end
@@ -35,7 +35,7 @@ defmodule Recipes.Data.Food do
 
   defp get_or_create_food(name, cs) do
     food = Repo.get_by(Recipes.Data.Food, name: name)
-    dbg
+    dbg(food)
     if food do
       innercg(food, %{})
     else

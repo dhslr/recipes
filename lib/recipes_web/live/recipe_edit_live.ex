@@ -21,7 +21,9 @@ defmodule RecipesWeb.RecipeEditLive do
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
           <div class="columns-3">
-            <span><%= ingredient.data.food.name %></span>
+            <.inputs_for :let={food} field={ingredient[:food]}>
+              <.input type="text" field={food[:name]} />
+            </.inputs_for>
             <.input type="text" field={ingredient[:quantity]} />
             <.input type="text" field={ingredient[:description]} />
           </div>
@@ -43,7 +45,7 @@ defmodule RecipesWeb.RecipeEditLive do
     {:ok, socket}
   end
 
-  def handle_event("validate_recipe", _, socket) do
+  def handle_event("validate_recipe", _params, socket) do
     {:noreply, socket}
   end
 

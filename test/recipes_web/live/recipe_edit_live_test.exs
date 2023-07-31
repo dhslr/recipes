@@ -22,20 +22,20 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       conn: conn,
       user: user
     } do
-      recipe = recipe_fixture(%{title: "Cake"})
+      recipe = recipe_fixture(%{title: "Cake",
+      ingredients: [
+        %{
+          food: %{name: "Flour"},
+          quantity: 100,
+          description: "g"
 
-      ingredient_fixture(%{
-        recipe_id: recipe.id,
-        food: %{name: "Flour"},
-        quantity: 100,
-        description: "g"
-      })
-
-      ingredient_fixture(%{
-        recipe_id: recipe.id,
-        food: %{name: "Sugar"},
-        quantity: 50,
-        description: "g"
+        },
+        %{
+          food: %{name: "Sugar"},
+          quantity: 50,
+          description: "g"
+        }
+      ],
       })
 
       {:ok, lv, html} =
@@ -97,23 +97,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       |> form("#recipe_form", ingredients: %{})
       |> render_submit()
 
-      ## assert
-      a = [
-        %Recipes.Data.Ingredient{
-          recipe_id: recipe.id,
-          food: %{name: "Flour"},
-          quantity: 200,
-          description: "g"
-        },
-        %Recipes.Data.Ingredient{
-          recipe_id: recipe.id,
-          food: %{name: "Sugar"},
-          quantity: 200,
-          description: "g"
-        }
-      ]
-
-      # == Recipes.get_recipe!(recipe.id).ingredients
+      assert [] == Recipes.get_recipe!(recipe.id).ingredients
     end
   end
 end

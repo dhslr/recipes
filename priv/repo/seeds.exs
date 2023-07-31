@@ -34,29 +34,16 @@
       Abschmecken. Wer es süsser mag kann noch mehr Rübensirup zugeben. Den Sambal oelek so dosieren wie man die Schärfe gerne mag. Ein Teelöffel davon ist für die meisten Menschen genug, ohne das gleich Rauch aus den Nasenlöchern kommt. Wer es schärfer mag, nach oben ist keine Grenze. Soll es für den Kindergeburtstag sein - lieber gar nichts hinein geben. Man kann stattdessen natürlich auch ein oder zwei Peperoncino bereits mit den Paprika anbraten.
       5
       Noch heiss in Gläser abfüllen und die Deckel schliessen. Sind die Twist-off Deckel fest verschlossen, hält es sich bei dunkler Lagerung sicher 3 - 4 Monate. Die Sauce kann auch zu Grillgerichten serviert werden. Für die Currywurst am Besten nochmals anwärmen und darüber geben und mit Currypulver bestäuben. Sie schmeckt aber auch kalt.
-    """
+    """,
+    ingredients: [
+      %{description: "Viel", food: %{name: "Ketchup"}},
+      %{
+        quantity: 500,
+        description: "Gramm",
+        food: %{name: "Pommes"},
+      }
+    ]
   })
-
-{:ok, _} =
-  Recipes.create_ingredient(%{description: "Viel", food_id: ketchup.id, recipe_id: currywurst.id})
-
-{:ok, _} =
-  Recipes.create_ingredient(%{
-    quantity: 500,
-    description: "Gramm",
-    food_id: pommes.id,
-    recipe_id: currywurst.id
-  })
-
-{:ok, _} =
-  Recipes.create_ingredient(%{
-    quantity: 1,
-    description: "Stück",
-    food_id: wurst.id,
-    recipe_id: currywurst.id
-  })
-
-{:ok, _} = Recipes.create_ingredient(%{food_id: curry.id, recipe_id: currywurst.id})
 
 {:ok, _} =
   Recipes.Accounts.register_user(%{
