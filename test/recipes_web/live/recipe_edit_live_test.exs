@@ -95,11 +95,32 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes/#{recipe.id}/edit")
 
-      lv
-      |> form("#recipe_form", ingredients: %{})
-      |> render_submit()
+      rendered =
+        lv
+        |> form("#recipe_form",
+          recipe: %{
+            title: "Currywurst",
+            description: "Lecker",
+            ingredients: %{
+              "0" => %{
+                description: "Viel",
+                food: %{name: "Ketchup"},
+                quantity: 0
+              },
+              "1" => %{
+                description: "g",
+                food: %{name: "Pommes"},
+                quantity: 200
+              }
+            }
+          }
+        )
+        |> render_submit()
 
-      assert [] == Data.get_recipe!(recipe.id).ingredients
+      assert has_element?(lv, ~s(input[value="Ketchup"]))
+      assert has_element?(lv, ~s(input[value="Pommes"]))
+      refute has_element?(lv, ~s(input[value="Flour"]))
+      refute has_element?(lv, ~s(input[value="Sugar"]))
     end
   end
 end

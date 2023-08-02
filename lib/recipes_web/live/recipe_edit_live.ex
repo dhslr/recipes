@@ -3,9 +3,12 @@ defmodule RecipesWeb.RecipeEditLive do
   alias Recipes.Data
 
   def render(assigns) do
-    assigns = assign(assigns,
-    :form_data,
-      to_form(Data.change_recipe(assigns.recipe))) # todo better way to obtain changeset?
+    form_data =
+      assigns.recipe
+      |> Ecto.Changeset.change()
+      |> to_form()
+
+    assigns = assign(assigns, :form_data, form_data)
 
     ~H"""
     <.header class="text-center">
@@ -41,11 +44,9 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   def mount(params, _session, socket) do
-    socket =
-      socket
-      |> assign(:recipe, Data.get_recipe!(params["id"]))
+    recipe = Data.get_recipe!(params["id"])
 
-    {:ok, socket}
+    {:ok, socket |> assign(:recipe, recipe)}
   end
 
   def handle_event("validate_recipe", _params, socket) do
@@ -53,10 +54,8 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   def handle_event("update_recipe", params, socket) do
-    dbg(params)
     {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
 
     {:noreply, assign(socket, recipe: recipe)}
   end
-
 end
