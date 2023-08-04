@@ -159,6 +159,7 @@ defmodule RecipesTest do
                  title: "Great recipe!",
                  ingredients: [%{food: %{name: "Sugar"}, quantity: 2.0, description: "g"}]
                })
+
       assert {:ok, %Recipe{} = recipe_2} =
                Data.create_recipe(%{
                  title: "Another great recipe!",

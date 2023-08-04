@@ -207,7 +207,7 @@ defmodule RecipesWeb.CoreComponents do
   end
 
   @doc """
-  Renders a button.
+  Renders a button. Optional with a hero-icon.
 
   ## Examples
 
@@ -216,6 +216,7 @@ defmodule RecipesWeb.CoreComponents do
   """
   attr :type, :string, default: nil
   attr :class, :string, default: nil
+  attr :icon, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -233,6 +234,32 @@ defmodule RecipesWeb.CoreComponents do
     >
       <%= render_slot(@inner_block) %>
     </button>
+    """
+  end
+
+  @doc """
+  Renders a button with a label and an optional icon and an optional href.
+
+  ## Examples
+
+      <.label_button label="Send!" />
+      <.label_button label="Send!" phx-click="go" icon="face-smile"/>
+  """
+  attr :label, :string, required: true
+  attr :icon, :string, default: nil
+  attr :href, :string, default: nil
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  def label_button(assigns) do
+    ~H"""
+    <.button type={@type} class={@class} {@rest}>
+      <.link navigate={@href}>
+        <.icon :if={@icon} name={@icon} class="mr-1" />
+        <span><%= @label %></span>
+      </.link>
+    </.button>
     """
   end
 

@@ -41,7 +41,7 @@ alias Recipes.Data
       %{
         quantity: 500,
         description: "Gramm",
-        food: %{name: "Pommes"},
+        food: %{name: "Pommes"}
       }
     ]
   })

@@ -23,7 +23,7 @@ defmodule Recipes.Data.Ingredient do
   end
 
   defp parse_food(attrs) do
-    food_attrs =  attrs["food"] || attrs[:food] || %{}
+    food_attrs = attrs["food"] || attrs[:food] || %{}
     food_changeset = Food.changeset(%Food{}, food_attrs)
 
     if food_changeset.valid? do

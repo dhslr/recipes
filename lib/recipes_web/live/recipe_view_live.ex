@@ -14,7 +14,15 @@ defmodule RecipesWeb.RecipeViewLive do
     <.photos photos={@recipe.photos} class="my-3" />
     <.description description={@recipe.description} class="my-3" />
 
-    <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
+    <div class="flex justify-between items-start align-baseline">
+      <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
+      <.label_button
+        icon="hero-pencil"
+        label={gettext("Edit")}
+        class="mt-16"
+        href={~p"/recipes/#{@recipe.id}/edit"}
+      />
+    </div>
     """
   end
 

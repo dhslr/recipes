@@ -26,7 +26,7 @@ defmodule RecipesWeb.RecipeEditLive do
       <h4><%= gettext("Ingredients") %></h4>
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
-          <div class="columns-3">
+          <div class="flex justify-between">
             <.inputs_for :let={food} field={ingredient[:food]}>
               <.input type="text" field={food[:name]} />
             </.inputs_for>
@@ -37,9 +37,16 @@ defmodule RecipesWeb.RecipeEditLive do
       </div>
 
       <:actions>
-        <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
+        <.label_button icon="hero-circle-stack" phx-disable-with="Saving..." label={gettext("Save")} />
+        <.label_button
+          icon="hero-x-circle"
+          type="button"
+          label={gettext("Cancel")}
+          href={~p"/recipes/#{@recipe.id}"}
+        />
       </:actions>
     </.simple_form>
+    <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
     """
   end
 

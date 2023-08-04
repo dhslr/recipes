@@ -8,7 +8,10 @@ defmodule Recipes.Data.Recipe do
     field :kcal, :integer
     field :servings, :integer
 
-    has_many :ingredients, Recipes.Data.Ingredient, on_delete: :delete_all, on_replace: :delete_if_exists
+    has_many :ingredients, Recipes.Data.Ingredient,
+      on_delete: :delete_all,
+      on_replace: :delete_if_exists
+
     has_many :photos, Recipes.Data.Photo
     timestamps()
   end

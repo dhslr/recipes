@@ -102,8 +102,7 @@ defmodule RecipesWeb.RecipeLiveTest do
                     ]}
                  ]
                }
-             ] =
-               Floki.parse_document!(html) |> Floki.find(~s([data-test="description"]))
+             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="description"]))
     end
   end
 end
