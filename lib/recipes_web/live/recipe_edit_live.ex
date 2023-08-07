@@ -1,5 +1,6 @@
 defmodule RecipesWeb.RecipeEditLive do
   use RecipesWeb, :live_view
+  require Logger
   alias Recipes.Data
 
   def render(assigns) do
@@ -37,13 +38,7 @@ defmodule RecipesWeb.RecipeEditLive do
       </div>
 
       <:actions>
-        <.label_button icon="hero-circle-stack" phx-disable-with="Saving..." label={gettext("Save")} />
-        <.label_button
-          icon="hero-x-circle"
-          type="button"
-          label={gettext("Cancel")}
-          href={~p"/recipes/#{@recipe.id}"}
-        />
+        <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
     </.simple_form>
     <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
@@ -63,6 +58,7 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("update_recipe", params, socket) do
     {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
 
-    {:noreply, assign(socket, recipe: recipe)}
+    Logger.debug("Recipe updated: #{inspect(recipe)}")
+    {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
   end
 end

@@ -49,7 +49,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert html =~ "Cake"
     end
 
-    test "updates the recipe", %{
+    test "updates the recipe and redirects back", %{
       conn: conn,
       user: user
     } do
@@ -68,9 +68,11 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                title: "New Title",
                description: "New description"
              } = Data.get_recipe!(recipe.id)
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
     end
 
-    test "update ingredients", %{
+    test "update ingredients and redirects back", %{
       conn: conn,
       user: user
     } do
@@ -95,32 +97,45 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes/#{recipe.id}/edit")
 
-      rendered =
-        lv
-        |> form("#recipe_form",
-          recipe: %{
-            title: "Currywurst",
-            description: "Lecker",
-            ingredients: %{
-              "0" => %{
-                description: "Viel",
-                food: %{name: "Ketchup"},
-                quantity: 0
-              },
-              "1" => %{
-                description: "g",
-                food: %{name: "Pommes"},
-                quantity: 200
-              }
+      lv
+      |> form("#recipe_form",
+        recipe: %{
+          title: "Currywurst",
+          description: "Lecker",
+          ingredients: %{
+            "0" => %{
+              description: "Viel",
+              food: %{name: "Ketchup"},
+              quantity: 0
+            },
+            "1" => %{
+              description: "g",
+              food: %{name: "Pommes"},
+              quantity: 200
             }
           }
-        )
-        |> render_submit()
+        }
+      )
+      |> render_submit()
 
-      assert has_element?(lv, ~s(input[value="Ketchup"]))
-      assert has_element?(lv, ~s(input[value="Pommes"]))
-      refute has_element?(lv, ~s(input[value="Flour"]))
-      refute has_element?(lv, ~s(input[value="Sugar"]))
+      assert %Recipes.Data.Recipe{
+               title: "Currywurst",
+               description: "Lecker",
+               ingredients: [ketchup, pommes]
+             } = Data.get_recipe!(recipe.id)
+
+      assert %Recipes.Data.Ingredient{
+               food: %{name: "Ketchup"},
+               description: "Viel"
+             } = ketchup
+
+      assert %Recipes.Data.Ingredient{
+               food: %{name: "Pommes"},
+               quantity: 200.0,
+               description: "g"
+             } = pommes
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
     end
   end
 end

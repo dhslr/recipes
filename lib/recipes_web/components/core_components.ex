@@ -254,12 +254,12 @@ defmodule RecipesWeb.CoreComponents do
 
   def label_button(assigns) do
     ~H"""
-    <.button type={@type} class={@class} {@rest}>
-      <.link navigate={@href}>
+    <.link navigate={@href}>
+      <.button type={@type} class={@class} {@rest}>
         <.icon :if={@icon} name={@icon} class="mr-1" />
         <span><%= @label %></span>
-      </.link>
-    </.button>
+      </.button>
+    </.link>
     """
   end
 
