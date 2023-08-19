@@ -4,12 +4,7 @@ defmodule RecipesWeb.RecipeEditLive do
   alias Recipes.Data
 
   def render(assigns) do
-    form_data =
-      assigns.recipe
-      |> Ecto.Changeset.change()
-      |> to_form()
-
-    assigns = assign(assigns, :form_data, form_data)
+    assigns = assign(assigns, form_data: to_form(assigns.changeset))
 
     ~H"""
     <.header class="text-center">
@@ -33,6 +28,15 @@ defmodule RecipesWeb.RecipeEditLive do
             </.inputs_for>
             <.input type="text" field={ingredient[:quantity]} />
             <.input type="text" field={ingredient[:description]} />
+            <label>
+              <input
+                type="checkbox"
+                name="ingredient[ingredients_delete][]"
+                value={ingredient.index}
+                class="hidden"
+              />
+              <.icon name="hero-x-mark" />
+            </label>
           </div>
         </.inputs_for>
       </div>
@@ -46,19 +50,24 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   def mount(params, _session, socket) do
+    Logger.debug("Mount recipe edit : #{inspect(params)}")
     recipe = Data.get_recipe!(params["id"])
+    changeset = Data.change_recipe(recipe)
 
-    {:ok, socket |> assign(:recipe, recipe)}
+    {:ok, socket |> assign(changeset: changeset, recipe: recipe)}
   end
 
-  def handle_event("validate_recipe", _params, socket) do
-    {:noreply, socket}
+  def handle_event("validate_recipe", params, socket) do
+    Logger.debug("Validate recipe : #{inspect(params)}")
+
+        changeset = Recipes.Data.change_recipe(socket.assigns.recipe, params["recipe"])
+    {:noreply, socket |> assign(:changeset, changeset)}
   end
 
   def handle_event("update_recipe", params, socket) do
-    {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
+    Logger.debug("Update recipe : #{inspect(params)}")
 
-    Logger.debug("Recipe updated: #{inspect(recipe)}")
+    {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
     {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
   end
 end
