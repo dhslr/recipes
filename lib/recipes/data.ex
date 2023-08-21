@@ -209,7 +209,7 @@ defmodule Recipes.Data do
 
   ## Examples
 
-      iex> create_ingredient(%{recipe_id: 1, food_id: 1})
+      iex> create_ingredient(%{recipe_id: 1, name: "Food"})
       {:ok, %Ingredient{}}
 
       iex> create_ingredient_and_food(%{field: bad_value})

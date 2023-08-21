@@ -23,9 +23,7 @@ defmodule RecipesWeb.RecipeEditLive do
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
           <div class="flex justify-between">
-            <.inputs_for :let={food} field={ingredient[:food]}>
-              <.input type="text" field={food[:name]} />
-            </.inputs_for>
+            <.input type="text" field={ingredient[:name]} />
             <.input type="text" field={ingredient[:quantity]} />
             <.input type="text" field={ingredient[:description]} />
             <label>

@@ -70,7 +70,7 @@ defmodule RecipesWeb.RecipeViewLive do
     <div class={["text-center", @class]} data-test="ingredients">
       <ul class="inline-block">
         <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
-          <span class="font-medium text-left"><%= ingredient.food.name %></span>
+          <span class="font-medium text-left"><%= ingredient.name %></span>
           <span class="text-right">
             <span><%= ingredient.quantity %></span>
             <span><%= ingredient.description %></span>
