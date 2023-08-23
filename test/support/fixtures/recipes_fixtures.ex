@@ -10,15 +10,6 @@ defmodule Recipes.RecipesFixtures do
     recipe
   end
 
-  def food_fixture(attrs \\ %{}) do
-    {:ok, food} =
-      attrs
-      |> Enum.into(%{name: "Ketchup"})
-      |> Data.create_food()
-
-    food
-  end
-
   def ingredient_fixture(attrs \\ %{}) do
     {:ok, ingredient} =
       attrs

@@ -26,14 +26,14 @@ defmodule RecipesWeb.RecipeLiveTest do
 
       ingredient_fixture(%{
         recipe_id: recipe.id,
-        food: %{name: "Flour"},
+        name: "Flour",
         quantity: 100,
         description: "g"
       })
 
       ingredient_fixture(%{
         recipe_id: recipe.id,
-        food: %{name: "Sugar"},
+        name: "Sugar",
         quantity: 50,
         description: "g"
       })
