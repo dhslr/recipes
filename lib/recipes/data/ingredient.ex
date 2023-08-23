@@ -1,7 +1,6 @@
 defmodule Recipes.Data.Ingredient do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Recipes.Data.Food
 
   schema "ingredients" do
     field(:name, :string)
@@ -9,7 +8,6 @@ defmodule Recipes.Data.Ingredient do
     field(:quantity, :float)
     field(:position, :integer, default: 0)
     belongs_to(:recipe, Recipes.Data.Recipe, on_replace: :delete_if_exists)
-    belongs_to(:food, Food, on_replace: :nilify)
 
     timestamps()
   end
