@@ -11,8 +11,7 @@ defmodule Recipes.Data.IngredientTest do
       recipe_id: 1,
       position: 1
     }
-    @invalid_attrs_no_food %{description: "some description", recipe_id: 1}
-    @invalid_attrs_no_recipe_id %{description: "some description", name: "Abc"}
+    @invalid_attrs_no_name %{description: "some description", recipe_id: 1}
     @invalid_attrs_quantity_no_number %{
       description: "some description",
       quantity: "a",
@@ -26,9 +25,9 @@ defmodule Recipes.Data.IngredientTest do
     end
 
     test "changeset with invalid attributes" do
-      changeset_1 = Ingredient.changeset(%Ingredient{}, @invalid_attrs_no_food)
+      changeset_1 = Ingredient.changeset(%Ingredient{}, @invalid_attrs_no_name)
       changeset_2 = Ingredient.changeset(%Ingredient{}, @invalid_attrs_quantity_no_number)
-      refute changeset_1.valid? # TODO need to make name required in ingredient
+      refute changeset_1.valid?
       refute changeset_2.valid?
     end
 

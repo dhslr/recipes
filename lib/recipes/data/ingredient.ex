@@ -16,6 +16,7 @@ defmodule Recipes.Data.Ingredient do
   def changeset(ingredient, attrs) do
     ingredient
     |> cast(attrs, [:description, :quantity, :recipe_id, :position, :name])
+    |> validate_required([:name])
     |> foreign_key_constraint(:recipe_id)
   end
 end
