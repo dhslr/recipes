@@ -1,8 +1,6 @@
 defmodule Recipes.Repo.Migrations.AddNameForIngredient do
   use Ecto.Migration
 
-  alias Recipes.Data
-
   def change do
     alter table(:ingredients) do
       add :name, :string
