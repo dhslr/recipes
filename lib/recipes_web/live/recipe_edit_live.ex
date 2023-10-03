@@ -26,14 +26,14 @@ defmodule RecipesWeb.RecipeEditLive do
             <.input type="text" field={ingredient[:name]} />
             <.input type="text" field={ingredient[:quantity]} />
             <.input type="text" field={ingredient[:description]} />
-            <label>
+            <label  class="self-center">
               <input
                 type="checkbox"
-                name="ingredient[ingredients_delete][]"
+                name="recipe[ingredients_drop][]"
                 value={ingredient.index}
                 class="hidden"
               />
-              <.icon name="hero-x-mark" />
+              <.icon name="hero-trash" class="bg-red-500 h-6 w-6" />
             </label>
           </div>
         </.inputs_for>
