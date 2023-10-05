@@ -1,4 +1,4 @@
-defmodule RecipesTest do
+defmodule DataTest do
   use Recipes.DataCase
 
   alias Recipes.Data
