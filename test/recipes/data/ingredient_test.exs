@@ -30,6 +30,5 @@ defmodule Recipes.Data.IngredientTest do
       refute changeset_1.valid?
       refute changeset_2.valid?
     end
-
   end
 end

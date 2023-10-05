@@ -33,7 +33,8 @@ defmodule Recipes.Data.RecipeTest do
       assert ingredient_changeset.valid?
     end
 
-    test "changeset is not valid if ingredients are not valid because name is missing" do # TODO need to make name required
+    # TODO need to make name required
+    test "changeset is not valid if ingredients are not valid because name is missing" do
       changeset =
         Recipe.changeset(%Recipe{}, %{
           title: "Title",

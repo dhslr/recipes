@@ -99,5 +99,12 @@ defmodule DataTest do
              ] = recipe.ingredients
     end
 
+    test "add ingredient changeset to recipe" do
+      recipe = recipe_fixture()
+      changeset = Data.add_ingredient(recipe, "Bananas")
+
+      assert changeset.valid?
+      assert %{ingredients: [%Ecto.Changeset{changes: %{name: "Bananas"}}]} = changeset.changes
+    end
   end
 end

@@ -20,7 +20,10 @@ defmodule Recipes.Data.Recipe do
   def changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:title, :description, :kcal, :servings])
-    |> cast_assoc(:ingredients, with: &Recipes.Data.Ingredient.changeset/2, drop_param: :ingredients_drop)
+    |> cast_assoc(:ingredients,
+      with: &Recipes.Data.Ingredient.changeset/2,
+      drop_param: :ingredients_drop
+    )
     |> validate_required([:title])
   end
 end

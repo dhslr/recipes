@@ -26,7 +26,7 @@ defmodule RecipesWeb.RecipeEditLive do
             <.input type="text" field={ingredient[:name]} />
             <.input type="text" field={ingredient[:quantity]} />
             <.input type="text" field={ingredient[:description]} />
-            <label  class="self-center">
+            <label class="self-center">
               <input
                 type="checkbox"
                 name="recipe[ingredients_drop][]"
@@ -41,6 +41,9 @@ defmodule RecipesWeb.RecipeEditLive do
 
       <:actions>
         <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
+        <.button type="button" phx-click="add_ingredient" phx-disable-with="Adding...">
+          <%= gettext("Add") %>
+        </.button>
       </:actions>
     </.simple_form>
     <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
@@ -58,7 +61,7 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("validate_recipe", params, socket) do
     Logger.debug("Validate recipe : #{inspect(params)}")
 
-        changeset = Recipes.Data.change_recipe(socket.assigns.recipe, params["recipe"])
+    changeset = Recipes.Data.change_recipe(socket.assigns.recipe, params["recipe"])
     {:noreply, socket |> assign(:changeset, changeset)}
   end
 
@@ -67,5 +70,12 @@ defmodule RecipesWeb.RecipeEditLive do
 
     {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
     {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
+  end
+
+  def handle_event("add_ingredient", _params, socket) do
+    Logger.debug("Add ingredient")
+
+    changeset = Data.add_ingredient(socket.assigns.recipe, "New")
+    {:noreply, socket |> assign(:changeset, changeset)}
   end
 end
