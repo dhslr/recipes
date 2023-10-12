@@ -16,6 +16,7 @@ defmodule RecipesWeb.RecipeEditLive do
       id="recipe_form"
       phx-change="validate_recipe"
       phx-submit="update_recipe"
+      class="container mx-auto max-w-4xl"
     >
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
