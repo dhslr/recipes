@@ -1,4 +1,5 @@
 defmodule Recipes.Data.RecipeTest do
+  alias Recipes.Data.Photo
   use Recipes.DataCase
 
   alias Recipes.Data.Recipe
@@ -31,6 +32,38 @@ defmodule Recipes.Data.RecipeTest do
       assert changeset.valid?
       assert [ingredient_changeset] = changeset.changes.ingredients
       assert ingredient_changeset.valid?
+    end
+
+    test "get first photo from recipe" do
+      photo =
+        Recipe.first_photo(%Recipe{
+          id: 1,
+          title: "Title",
+          photos: [
+            %Photo{caption: "first", recipe_id: 1},
+            %Photo{caption: "second", recipe_id: 1}
+          ]
+        })
+
+      assert %Photo{caption: "first", recipe_id: 1} == photo
+    end
+
+    test "first_photo, return nil when there are no photos" do
+      photo1 =
+        Recipe.first_photo(%Recipe{
+          id: 1,
+          title: "Title",
+          photos: []
+        })
+
+      photo2 =
+        Recipe.first_photo(%Recipe{
+          id: 1,
+          title: "Title"
+        })
+
+      assert nil == photo1
+      assert nil == photo2
     end
 
     # TODO need to make name required

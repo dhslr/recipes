@@ -5,20 +5,38 @@ defmodule RecipesWeb.RecipesLive do
   alias Recipes.Data.Photo
 
   def render(assigns) do
-    photo = ~H"""
+    ~H"""
     <.header class="text-center"></.header>
 
     <div class="container mx-auto">
       <div class="flex flex-wrap gap-2 justify-center">
         <div :for={recipe <- @recipes} class="text-center">
           <.link navigate={~p"/recipes/#{recipe.id}"}>
-            <img src={"/photos/#{Photo.filename(Recipe.first_photo(recipe))}"} width="250px" />
+            <.main_photo photo={Recipe.first_photo(recipe)} />
             <%= recipe.title %>
           </.link>
         </div>
       </div>
     </div>
     """
+  end
+
+  defp main_photo(assigns) do
+    if assigns.photo do
+      ~H"""
+      <img
+        src={"/photos/#{Photo.filename(@photo)}"}
+        width="250px"
+      />
+      """
+    else
+      ~H"""
+      <img
+        src={"/images/meal_placeholder.jpg"}
+        width="250px"
+      />
+      """
+    end
   end
 
   def mount(_params, _session, socket) do
