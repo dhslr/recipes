@@ -37,6 +37,23 @@ defmodule RecipesWeb.RecipesLiveTest do
       assert html =~ "Kirschtorte"
     end
 
+    test "filters the recipes by typing into the input field", %{conn: conn, user: user} do
+      recipe_fixture(%{title: "Kirschtorte"})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      html =
+        lv
+        |> element("form")
+        |> render_change(%{query: "Kirsch"})
+
+      assert html =~ "Kirschtorte"
+      refute html =~ "Currywurst"
+    end
+
     test "click on the recipe in the overview redirects to recipes detail", %{
       conn: conn,
       user: user,
