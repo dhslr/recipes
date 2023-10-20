@@ -10,7 +10,13 @@ defmodule RecipesWeb.RecipeViewLive do
       <h1><%= @recipe.title %></h1>
     </.header>
     <div class="mx-auto container max-w-4xl">
+      <.sub_header text={gettext("Ingredients")} />
       <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
+      <div class="flex items-center justify-between">
+        <.kcal kcal={@recipe.kcal} />
+        <.servings servings={@recipe.servings} />
+      </div>
+
       <.photos photos={@recipe.photos} class="my-3" />
       <.description description={@recipe.description} class="my-3 container mx-auto" />
 
@@ -66,8 +72,6 @@ defmodule RecipesWeb.RecipeViewLive do
 
   defp ingredients_list(assigns) do
     ~H"""
-    <.sub_header text={gettext("Ingredients")} />
-
     <div class={["text-center", @class]} data-test="ingredients">
       <ul class="inline-block">
         <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
@@ -92,6 +96,29 @@ defmodule RecipesWeb.RecipeViewLive do
       <h3 class="text-center"><%= @text %></h3>
       <div class="border border-solid h-[1px] flex-1"></div>
     </div>
+    """
+  end
+
+  attr(:servings, :float, required: true)
+
+  defp servings(assigns) do
+    ~H"""
+    <div>
+      <div class="flex flex-wrap content-center text-center" data-test="servings">
+        <.icon name="hero-minus-circle" />
+        <input value={@servings} class="w-8 text-center" />
+        <.icon name="hero-plus-circle" />
+      </div>
+      <div class="text-center"><%= gettext("Servings") %></div>
+    </div>
+    """
+  end
+
+  attr(:kcal, :float, required: true)
+
+  defp kcal(assigns) do
+    ~H"""
+    <div data-test="kcal"><span :if={@kcal}><%= @kcal %> kcal</span></div>
     """
   end
 end
