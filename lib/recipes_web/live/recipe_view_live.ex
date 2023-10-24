@@ -12,13 +12,13 @@ defmodule RecipesWeb.RecipeViewLive do
     <div class="mx-auto container max-w-4xl">
       <.sub_header text={gettext("Ingredients")} />
       <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
-      <div class="flex items-center justify-between">
-        <.kcal kcal={@recipe.kcal} />
+      <div class="flex items-center justify-center mt-3">
         <.servings servings={@recipe.servings} />
       </div>
 
       <.photos photos={@recipe.photos} class="my-3" />
       <.description description={@recipe.description} class="my-3 container mx-auto" />
+      <.kcal kcal={@recipe.kcal} />
 
       <div class="flex justify-between items-start align-baseline">
         <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
@@ -103,11 +103,11 @@ defmodule RecipesWeb.RecipeViewLive do
 
   defp servings(assigns) do
     ~H"""
-    <div>
+    <div class=" p-3 text-lg rounded-full">
       <div class="flex flex-wrap content-center text-center" data-test="servings">
-        <.icon name="hero-minus-circle" />
-        <input value={@servings} class="w-8 text-center" />
-        <.icon name="hero-plus-circle" />
+        <.icon name="hero-minus-circle w-8 h-8" />
+        <span class="w-8 text-center"><%= @servings %></span>
+        <.icon name="hero-plus-circle  w-8 h-8" />
       </div>
       <div class="text-center"><%= gettext("Servings") %></div>
     </div>
@@ -118,7 +118,7 @@ defmodule RecipesWeb.RecipeViewLive do
 
   defp kcal(assigns) do
     ~H"""
-    <div data-test="kcal"><span :if={@kcal}><%= @kcal %> kcal</span></div>
+    <div class="float-right from-neutral-300" data-test="kcal"><span :if={@kcal}><%= @kcal %> kcal</span></div>
     """
   end
 end
