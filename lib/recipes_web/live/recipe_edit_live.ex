@@ -18,6 +18,7 @@ defmodule RecipesWeb.RecipeEditLive do
       phx-submit="update_recipe"
       class="container mx-auto max-w-4xl"
     >
+      <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
       <h4><%= gettext("Ingredients") %></h4>
@@ -55,7 +56,6 @@ defmodule RecipesWeb.RecipeEditLive do
         <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
     </.simple_form>
-    <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
     """
   end
 

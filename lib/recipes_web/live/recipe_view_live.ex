@@ -13,6 +13,7 @@ defmodule RecipesWeb.RecipeViewLive do
       <h1><%= @recipe.title %></h1>
     </.header>
     <div class="mx-auto container max-w-4xl">
+      <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
       <.sub_header text={gettext("Ingredients")} />
       <.ingredients_list
         adjust_factor={@adjusted_servings / max(1, @recipe.servings)}
@@ -28,7 +29,6 @@ defmodule RecipesWeb.RecipeViewLive do
       <.kcal kcal={@recipe.kcal} />
 
       <div class="flex justify-between items-start align-baseline">
-        <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
         <.label_button
           icon="hero-pencil"
           label={gettext("Edit")}
@@ -147,8 +147,8 @@ defmodule RecipesWeb.RecipeViewLive do
 
   defp kcal(assigns) do
     ~H"""
-    <div class="float-right from-neutral-300" data-test="kcal">
-      <span :if={@kcal}><%= @kcal %> kcal</span>
+    <div class="text-gray-500" data-test="kcal">
+      <span :if={@kcal}><%= @kcal %> kcal pro Portion</span>
     </div>
     """
   end

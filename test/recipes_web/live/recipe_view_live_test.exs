@@ -117,9 +117,13 @@ defmodule RecipesWeb.RecipeLiveTest do
         |> live(~p"/recipes/#{recipe.id}")
 
       assert [
-               {"div", [{"class", "float-right from-neutral-300"}, {"data-test", "kcal"}],
-                [{"span", [], ["1337 kcal"]}]}
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
+               {
+                 "div",
+                 [{"class", "text-gray-500"}, {"data-test", "kcal"}],
+                 [{"span", [], ["1337 kcal pro Portion"]}]
+               }
+             ] =
+               Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
     end
 
     test "renders the recipes details containing servings", %{
