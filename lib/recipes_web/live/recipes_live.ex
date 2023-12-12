@@ -38,6 +38,7 @@ defmodule RecipesWeb.RecipesLive do
     </div>
     <.simple_form for={@form_data} phx-change="change-query" class="mb-12">
       <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
+      <.link navigate={"/recipes/new"} phx-click="new-recipe">New recipe</.link>
     </.simple_form>
     """
   end

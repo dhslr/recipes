@@ -26,7 +26,7 @@ defmodule RecipesWeb.RecipeViewLive do
 
       <.photos photos={@recipe.photos} class="my-3" />
       <.description description={@recipe.description} class="my-3 container mx-auto" />
-      <.kcal kcal={@recipe.kcal} />
+      <.kcal :if={@recipe.kcal} kcal={@recipe.kcal} />
 
       <div class="flex justify-between items-start align-baseline">
         <.label_button

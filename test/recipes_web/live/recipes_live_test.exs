@@ -54,6 +54,21 @@ defmodule RecipesWeb.RecipesLiveTest do
       refute html =~ "Currywurst"
     end
 
+    test "click on new recipe button opens recipe edit view", %{conn: conn, user: user} do
+      recipe_fixture(%{title: "Kirschtorte"})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      lv
+      |> element("form a")
+      |> render_click()
+
+      assert_redirect(lv, "/recipes/new")
+    end
+
     test "click on the recipe in the overview redirects to recipes detail", %{
       conn: conn,
       user: user,
