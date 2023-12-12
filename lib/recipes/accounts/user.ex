@@ -52,7 +52,6 @@ defmodule Recipes.Accounts.User do
     end
   end
 
-
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])

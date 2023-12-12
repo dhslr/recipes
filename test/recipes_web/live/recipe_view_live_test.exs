@@ -136,7 +136,7 @@ defmodule RecipesWeb.RecipeLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes/#{recipe.id}")
 
-      assert [] ==  Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
+      assert [] == Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
     end
 
     test "renders the recipes details containing servings", %{

@@ -49,7 +49,6 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert html =~ "Cake"
     end
 
-
     test "renders the recipe edit view for new recipe", %{
       conn: conn,
       user: user
