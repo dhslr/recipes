@@ -3,10 +3,10 @@ defmodule Recipes.Data.Recipe do
   import Ecto.Changeset
 
   schema "recipes" do
-    field :description, :string
     field :title, :string
+    field :description, :string, default: ""
     field :kcal, :integer
-    field :servings, :integer
+    field :servings, :integer, default: 1
 
     has_many :ingredients, Recipes.Data.Ingredient,
       on_delete: :delete_all,
