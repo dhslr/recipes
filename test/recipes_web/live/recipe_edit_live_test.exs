@@ -58,8 +58,11 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes/new")
 
-      assert has_element?(lv, ~s([data-test="ingredients"]))
-      assert html =~ "Cake"
+      assert has_element?(lv, "button", "Save")
+      assert has_element?(lv, "h4", "Ingredients")
+
+      assert [{"div", [{"data-test", "ingredients"}, {"class", "ml-3"}], []}] =
+               Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
     end
 
     test "updates the recipe and redirects back", %{
