@@ -12,7 +12,7 @@ defmodule RecipesWeb.RecipeEditLive do
         else: ~p"/recipes/#{assigns.recipe.id}"
       )
 
-    assigns = assign(assigns, form_data: to_form(assigns.changeset), back_link: link)
+    assigns = assign(assigns, back_link: link)
 
     ~H"""
     <.header class="text-center">
@@ -83,7 +83,7 @@ defmodule RecipesWeb.RecipeEditLive do
     socket
     |> assign(:page_title, "Edit Recipe")
     |> assign(:recipe, recipe)
-    |> assign(:changeset, Data.change_recipe(recipe))
+    |> assign(:form_data, to_form(Data.change_recipe(recipe)))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -92,7 +92,7 @@ defmodule RecipesWeb.RecipeEditLive do
     socket
     |> assign(:page_title, "New Recipe")
     |> assign(:recipe, recipe)
-    |> assign(:changeset, Data.change_recipe(recipe))
+    |> assign(:form_data, Data.change_recipe(recipe))
   end
 
   @impl true
@@ -100,15 +100,20 @@ defmodule RecipesWeb.RecipeEditLive do
     Logger.debug("Validate recipe : #{inspect(params)}")
 
     changeset = Recipes.Data.change_recipe(socket.assigns.recipe, params["recipe"])
-    {:noreply, socket |> assign(:changeset, changeset)}
+    {:noreply, socket |> assign(:form_data, to_form(changeset))}
   end
 
   @impl true
   def handle_event("add_ingredient", _params, socket) do
     Logger.debug("Add ingredient")
 
-    changeset = Data.add_ingredient(socket.assigns.recipe, "")
-    {:noreply, socket |> assign(:changeset, changeset)}
+    socket = update(socket, :form_data, fn %{source: changeset} ->
+      existing = Ecto.Changeset.get_assoc(changeset, :ingredients)
+      changeset = Ecto.Changeset.put_assoc(changeset, :ingredients, existing ++ [%{name: ""}])
+      to_form(changeset)
+    end)
+
+    {:noreply, socket}
   end
 
   @impl true
