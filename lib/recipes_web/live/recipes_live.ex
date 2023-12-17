@@ -21,8 +21,8 @@ defmodule RecipesWeb.RecipesLive do
     <div class="container mx-auto">
       <.search_bar form_data={@form_data} />
       <div class="flex flex-wrap gap-2 justify-center">
-        <div :for={recipe <- @filtered_recipes} class="text-center">
-          <.link navigate={~p"/recipes/#{recipe.id}"}>
+        <div :for={recipe <- @filtered_recipes} class="flex-1">
+          <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block">
             <.main_photo photo={Recipe.first_photo(recipe)} />
             <%= recipe.title %>
           </.link>
@@ -37,7 +37,7 @@ defmodule RecipesWeb.RecipesLive do
     <div></div>
     <.simple_form for={@form_data} phx-change="change-query" class="mb-12">
       <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
-      <.link navigate="/recipes/new" phx-click="new-recipe">New recipe</.link>
+      <.button><.link navigate="/recipes/new" phx-click="new-recipe">New recipe</.link></.button>
     </.simple_form>
     """
   end
@@ -45,11 +45,11 @@ defmodule RecipesWeb.RecipesLive do
   defp main_photo(assigns) do
     if assigns.photo do
       ~H"""
-      <img src={"/photos/#{Photo.filename(@photo)}"} width="250px" />
+      <img src={"/photos/#{Photo.filename(@photo)}"} width="250px" class="mx-auto"/>
       """
     else
       ~H"""
-      <img src="/images/meal_placeholder.jpg" width="250px" />
+      <img src="/images/meal_placeholder.jpg" width="250px" class="mx-auto" />
       """
     end
   end
