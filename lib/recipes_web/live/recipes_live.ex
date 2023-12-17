@@ -20,7 +20,7 @@ defmodule RecipesWeb.RecipesLive do
 
     <div class="container mx-auto">
       <.search_bar form_data={@form_data} />
-      <div class="flex flex-wrap gap-2 justify-center">
+      <div class="flex flex-wrap gap-2">
         <div :for={recipe <- @filtered_recipes} class="flex-1">
           <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block">
             <.main_photo photo={Recipe.first_photo(recipe)} />
@@ -34,11 +34,12 @@ defmodule RecipesWeb.RecipesLive do
 
   defp search_bar(assigns) do
     ~H"""
-    <div></div>
-    <.simple_form for={@form_data} phx-change="change-query" class="mb-12">
-      <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
-      <.button><.link navigate="/recipes/new" phx-click="new-recipe">New recipe</.link></.button>
-    </.simple_form>
+    <div class="flex gap-2 mb-12 items-baseline content-center">
+      <.simple_form for={@form_data} phx-change="change-query" class="flex-1">
+        <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
+      </.simple_form>
+      <.link navigate="/recipes/new" phx-click="new-recipe"><.button type="button">New recipe</.button></.link>
+    </div>
     """
   end
 
