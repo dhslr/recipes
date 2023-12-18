@@ -11,7 +11,7 @@ defmodule RecipesWeb.RecipesLive do
       |> assign(
         :filtered_recipes,
         Enum.filter(assigns.recipes, fn recipe ->
-          String.contains?(String.capitalize(recipe.title), String.capitalize(assigns.query))
+          String.contains?(String.upcase(recipe.title), String.upcase(assigns.query))
         end)
       )
 
@@ -20,7 +20,7 @@ defmodule RecipesWeb.RecipesLive do
 
     <div class="container mx-auto">
       <.search_bar form_data={@form_data} />
-      <div class="flex flex-wrap gap-1">
+      <div class="flex flex-wrap gap-5 justify-evenly">
         <div :for={recipe <- @filtered_recipes}>
           <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block w-[320px]">
             <.main_photo photo={Recipe.first_photo(recipe)} />

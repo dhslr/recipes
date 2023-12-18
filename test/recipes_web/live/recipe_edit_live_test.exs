@@ -267,6 +267,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert lv
              |> element("input[name=\"recipe[ingredients][1][name]\"]")
              |> has_element?()
+
       assert lv
              |> element("input[name=\"recipe[ingredients][2][name]\"]")
              |> has_element?()
