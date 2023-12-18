@@ -1,7 +1,7 @@
 #!/bin/sh
 set -xe
 RECIPES_DIR=/home/daniel/git/recipes_live_view
-BACKUP_DIR=$RECIPES_DIR/backup 
+BACKUP_DIR=$RECIPES_DIR/backup
 alias compose="docker-compose -f $RECIPES_DIR/docker-compose.yml"
 . $RECIPES_DIR/.env
 if [ -z "$POSTGRES_USER" ] || [ -z "$POSTGRES_PASSWORD" ] || [ -z "$POSTGRES_DB" ]; then
