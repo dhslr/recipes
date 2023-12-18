@@ -20,9 +20,9 @@ defmodule RecipesWeb.RecipesLive do
 
     <div class="container mx-auto">
       <.search_bar form_data={@form_data} />
-      <div class="flex flex-wrap gap-2">
-        <div :for={recipe <- @filtered_recipes} class="flex-1">
-          <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block">
+      <div class="flex flex-wrap gap-1">
+        <div :for={recipe <- @filtered_recipes}>
+          <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block w-[320px]">
             <.main_photo photo={Recipe.first_photo(recipe)} />
             <%= recipe.title %>
           </.link>
@@ -38,21 +38,22 @@ defmodule RecipesWeb.RecipesLive do
       <.simple_form for={@form_data} phx-change="change-query" class="flex-1">
         <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
       </.simple_form>
-      <.link navigate="/recipes/new" phx-click="new-recipe"><.button type="button">New recipe</.button></.link>
+      <.label_button href={~p(/recipes/new)} icon="hero-plus" type="button" label="New recipe" />
     </div>
     """
   end
 
   defp main_photo(assigns) do
-    if assigns.photo do
-      ~H"""
-      <img src={"/photos/#{Photo.filename(@photo)}"} width="250px" class="mx-auto"/>
-      """
-    else
-      ~H"""
-      <img src="/images/meal_placeholder.jpg" width="250px" class="mx-auto" />
-      """
-    end
+    ~H"""
+    <div class="overflow-hidden w-[320px] h-[240px] mx-auto">
+      <img
+        :if={assigns.photo}
+        src={"/photos/#{Photo.filename(@photo)}"}
+        class="object-cover w-full h-full"
+      />
+      <img :if={!assigns.photo} src="/images/meal_placeholder.jpg" class="object-cover w-full h-full" />
+    </div>
+    """
   end
 
   def mount(_params, _session, socket) do
