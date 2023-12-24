@@ -274,5 +274,44 @@ defmodule RecipesWeb.RecipeLiveTest do
                }
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
     end
+
+    test "shows photos of recipe", %{
+      conn: conn,
+      user: user
+    } do
+      recipe = recipe_fixture(%{photos: [%{caption: "step 1"}, %{caption: "yummy"}]})
+      [photo1, photo2] = recipe.photos
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}")
+
+      assert [
+               {"ul",
+                [
+                  {"class", "my-2 flex justify-evenly gap-y-2 flex-wrap"},
+                  {"data-test", "photos"}
+                ],
+                [
+                  {"li", [{"class", "min-w-[200px] max-h-[400px] max-w-[400px]"}],
+                   [
+                     {"img",
+                      [
+                        {"src", "/photos/recipe_#{recipe.id}_#{photo1.id}.jpg"},
+                        {"class", "object-cover w-full h-full"}
+                      ], []}
+                   ]},
+                  {"li", [{"class", "min-w-[200px] max-h-[400px] max-w-[400px]"}],
+                   [
+                     {"img",
+                      [
+                        {"src", "/photos/recipe_#{recipe.id}_#{photo2.id}.jpg"},
+                        {"class", "object-cover w-full h-full"}
+                      ], []}
+                   ]}
+                ]}
+             ] == Floki.parse_document!(html) |> Floki.find(~s([data-test="photos"]))
+    end
   end
 end

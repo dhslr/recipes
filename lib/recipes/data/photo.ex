@@ -13,7 +13,6 @@ defmodule Recipes.Data.Photo do
   def changeset(photo, attrs) do
     photo
     |> cast(attrs, [:caption, :recipe_id])
-    |> validate_required([:recipe_id])
   end
 
   def filename(photo) when is_nil(photo), do: nil
