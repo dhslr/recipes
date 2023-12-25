@@ -1,8 +1,8 @@
 defmodule RecipesWeb.RecipeEditLive do
-  alias Recipes.Data.Recipe
   use RecipesWeb, :live_view
   require Logger
   alias Recipes.Data
+  alias Recipes.Data.Recipe
 
   @impl true
   def render(assigns) do
@@ -18,6 +18,8 @@ defmodule RecipesWeb.RecipeEditLive do
     <.header class="text-center">
       <h1><%= @recipe.title %></h1>
     </.header>
+
+    <%= # TODO integrate live_render(@socket, RecipesWeb.PhotoUploadLive, id: "photo-upload-live") %>
 
     <.simple_form
       for={@form_data}
@@ -70,7 +72,11 @@ defmodule RecipesWeb.RecipeEditLive do
   @impl true
   def mount(params, _session, socket) do
     socket = apply_action(socket, socket.assigns.live_action, params)
-    {:ok, assign(socket, :form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
+
+    {:ok,
+     socket
+     |> allow_upload(:photos, accept: ~w(.jpg .jpeg .heic), max_entries: 3)
+     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
