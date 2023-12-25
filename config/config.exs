@@ -59,6 +59,8 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :recipes, http_client: HTTPoison
+config :recipes, recipe_scraper: Recipes.Scraper.Chefkoch
 config :recipes, :accounts, registration_enabled: true
 
 # Import environment specific config. This must remain at the bottom

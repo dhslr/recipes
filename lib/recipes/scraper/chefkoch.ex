@@ -1,15 +1,15 @@
-defmodule Recipes.Datacraper.Chefkoch do
+defmodule Recipes.Scraper.Chefkoch do
   @moduledoc """
   Scaper to scrape recipes from chefkoch
   """
 
   alias Recipes.HttpClient
-  alias Recipes.Datacraper
-  @behaviour RecipeScraper
+  alias Recipes.Scraper
+
+  @behaviour Scraper
 
   require Logger
 
-  @impl RecipeScraper
   def scrape(url) do
     with {:ok, %{body: body, status_code: 200}} <- HttpClient.get(url),
          {:ok, recipe_data} <- extract_recipe_data(body),

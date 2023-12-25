@@ -75,7 +75,7 @@ USER nobody
 
 # Usage:
 #  * build: sudo docker image build -t elixir/recipes .
-#  * run:   sudo docker container run --rm -it -p 127.0.0.1:4000:4000 --name recipes_backend elixir/recipes
+#  * run:   sudo docker container run --rm -it -p 127.0.0.1:4000:4000 --name recipes elixir/recipes
 #  * exec:  sudo docker container exec -it recipes sh
 #  * logs:  sudo docker container logs --follow --tail 100 recipes
 

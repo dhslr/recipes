@@ -1,4 +1,4 @@
-defmodule Recipes.Datacraper do
+defmodule Recipes.Scraper do
   @typedoc """
   The url encoded as string
   """
@@ -11,5 +11,5 @@ defmodule Recipes.Datacraper do
 
   def scrape(url), do: impl().scrape(url)
 
-  defp impl(), do: Application.get_env(:recipes_backend, :recipe_scraper)
+  defp impl(), do: Application.get_env(:recipes, :recipe_scraper)
 end
