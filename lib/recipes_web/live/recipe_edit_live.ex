@@ -3,6 +3,7 @@ defmodule RecipesWeb.RecipeEditLive do
   require Logger
   alias Recipes.Data
   alias Recipes.Data.Recipe
+  alias Recipes.Data.Photo
 
   @impl true
   def render(assigns) do
@@ -19,8 +20,6 @@ defmodule RecipesWeb.RecipeEditLive do
       <h1><%= @recipe.title %></h1>
     </.header>
 
-    <%= # TODO integrate live_render(@socket, RecipesWeb.PhotoUploadLive, id: "photo-upload-live") %>
-
     <.simple_form
       for={@form_data}
       id="recipe_form"
@@ -31,6 +30,55 @@ defmodule RecipesWeb.RecipeEditLive do
       <.back navigate={@back_link}><%= gettext("Back") %></.back>
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
+
+      <h4><%= gettext("Photos") %></h4>
+      <div data-test="photos" class="my-2 flex gap-2">
+        <.inputs_for :let={photo} field={@form_data[:photos]}>
+          <.photo photo={photo} />
+        </.inputs_for>
+      </div>
+      <%!-- use phx-drop-target with the upload ref to enable file drag and drop --%>
+      <section phx-drop-target={@uploads.photo.ref}>
+        <%!-- render each photo entry --%>
+
+        <ul class="flex gap-2">
+          <li :for={entry <- @uploads.photo.entries} class="upload-entry">
+            <figure class="py-1 w-[400px]">
+              <div class="relative">
+                <.live_img_preview entry={entry} width={400} class="relative" />
+                <progress
+                  value={entry.progress}
+                  max="100"
+                  class="absolute top-[93%] w-full p-[5px] opacity-60"
+                >
+                  <%= entry.progress %>%
+                </progress>
+              </div>
+              <div class="flex justify-between">
+                <figcaption><%= entry.client_name %></figcaption>
+                <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref}>
+                  <.trash_icon />
+                </button>
+              </div>
+            </figure>
+            <div class="flex my-6">
+              <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
+              <%= for err <- upload_errors(@uploads.photo, entry) do %>
+                <p class="alert alert-danger"><%= error_to_string(err) %></p>
+              <% end %>
+            </div>
+          </li>
+          <%!-- Phoenix.Component.upload_errors/1 returns a list of error atoms --%>
+          <%= for err <- upload_errors(@uploads.photo) do %>
+            <p class="alert alert-danger"><%= error_to_string(err) %></p>
+          <% end %>
+        </ul>
+        <.button type="button">
+          <label>
+            Add photo<.live_file_input upload={@uploads.photo} class="hidden" />
+          </label>
+        </.button>
+      </section>
       <h4><%= gettext("Ingredients") %></h4>
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
@@ -53,7 +101,7 @@ defmodule RecipesWeb.RecipeEditLive do
                 value={ingredient.index}
                 class="hidden"
               />
-              <.icon name="hero-trash" class="bg-red-500 h-6 w-6" />
+              <.trash_icon />
             </label>
           </div>
         </.inputs_for>
@@ -75,7 +123,8 @@ defmodule RecipesWeb.RecipeEditLive do
 
     {:ok,
      socket
-     |> allow_upload(:photos, accept: ~w(.jpg .jpeg .heic), max_entries: 3)
+     |> assign(:uploaded_files, [])
+     |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic), max_entries: 3)
      |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
   end
 
@@ -132,6 +181,34 @@ defmodule RecipesWeb.RecipeEditLive do
     end
   end
 
+  @impl Phoenix.LiveView
+  def handle_event("cancel-upload", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :photo, ref)}
+  end
+
+  attr(:photo, :map, required: true, doc: "The photo form data")
+
+  defp photo(assigns) do
+    ~H"""
+    <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative">
+      <img src={"/photos/#{Photo.filename(@photo.data)}"} class="object-cover w-full h-full" />
+      <label class="self-center absolute top-[85%] left-[88%]">
+        <input name="recipe[photos_drop][]" type="checkbox" value={@photo.index} class="hidden" />
+        <.trash_icon />
+      </label>
+    </div>
+    """
+  end
+
+  defp trash_icon(assigns) do
+    ~H"""
+    <.icon
+      name="hero-trash"
+      class="bg-red-500 h-6 w-6 transition-transform transform hover:scale-105"
+    />
+    """
+  end
+
   defp save_recipe(_socket, :new, recipe_params) do
     Data.create_recipe(recipe_params)
   end
@@ -139,4 +216,8 @@ defmodule RecipesWeb.RecipeEditLive do
   defp save_recipe(socket, :edit, recipe_params) do
     Data.update_recipe(socket.assigns.recipe, recipe_params)
   end
+
+  defp error_to_string(:too_large), do: "Too large"
+  defp error_to_string(:too_many_files), do: "You have selected too many files"
+  defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
 end

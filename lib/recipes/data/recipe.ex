@@ -12,7 +12,10 @@ defmodule Recipes.Data.Recipe do
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
-    has_many :photos, Recipes.Data.Photo
+    has_many :photos, Recipes.Data.Photo,
+      on_delete: :delete_all,
+      on_replace: :delete_if_exists
+
     timestamps()
   end
 
@@ -24,7 +27,10 @@ defmodule Recipes.Data.Recipe do
       with: &Recipes.Data.Ingredient.changeset/2,
       drop_param: :ingredients_drop
     )
-    |> cast_assoc(:photos, with: &Recipes.Data.Photo.changeset/2)
+    |> cast_assoc(:photos,
+      with: &Recipes.Data.Photo.changeset/2,
+      drop_param: :photos_drop
+    )
     |> validate_required([:title])
   end
 
