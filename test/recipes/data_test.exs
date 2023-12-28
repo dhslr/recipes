@@ -1,4 +1,5 @@
 defmodule DataTest do
+  alias Recipes.Data.Photo
   use Recipes.DataCase
 
   alias Recipes.Data
@@ -106,6 +107,19 @@ defmodule DataTest do
 
       assert changeset.valid?
       assert %{ingredients: [%Ecto.Changeset{changes: %{name: "Bananas"}}]} = changeset.changes
+    end
+
+    test "create photo from uploaded file" do
+      recipe = recipe_fixture()
+      path = Path.join(Application.app_dir(:recipes), "/priv/static/images/meal_placeholder.jpg")
+
+      assert {:ok, photo} =
+               Data.create_photo(%{
+                 photo_file_path: path,
+                 recipe_id: recipe.id
+               })
+
+      assert File.exists?(Path.join(Photo.photos_dir(), Photo.filename(photo)))
     end
   end
 end

@@ -77,7 +77,9 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> live(~p"/recipes/#{recipe.id}/edit")
 
       lv
-      |> form("#recipe_form", recipe: %{title: "New Title", description: "New description", servings: 4, kcal: 1234})
+      |> form("#recipe_form",
+        recipe: %{title: "New Title", description: "New description", servings: 4, kcal: 1234}
+      )
       |> render_submit()
 
       assert_redirect(lv, "/recipes/#{recipe.id}")
@@ -86,9 +88,8 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                title: "New Title",
                description: "New description",
                servings: 4,
-               kcal: 1234,
+               kcal: 1234
              } = Data.get_recipe!(recipe.id)
-
     end
 
     test "update ingredients and redirects back", %{

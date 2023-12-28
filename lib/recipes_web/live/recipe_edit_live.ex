@@ -6,6 +6,18 @@ defmodule RecipesWeb.RecipeEditLive do
   alias Recipes.Data.Photo
 
   @impl true
+  def mount(params, _session, socket) do
+    socket = apply_action(socket, socket.assigns.live_action, params)
+
+    {:ok,
+     socket
+     |> assign(:uploaded_files, [])
+     |> assign(:dirty, false)
+     |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic .png .gif), max_entries: 3)
+     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
+  end
+
+  @impl true
   def render(assigns) do
     link =
       if(assigns.live_action == :new,
@@ -36,53 +48,20 @@ defmodule RecipesWeb.RecipeEditLive do
       </div>
 
       <h4><%= gettext("Photos") %></h4>
-      <div data-test="photos" class="my-2 flex gap-2">
+      <div data-test="photos" class="flex gap-2">
         <.inputs_for :let={photo} field={@form_data[:photos]}>
-          <.photo photo={photo} />
+          <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative">
+            <img src={"/photos/#{Photo.filename(photo.data)}"} class="object-cover w-full h-full" />
+            <label class="self-center absolute top-[85%] left-[88%]">
+              <input name="recipe[photos_drop][]" type="checkbox" value={photo.index} class="hidden" />
+              <.trash_icon />
+            </label>
+          </div>
         </.inputs_for>
       </div>
-      <%!-- use phx-drop-target with the upload ref to enable file drag and drop --%>
-      <section phx-drop-target={@uploads.photo.ref}>
-        <%!-- render each photo entry --%>
 
-        <ul class="flex gap-2">
-          <li :for={entry <- @uploads.photo.entries} class="upload-entry">
-            <figure class="py-1 w-[400px]">
-              <div class="relative">
-                <.live_img_preview entry={entry} width={400} class="relative" />
-                <progress
-                  value={entry.progress}
-                  max="100"
-                  class="absolute top-[93%] w-full p-[5px] opacity-60"
-                >
-                  <%= entry.progress %>%
-                </progress>
-              </div>
-              <div class="flex justify-between">
-                <figcaption><%= entry.client_name %></figcaption>
-                <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref}>
-                  <.trash_icon />
-                </button>
-              </div>
-            </figure>
-            <div class="flex my-6">
-              <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
-              <%= for err <- upload_errors(@uploads.photo, entry) do %>
-                <p class="alert alert-danger"><%= error_to_string(err) %></p>
-              <% end %>
-            </div>
-          </li>
-          <%!-- Phoenix.Component.upload_errors/1 returns a list of error atoms --%>
-          <%= for err <- upload_errors(@uploads.photo) do %>
-            <p class="alert alert-danger"><%= error_to_string(err) %></p>
-          <% end %>
-        </ul>
-        <.button type="button">
-          <label>
-            Add photo<.live_file_input upload={@uploads.photo} class="hidden" />
-          </label>
-        </.button>
-      </section>
+      <.photo_upload uploads={@uploads} />
+
       <h4><%= gettext("Ingredients") %></h4>
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
@@ -121,17 +100,6 @@ defmodule RecipesWeb.RecipeEditLive do
     """
   end
 
-  @impl true
-  def mount(params, _session, socket) do
-    socket = apply_action(socket, socket.assigns.live_action, params)
-
-    {:ok,
-     socket
-     |> assign(:uploaded_files, [])
-     |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic), max_entries: 3)
-     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
-  end
-
   defp apply_action(socket, :edit, %{"id" => id}) do
     recipe = Data.get_recipe!(id)
 
@@ -158,7 +126,7 @@ defmodule RecipesWeb.RecipeEditLive do
       |> struct!(action: :validate)
       |> to_form()
 
-    {:noreply, socket |> assign(:form_data, form_data)}
+    {:noreply, socket |> assign(:form_data, form_data) |> assign(:dirty, true)}
   end
 
   @impl true
@@ -172,12 +140,18 @@ defmodule RecipesWeb.RecipeEditLive do
         to_form(changeset)
       end)
 
-    {:noreply, socket}
+    {:noreply, socket |> assign(:dirty, true)}
   end
 
   @impl true
   def handle_event("save_recipe", %{"recipe" => recipe_params}, socket) do
     Logger.debug("Save recipe : #{inspect(recipe_params)}")
+
+    # TODO this does not work for new recipes yet (no id)
+    _photos =
+      consume_uploaded_entries(socket, :photo, fn %{path: path}, _entry ->
+        Data.create_photo(%{photo_file_path: path, recipe_id: socket.assigns.recipe.id})
+      end)
 
     case save_recipe(socket, socket.assigns.live_action, recipe_params) do
       {:ok, recipe} -> {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
@@ -190,17 +164,48 @@ defmodule RecipesWeb.RecipeEditLive do
     {:noreply, cancel_upload(socket, :photo, ref)}
   end
 
-  attr(:photo, :map, required: true, doc: "The photo form data")
-
-  defp photo(assigns) do
+  defp photo_upload(assigns) do
     ~H"""
-    <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative">
-      <img src={"/photos/#{Photo.filename(@photo.data)}"} class="object-cover w-full h-full" />
-      <label class="self-center absolute top-[85%] left-[88%]">
-        <input name="recipe[photos_drop][]" type="checkbox" value={@photo.index} class="hidden" />
-        <.trash_icon />
-      </label>
-    </div>
+    <%!-- use phx-drop-target with the upload ref to enable file drag and drop --%>
+    <section phx-drop-target={@uploads.photo.ref}>
+      <ul class="flex gap-2">
+        <li :for={entry <- @uploads.photo.entries} class="upload-entry">
+          <figure class="py-1 w-[400px]">
+            <div class="relative">
+              <.live_img_preview entry={entry} width={400} class="relative" />
+              <progress
+                value={entry.progress}
+                max="100"
+                class="absolute top-[93%] w-full p-[5px] opacity-60"
+              >
+                <%= entry.progress %>%
+              </progress>
+            </div>
+            <div class="flex justify-between">
+              <figcaption><%= entry.client_name %></figcaption>
+              <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref}>
+                <.trash_icon />
+              </button>
+            </div>
+          </figure>
+          <div class="flex my-6">
+            <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
+            <%= for err <- upload_errors(@uploads.photo, entry) do %>
+              <p class="alert alert-danger"><%= error_to_string(err) %></p>
+            <% end %>
+          </div>
+        </li>
+        <%!-- Phoenix.Component.upload_errors/1 returns a list of error atoms --%>
+        <%= for err <- upload_errors(@uploads.photo) do %>
+          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+        <% end %>
+      </ul>
+      <.button type="button">
+        <label>
+          Add photo<.live_file_input upload={@uploads.photo} class="hidden" />
+        </label>
+      </.button>
+    </section>
     """
   end
 
@@ -221,7 +226,7 @@ defmodule RecipesWeb.RecipeEditLive do
     Data.update_recipe(socket.assigns.recipe, recipe_params)
   end
 
-  defp error_to_string(:too_large), do: "Too large"
-  defp error_to_string(:too_many_files), do: "You have selected too many files"
-  defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
+  defp error_to_string(:too_large), do: gettext("File too large")
+  defp error_to_string(:too_many_files), do: gettext("You have selected too many files")
+  defp error_to_string(:not_accepted), do: gettext("You have selected an unacceptable file type")
 end

@@ -256,7 +256,7 @@ defmodule RecipesWeb.CoreComponents do
     <.link navigate={@href}>
       <.button type={@type} class={@class} {@rest}>
         <.icon :if={@icon} name={@icon} class="mr-1" />
-        <span><%= @label %></span>
+        <label><%= @label %></label>
       </.button>
     </.link>
     """
