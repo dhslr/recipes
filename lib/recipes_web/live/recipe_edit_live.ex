@@ -30,6 +30,10 @@ defmodule RecipesWeb.RecipeEditLive do
       <.back navigate={@back_link}><%= gettext("Back") %></.back>
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
+      <div class="flex gap-2">
+        <.input type="number" field={@form_data[:servings]} label={gettext("Servings")} />
+        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories")} />
+      </div>
 
       <h4><%= gettext("Photos") %></h4>
       <div data-test="photos" class="my-2 flex gap-2">
