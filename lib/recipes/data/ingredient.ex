@@ -21,11 +21,11 @@ defmodule Recipes.Data.Ingredient do
   end
 
   @doc false
-  def changeset(ingredient, _changes, position) do
-    dbg(ingredient)
-    dbg(position)
-
+  def changeset(ingredient, attrs, position) do
     ingredient
+    |> cast(attrs, [:description, :quantity, :recipe_id, :name])
+    |> validate_required([:name])
     |> change(position: position)
+    |> foreign_key_constraint(:recipe_id)
   end
 end

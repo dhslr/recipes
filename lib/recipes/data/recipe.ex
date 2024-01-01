@@ -9,6 +9,7 @@ defmodule Recipes.Data.Recipe do
     field :servings, :integer, default: 1
 
     has_many :ingredients, Recipes.Data.Ingredient,
+      preload_order: [asc: :position],
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
@@ -24,8 +25,9 @@ defmodule Recipes.Data.Recipe do
     recipe
     |> cast(attrs, [:title, :description, :kcal, :servings])
     |> cast_assoc(:ingredients,
-      with: &Recipes.Data.Ingredient.changeset/2,
-      drop_param: :ingredients_drop
+      with: &Recipes.Data.Ingredient.changeset/3,
+      drop_param: :ingredients_drop,
+      sort_param: :ingredients_order
     )
     |> cast_assoc(:photos,
       with: &Recipes.Data.Photo.changeset/2,

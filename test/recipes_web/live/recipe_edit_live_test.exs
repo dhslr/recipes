@@ -61,8 +61,15 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert has_element?(lv, "button", "Save")
       assert has_element?(lv, "h4", "Ingredients")
 
-      assert [{"div", [{"data-test", "ingredients"}, {"class", "ml-3"}], []}] =
-               Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
+      assert [
+               {"div",
+                [
+                  {"id", "ingredients"},
+                  {"data-test", "ingredients"},
+                  {"class", "ml-3"},
+                  {"phx-hook", "Sortable"}
+                ], []}
+             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
     end
 
     test "updates the recipe and redirects back", %{
@@ -261,11 +268,12 @@ defmodule RecipesWeb.RecipeEditLiveTest do
              |> has_element?()
 
       lv
-      |> element("button[phx-click=\"add_ingredient\"]")
+      # TODO fix
+      |> element(".hero-plus-circle")
       |> render_click()
 
       lv
-      |> element("button[phx-click=\"add_ingredient\"]")
+      |> element(".hero-plus-circle")
       |> render_click()
 
       assert lv
