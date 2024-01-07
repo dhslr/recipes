@@ -8,6 +8,11 @@ defmodule Recipes.Data.PhotoTest do
       assert changeset.valid?
     end
 
+    test "photo with position" do
+      changeset = Photo.changeset(%Photo{}, %{caption: "a caption", recipe_id: 1}, 1)
+      assert changeset.valid?
+    end
+
     test "filename, get filename of photo" do
       filename = Photo.filename(%Photo{id: 42, caption: "first", recipe_id: 23})
 
