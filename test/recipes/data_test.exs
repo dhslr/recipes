@@ -116,7 +116,8 @@ defmodule DataTest do
       assert {:ok, photo} =
                Data.create_photo(%{
                  photo_file_path: path,
-                 recipe_id: recipe.id
+                 recipe_id: recipe.id,
+                 position: 0
                })
 
       assert File.exists?(Path.join(Photo.photos_dir(), Photo.filename(photo)))

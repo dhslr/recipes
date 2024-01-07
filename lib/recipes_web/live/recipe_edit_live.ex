@@ -48,9 +48,10 @@ defmodule RecipesWeb.RecipeEditLive do
       </div>
 
       <h4><%= gettext("Photos") %></h4>
-      <div data-test="photos" class="flex gap-2">
+      <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">
         <.inputs_for :let={photo} field={@form_data[:photos]}>
-          <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative">
+          <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative drag-item" data-handle>
+            <input type="hidden" name="recipe[photos_order][]" value={photo.index} />
             <img src={"/photos/#{Photo.filename(photo.data)}"} class="object-cover w-full h-full" />
             <label class="self-center absolute top-[85%] left-[88%]">
               <input name="recipe[photos_drop][]" type="checkbox" value={photo.index} class="hidden" />
@@ -136,10 +137,18 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("save_recipe", %{"recipe" => recipe_params} = attrs, socket) do
     Logger.debug("Save recipe : #{inspect(attrs)}")
 
-    # TODO this does not work for new recipes yet (no id)
+    max_position =
+      socket.assigns.recipe.photos
+      |> Enum.map(& &1.position)
+      |> Enum.max(&>=/2, fn -> 0 end)
+
     _photos =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, _entry ->
-        Data.create_photo(%{photo_file_path: path, recipe_id: socket.assigns.recipe.id})
+        Data.create_photo(%{
+          photo_file_path: path,
+          recipe_id: socket.assigns.recipe.id,
+          position: max_position + 1
+        })
       end)
 
     case save_recipe(socket, socket.assigns.live_action, recipe_params) do
