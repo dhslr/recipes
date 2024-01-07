@@ -26,7 +26,7 @@ defmodule Recipes.Data do
   alias Recipes.Data.Recipe
 
   @doc """
-  Returns the list of recipes.
+  Returns the list of recipes sorted alphabetically.
 
   ## Examples
 
@@ -35,7 +35,9 @@ defmodule Recipes.Data do
 
   """
   def list_recipes do
-    Repo.all(Recipe) |> Repo.preload([:ingredients, :photos])
+    Repo.all(Recipe)
+    |> Repo.preload([:ingredients, :photos])
+    |> Enum.sort(&(&1.title <= &2.title))
   end
 
   @doc """
