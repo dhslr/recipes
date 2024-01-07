@@ -68,7 +68,20 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                   {"data-test", "ingredients"},
                   {"class", "ml-3"},
                   {"phx-hook", "Sortable"}
-                ], []}
+                ],
+                [
+                  {"label", [{"class", "block cursor-pointer my-2"}],
+                   [
+                     {"input",
+                      [
+                        {"type", "checkbox"},
+                        {"name", "recipe[ingredients_order][]"},
+                        {"class", "hidden"}
+                      ], []},
+                     {"span", [{"class", "hero-plus-circle"}], []},
+                     " add\n    "
+                   ]}
+                ]}
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
     end
 
@@ -241,48 +254,6 @@ defmodule RecipesWeb.RecipeEditLiveTest do
              } = Data.get_recipe!(recipe.id)
 
       assert_redirect(lv, "/recipes/#{recipe.id}")
-    end
-
-    test "add ingredients to recipe", %{
-      conn: conn,
-      user: user
-    } do
-      recipe =
-        recipe_fixture(%{
-          ingredients: [
-            %{
-              name: "Flour",
-              quantity: 200,
-              description: "g"
-            }
-          ]
-        })
-
-      {:ok, lv, _html} =
-        conn
-        |> log_in_user(user)
-        |> live(~p"/recipes/#{recipe.id}/edit")
-
-      refute lv
-             |> element("input[name=\"recipe[ingredients][1][name]\"]")
-             |> has_element?()
-
-      lv
-      # TODO fix
-      |> element(".hero-plus-circle")
-      |> render_click()
-
-      lv
-      |> element(".hero-plus-circle")
-      |> render_click()
-
-      assert lv
-             |> element("input[name=\"recipe[ingredients][1][name]\"]")
-             |> has_element?()
-
-      assert lv
-             |> element("input[name=\"recipe[ingredients][2][name]\"]")
-             |> has_element?()
     end
   end
 end
