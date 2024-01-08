@@ -41,4 +41,4 @@ npm-debug.log
 # Ignore env file
 .env
 
-backup
+backup.tgz
