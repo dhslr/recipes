@@ -85,6 +85,28 @@ defmodule RecipesWeb.RecipeEditLiveTest do
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
     end
 
+    test "renders the recipe edit view for new recipe, can edit and save", %{
+      conn: conn,
+      user: user
+    } do
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/new")
+
+      assert has_element?(lv, "button", "Save")
+      assert has_element?(lv, "h4", "Ingredients")
+
+      lv
+      |> form("#recipe_form",
+        recipe: %{title: "A Title", description: "A description", servings: 4, kcal: 1234}
+      )
+      |> render_submit()
+
+      {path, _flash} = assert_redirect(lv)
+      assert path =~ ~r(/recipes/\d+)
+    end
+
     test "updates the recipe and redirects back", %{
       conn: conn,
       user: user
