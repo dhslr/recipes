@@ -275,6 +275,49 @@ defmodule RecipesWeb.RecipeLiveTest do
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
     end
 
+
+    test "renders the recipes details containing servings with adjusted servings in URL", %{
+      conn: conn,
+      user: user
+    } do
+      recipe = recipe_fixture(%{servings: 4})
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}?servings=17")
+
+      assert [
+               {
+                 "div",
+                 _,
+                 [
+                   {
+                     "button",
+                     [
+                       {"name", "decrease-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "16"}
+                     ],
+                     [{"span", [{"class", "hero-minus-circle w-8 h-8"}], []}]
+                   },
+                   {"span", [{"class", "w-8 text-center"}], ["17"]},
+                   {
+                     "button",
+                     [
+                       {"name", "increase-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "18"}
+                     ],
+                     [{"span", [{"class", "hero-plus-circle  w-8 h-8"}], []}]
+                   }
+                 ]
+               }
+             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+    end
+
     test "shows photos of recipe", %{
       conn: conn,
       user: user
