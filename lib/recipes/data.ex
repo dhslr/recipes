@@ -209,6 +209,7 @@ defmodule Recipes.Data do
   end
 
   def create_photo(%{photo_file_path: path, recipe_id: recipe_id}) do
+    dbg(path)
     with {:ok, %Photo{} = photo} <-
            create_photo_entry(%{recipe_id: recipe_id}),
          {:ok, _} <- File.copy(path, filepath(photo)) do
