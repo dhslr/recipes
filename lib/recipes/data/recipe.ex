@@ -16,7 +16,7 @@ defmodule Recipes.Data.Recipe do
     has_many :photos, Recipes.Data.Photo,
       preload_order: [asc: :position],
       on_delete: :delete_all,
-      on_replace: :delete
+      on_replace: :delete_if_exists
 
     timestamps()
   end
