@@ -28,7 +28,7 @@ compose stop app
 compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/dropdb -h db -U $POSTGRES_USER $POSTGRES_DB
 compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/createdb -h db -U $POSTGRES_USER $POSTGRES_DB
 compose run --rm -T -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/psql -h db -U $POSTGRES_USER $POSTGRES_DB < $BACKUP_DIR/recipes_db_dump_new.sql
-compose cp $BACKUP_DIR/app app:/app
+docker cp  $BACKUP_DIR/app recipes_live_view_app_1:/app
 compose start app
 
 rm -rf $BACKUP_DIR
