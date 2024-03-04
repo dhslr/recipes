@@ -275,7 +275,6 @@ defmodule RecipesWeb.RecipeLiveTest do
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
     end
 
-
     test "renders the recipes details containing servings with adjusted servings in URL", %{
       conn: conn,
       user: user
