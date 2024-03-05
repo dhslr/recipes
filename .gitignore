@@ -35,8 +35,9 @@ recipes-*.tar
 npm-debug.log
 /assets/node_modules/
 
-# Ignore photos directory
-/priv/static/photos/
+# Ignore content of photos but the the dir itself
+/priv/static/photos/*
+!/priv/static/photos/.keep
 
 # Ignore env file
 .env
