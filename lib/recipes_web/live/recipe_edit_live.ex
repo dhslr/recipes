@@ -1,8 +1,11 @@
 defmodule RecipesWeb.RecipeEditLive do
   use RecipesWeb, :live_view
+  alias Recipes.Data
 
   def render(assigns) do
-    assigns = assign(assigns, :form_data, to_form(Recipes.change_recipe(assigns.recipe)))
+    assigns = assign(assigns,
+    :form_data,
+      to_form(Data.change_recipe(assigns.recipe))) # todo better way to obtain changeset?
 
     ~H"""
     <.header class="text-center">
@@ -40,7 +43,7 @@ defmodule RecipesWeb.RecipeEditLive do
   def mount(params, _session, socket) do
     socket =
       socket
-      |> assign(:recipe, Recipes.get_recipe!(params["id"]))
+      |> assign(:recipe, Data.get_recipe!(params["id"]))
 
     {:ok, socket}
   end
@@ -50,7 +53,8 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   def handle_event("update_recipe", params, socket) do
-    {:ok, recipe} = Recipes.update_recipe(socket.assigns.recipe, params["recipe"])
+    dbg(params)
+    {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
 
     {:noreply, assign(socket, recipe: recipe)}
   end

@@ -1,4 +1,4 @@
-defmodule Recipes do
+defmodule Recipes.Data do
   @moduledoc """
   The Data context.
   """

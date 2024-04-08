@@ -1,9 +1,11 @@
 defmodule Recipes.RecipesFixtures do
+  alias Recipes.Data
+
   def recipe_fixture(attrs \\ %{}) do
     {:ok, recipe} =
       attrs
       |> Enum.into(%{description: "Hmm... lecker Currywurst.", title: "Currywurst"})
-      |> Recipes.create_recipe()
+      |> Data.create_recipe()
 
     recipe
   end
@@ -12,7 +14,7 @@ defmodule Recipes.RecipesFixtures do
     {:ok, food} =
       attrs
       |> Enum.into(%{name: "Ketchup"})
-      |> Recipes.create_food()
+      |> Data.create_food()
 
     food
   end
@@ -21,7 +23,7 @@ defmodule Recipes.RecipesFixtures do
     {:ok, ingredient} =
       attrs
       |> Enum.into(%{quantity: 1, description: "kg"})
-      |> Recipes.create_ingredient()
+      |> Data.create_ingredient()
 
     ingredient
   end

@@ -1,5 +1,6 @@
 defmodule RecipesWeb.RecipesLive do
   use RecipesWeb, :live_view
+  alias Recipes.Data
 
   def render(assigns) do
     ~H"""
@@ -18,7 +19,7 @@ defmodule RecipesWeb.RecipesLive do
   def mount(_params, _session, socket) do
     socket =
       socket
-      |> assign(:recipes, Recipes.list_recipes())
+      |> assign(:recipes, Data.list_recipes())
 
     {:ok, socket}
   end

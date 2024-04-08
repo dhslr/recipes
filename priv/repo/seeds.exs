@@ -9,17 +9,18 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+alias Recipes.Data
 
-{:ok, _} = Recipes.create_food(%{name: "Salz"})
-{:ok, _} = Recipes.create_food(%{name: "Pfeffer"})
-{:ok, _} = Recipes.create_food(%{name: "Wasser"})
-{:ok, pommes} = Recipes.create_food(%{name: "Pommes"})
-{:ok, ketchup} = Recipes.create_food(%{name: "Ketchup"})
-{:ok, wurst} = Recipes.create_food(%{name: "Wurst"})
-{:ok, curry} = Recipes.create_food(%{name: "Curry"})
+{:ok, _} = Data.create_food(%{name: "Salz"})
+{:ok, _} = Data.create_food(%{name: "Pfeffer"})
+{:ok, _} = Data.create_food(%{name: "Wasser"})
+{:ok, pommes} = Data.create_food(%{name: "Pommes"})
+{:ok, ketchup} = Data.create_food(%{name: "Ketchup"})
+{:ok, wurst} = Data.create_food(%{name: "Wurst"})
+{:ok, curry} = Data.create_food(%{name: "Curry"})
 
 {:ok, currywurst} =
-  Recipes.create_recipe(%{
+  Data.create_recipe(%{
     title: "Title",
     kcal: 2001,
     servings: 2,
