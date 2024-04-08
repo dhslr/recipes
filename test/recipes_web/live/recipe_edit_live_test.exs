@@ -232,7 +232,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert_redirect(lv, "/recipes/#{recipe.id}")
     end
 
-    test "add ingredient to recipe", %{
+    test "add ingredients to recipe", %{
       conn: conn,
       user: user
     } do
@@ -260,8 +260,15 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       |> element("button[phx-click=\"add_ingredient\"]")
       |> render_click()
 
+      lv
+      |> element("button[phx-click=\"add_ingredient\"]")
+      |> render_click()
+
       assert lv
              |> element("input[name=\"recipe[ingredients][1][name]\"]")
+             |> has_element?()
+      assert lv
+             |> element("input[name=\"recipe[ingredients][2][name]\"]")
              |> has_element?()
     end
   end
