@@ -208,15 +208,15 @@ defmodule Recipes.Data do
     Ingredient.changeset(ingredient, attrs)
   end
 
-  def create_photo(%{photo_file_path: path, recipe_id: recipe_id, position: position}) do
+  def create_photo(%{photo_file_path: path, recipe_id: recipe_id}) do
     with {:ok, %Photo{} = photo} <-
-           create_photo_entry(%{recipe_id: recipe_id, position: position}),
+           create_photo_entry(%{recipe_id: recipe_id}),
          {:ok, _} <- File.copy(path, filepath(photo)) do
       {:ok, photo}
     end
   end
 
-  defp create_photo_entry(%{recipe_id: _recipe_id, position: _position} = attrs) do
+  defp create_photo_entry(attrs) do
     %Photo{}
     # TODO support caption
     |> Photo.changeset(attrs)

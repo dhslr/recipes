@@ -137,17 +137,11 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("save_recipe", %{"recipe" => recipe_params} = attrs, socket) do
     Logger.debug("Save recipe : #{inspect(attrs)}")
 
-    max_position =
-      socket.assigns.recipe.photos
-      |> Enum.map(& &1.position)
-      |> Enum.max(&>=/2, fn -> 0 end)
-
     _photos =
       consume_uploaded_entries(socket, :photo, fn %{path: path}, _entry ->
         Data.create_photo(%{
           photo_file_path: path,
-          recipe_id: socket.assigns.recipe.id,
-          position: max_position + 1
+          recipe_id: socket.assigns.recipe.id
         })
       end)
 
