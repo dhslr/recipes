@@ -62,16 +62,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-${{ env.cache-name }}-
             ${{ runner.os }}-mix-
-
-      # Step: Download project dependencies. If unchanged, uses
-      # the cached version. Setup assets and ecto.
       - name: Install dependencies
         run: mix setup
-
-      # Step: Compile the project treating any warnings as errors.
       - name: Compiles without warnings
         run: mix ci
-
-      # Step: Execute the tests.
-      - name: Run tests
-        run: mix test
