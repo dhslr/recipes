@@ -136,14 +136,123 @@ defmodule RecipesWeb.RecipeLiveTest do
       assert [
                {
                  "div",
+                 _,
                  [
-                   {"class", "flex flex-wrap content-center text-center"},
-                   {"data-test", "servings"}
-                 ],
-                 [
-                   {"span", [{"class", "hero-minus-circle w-8 h-8"}], []},
+                   {
+                     "button",
+                     [
+                       {"name", "decrease-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "3"}
+                     ],
+                     [{"span", [{"class", "hero-minus-circle w-8 h-8"}], []}]
+                   },
                    {"span", [{"class", "w-8 text-center"}], ["4"]},
-                   {"span", [{"class", "hero-plus-circle  w-8 h-8"}], []}
+                   {
+                     "button",
+                     [
+                       {"name", "increase-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "5"}
+                     ],
+                     [{"span", [{"class", "hero-plus-circle  w-8 h-8"}], []}]
+                   }
+                 ]
+               }
+             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+    end
+
+    test "can increase recipe servings", %{
+      conn: conn,
+      user: user
+    } do
+      recipe = recipe_fixture(%{servings: 2})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}")
+
+      html =
+        lv
+        |> element(~s(button[name="increase-servings"]))
+        |> render_click()
+
+      assert [
+               {
+                 "div",
+                 _,
+                 [
+                   {
+                     "button",
+                     [
+                       {"name", "decrease-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "2"}
+                     ],
+                     [{"span", [{"class", "hero-minus-circle w-8 h-8"}], []}]
+                   },
+                   {"span", [{"class", "w-8 text-center"}], ["3"]},
+                   {
+                     "button",
+                     [
+                       {"name", "increase-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "4"}
+                     ],
+                     [{"span", [{"class", "hero-plus-circle  w-8 h-8"}], []}]
+                   }
+                 ]
+               }
+             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+    end
+
+    test "can decrease recipe servings", %{
+      conn: conn,
+      user: user
+    } do
+      recipe = recipe_fixture(%{servings: 2})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}")
+
+      html =
+        lv
+        |> element(~s(button[name="decrease-servings"]))
+        |> render_click()
+
+      assert [
+               {
+                 "div",
+                 _,
+                 [
+                   {
+                     "button",
+                     [
+                       {"name", "decrease-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "1"}
+                     ],
+                     [{"span", [{"class", "hero-minus-circle w-8 h-8"}], []}]
+                   },
+                   {"span", [{"class", "w-8 text-center"}], ["1"]},
+                   {
+                     "button",
+                     [
+                       {"name", "increase-servings"},
+                       {"type", "button"},
+                       {"phx-click", "change-servings"},
+                       {"phx-value-servings", "2"}
+                     ],
+                     [{"span", [{"class", "hero-plus-circle  w-8 h-8"}], []}]
+                   }
                  ]
                }
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))

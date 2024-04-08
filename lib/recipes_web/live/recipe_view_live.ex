@@ -3,7 +3,10 @@ defmodule RecipesWeb.RecipeViewLive do
   alias Recipes.Data
 
   def render(assigns) do
-    assigns = assign(assigns, :form_data, to_form(Data.change_recipe(assigns.recipe)))
+    assigns =
+      assign(assigns,
+        form_data: to_form(Data.change_recipe(assigns.recipe))
+      )
 
     ~H"""
     <.header class="text-center my-3">
@@ -11,9 +14,13 @@ defmodule RecipesWeb.RecipeViewLive do
     </.header>
     <div class="mx-auto container max-w-4xl">
       <.sub_header text={gettext("Ingredients")} />
-      <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
+      <.ingredients_list
+        adjust_factor={@adjusted_servings / max(1, @recipe.servings)}
+        ingredients={@recipe.ingredients}
+        class="my-3"
+      />
       <div class="flex items-center justify-center mt-3">
-        <.servings servings={@recipe.servings} />
+        <.servings servings={@adjusted_servings} />
       </div>
 
       <.photos photos={@recipe.photos} class="my-3" />
@@ -34,11 +41,13 @@ defmodule RecipesWeb.RecipeViewLive do
   end
 
   def mount(params, _session, socket) do
-    socket =
-      socket
-      |> assign(:recipe, Data.get_recipe!(params["id"]))
+    recipe = Data.get_recipe!(params["id"])
 
-    {:ok, socket}
+    {:ok,
+     assign(socket,
+       recipe: recipe,
+       adjusted_servings: recipe.servings
+     )}
   end
 
   attr(:class, :string, default: "")
@@ -69,6 +78,7 @@ defmodule RecipesWeb.RecipeViewLive do
 
   attr(:class, :string, default: "")
   attr(:ingredients, :list, required: true)
+  attr(:adjust_factor, :float, required: true)
 
   defp ingredients_list(assigns) do
     ~H"""
@@ -77,7 +87,7 @@ defmodule RecipesWeb.RecipeViewLive do
         <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
           <span class="font-medium text-left"><%= ingredient.name %></span>
           <span class="text-right">
-            <span><%= ingredient.quantity %></span>
+            <span><%= adjust_quantity(ingredient.quantity, @adjust_factor) %></span>
             <span><%= ingredient.description %></span>
           </span>
         </li>
@@ -85,6 +95,11 @@ defmodule RecipesWeb.RecipeViewLive do
     </div>
     """
   end
+
+  defp adjust_quantity(quantity, _factor) when is_nil(quantity), do: nil
+
+  defp adjust_quantity(quantity, factor),
+    do: :erlang.float_to_binary(quantity * factor, decimals: 1)
 
   attr(:class, :string, default: "")
   attr(:text, :string, required: true)
@@ -105,9 +120,23 @@ defmodule RecipesWeb.RecipeViewLive do
     ~H"""
     <div class=" p-3 text-lg rounded-full">
       <div class="flex flex-wrap content-center text-center" data-test="servings">
-        <.icon name="hero-minus-circle w-8 h-8" />
+        <button
+          name="decrease-servings"
+          type="button"
+          phx-click="change-servings"
+          phx-value-servings={max(1, assigns.servings - 1)}
+        >
+          <.icon name="hero-minus-circle w-8 h-8" />
+        </button>
         <span class="w-8 text-center"><%= @servings %></span>
-        <.icon name="hero-plus-circle  w-8 h-8" />
+        <button
+          name="increase-servings"
+          type="button"
+          phx-click="change-servings"
+          phx-value-servings={assigns.servings + 1}
+        >
+          <.icon name="hero-plus-circle  w-8 h-8" />
+        </button>
       </div>
       <div class="text-center"><%= gettext("Servings") %></div>
     </div>
@@ -118,7 +147,18 @@ defmodule RecipesWeb.RecipeViewLive do
 
   defp kcal(assigns) do
     ~H"""
-    <div class="float-right from-neutral-300" data-test="kcal"><span :if={@kcal}><%= @kcal %> kcal</span></div>
+    <div class="float-right from-neutral-300" data-test="kcal">
+      <span :if={@kcal}><%= @kcal %> kcal</span>
+    </div>
     """
+  end
+
+  def handle_event("change-servings", %{"servings" => servings}, socket) do
+    {new_servings, _} = Integer.parse(servings)
+
+    {:noreply,
+     assign(socket,
+       adjusted_servings: new_servings
+     )}
   end
 end
