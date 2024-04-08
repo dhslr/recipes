@@ -206,16 +206,17 @@ defmodule Recipes.Data do
     Ingredient.changeset(ingredient, attrs)
   end
 
-  def create_photo(%{"upload" => %Plug.Upload{} = upload} = attrs) do
-    with {:ok, %Photo{} = photo} <- create_photo_entry(attrs),
-         {:ok, _} <- File.copy(upload.path, "#{filepath(photo)}") do
+  def create_photo(%{photo_file_path: path, recipe_id: recipe_id}) do
+    with {:ok, %Photo{} = photo} <- create_photo_entry(recipe_id),
+         {:ok, _} <- File.copy(path, filepath(photo)) do
       {:ok, photo}
     end
   end
 
-  defp create_photo_entry(attrs) do
+  defp create_photo_entry(recpie_id) do
     %Photo{}
-    |> Photo.changeset(attrs)
+    # TODO support caption
+    |> Photo.changeset(%{recipe_id: recpie_id})
     |> Repo.insert()
   end
 
@@ -227,8 +228,6 @@ defmodule Recipes.Data do
   end
 
   defp filepath(%Photo{} = photo) do
-    path = Path.join(Photo.photos_dir(), Photo.filename(photo))
-    Logger.debug("Deleting photo #{path}")
-    path
+    Path.join(Photo.photos_dir(), Photo.filename(photo))
   end
 end

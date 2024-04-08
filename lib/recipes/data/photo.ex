@@ -22,7 +22,6 @@ defmodule Recipes.Data.Photo do
   end
 
   def photos_dir() do
-    # TODO this is not correct
-    Application.get_env(:recipes, :photos_dir)
+    Path.join(Application.app_dir(:recipes), "/priv/static/photos")
   end
 end

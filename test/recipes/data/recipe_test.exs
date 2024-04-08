@@ -22,6 +22,11 @@ defmodule Recipes.Data.RecipeTest do
       refute changeset_2.valid?
     end
 
+    test "changset with servings and kcal" do
+      changeset = Recipe.changeset(%Recipe{}, %{title: "title", servings: 4, kcal: 1234})
+      assert changeset.valid?
+    end
+
     test "changeset with ingredients" do
       changeset =
         Recipe.changeset(%Recipe{}, %{
