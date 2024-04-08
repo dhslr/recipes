@@ -24,6 +24,7 @@ defmodule Recipes.Data.Recipe do
       with: &Recipes.Data.Ingredient.changeset/2,
       drop_param: :ingredients_drop
     )
+    |> cast_assoc(:photos, with: &Recipes.Data.Photo.changeset/2)
     |> validate_required([:title])
   end
 
