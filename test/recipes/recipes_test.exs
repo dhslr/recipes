@@ -2,7 +2,6 @@ defmodule RecipesTest do
   use Recipes.DataCase
 
   alias Recipes.Data
-  alias Data.Food
   alias Data.Recipe
   alias Data.Ingredient
 
