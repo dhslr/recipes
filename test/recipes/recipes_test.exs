@@ -134,7 +134,7 @@ defmodule RecipesTest do
                  ])
                )
 
-      [ingredient1, ingredient2] = recipe.ingredients
+      [ingredient1, _] = recipe.ingredients
 
       {:ok, recipe} =
         Recipes.update_recipe(recipe, %{
@@ -155,17 +155,19 @@ defmodule RecipesTest do
 
     test "create recipes with same food re uses food entity" do
       assert {:ok, %Recipe{} = recipe_1} =
-               Recipes.create_recipe(
-                 Map.put(@valid_attrs, :ingredients, [
-                   %{food: %{name: "Sugar"}, quantity: 100.0, description: "g"}
-                 ])
-               )
-
-      assert {:ok, %Recipe{} = recipe_2} =
                Recipes.create_recipe(%{
-                 title: "some other name",
+                 title: "Great recipe!",
                  ingredients: [%{food: %{name: "Sugar"}, quantity: 2.0, description: "g"}]
                })
+      assert {:ok, %Recipe{} = recipe_2} =
+               Recipes.create_recipe(%{
+                 title: "Another great recipe!",
+                 ingredients: [%{food: %{name: "Sugar"}, quantity: 2.0, description: "g"}]
+               })
+
+      assert %{title: "Great recipe!", ingredients: [%{food: sugar_1}]} = recipe_1
+      assert %{title: "Another great recipe!", ingredients: [%{food: sugar_2}]} = recipe_2
+      assert sugar_1 == sugar_2
     end
   end
 end
