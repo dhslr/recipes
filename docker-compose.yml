@@ -26,7 +26,7 @@ services:
       - DATABASE_URL
       - SECRET_KEY_BASE
     volumes:
-      - photos:/app/lib/recipes-0.1.3/priv/static/photos
+      - photos:/app/lib/recipes-0.2.0/priv/static/photos
 
 networks:
   default:
