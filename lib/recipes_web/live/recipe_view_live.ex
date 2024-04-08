@@ -158,8 +158,18 @@ defmodule RecipesWeb.RecipeViewLive do
     {new_servings, _} = Integer.parse(servings)
 
     {:noreply,
-     assign(socket,
-       adjusted_servings: new_servings
-     )}
+     socket
+     |> push_patch(to: ~p"/recipes/#{socket.assigns.recipe.id}?servings=#{new_servings}")}
+  end
+
+  def handle_params(params, _uri, socket) do
+    with servings_str when not is_nil(servings_str) <- params["servings"],
+         {servings, _} <- Integer.parse(servings_str) do
+      {:noreply,
+       socket
+       |> assign(adjusted_servings: servings)}
+    else
+      _ -> {:noreply, socket}
+    end
   end
 end
