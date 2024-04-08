@@ -115,8 +115,10 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("save_recipe", %{"recipe" => recipe_params}, socket) do
     Logger.debug("Save recipe : #{inspect(recipe_params)}")
 
-    {:ok, recipe} = save_recipe(socket, socket.assigns.live_action, recipe_params)
-    {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
+    case save_recipe(socket, socket.assigns.live_action, recipe_params) do
+      {:ok, recipe} -> {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
+      {:error, changeset} -> {:noreply, assign(socket, :form_data, to_form(changeset))}
+    end
   end
 
   defp save_recipe(_socket, :new, recipe_params) do
