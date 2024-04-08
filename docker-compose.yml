@@ -11,6 +11,8 @@ services:
       - POSTGRES_USER
   app:
     build: .
+    user: 1001:1001
+    container_name: recipes_app
     links:
       - db
     restart: unless-stopped

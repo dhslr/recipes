@@ -63,15 +63,15 @@ ENV LC_ALL en_US.UTF-8
 
 WORKDIR "/app"
 RUN mkdir /app/data
-RUN chown nobody -R /app
+RUN chown 1001:1001 -R /app
 
 # set runner ENV
 ENV MIX_ENV="prod"
 
 # Only copy the final release from the build stage
-COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/recipes ./
+COPY --from=builder --chown=1001:1001 /app/_build/${MIX_ENV}/rel/recipes ./
 
-USER nobody
+USER 1001:1001
 
 # Usage:
 #  * build: sudo docker image build -t elixir/recipes .
