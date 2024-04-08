@@ -49,6 +49,20 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert html =~ "Cake"
     end
 
+
+    test "renders the recipe edit view for new recipe", %{
+      conn: conn,
+      user: user
+    } do
+      {:ok, lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/new")
+
+      assert has_element?(lv, ~s([data-test="ingredients"]))
+      assert html =~ "Cake"
+    end
+
     test "updates the recipe and redirects back", %{
       conn: conn,
       user: user

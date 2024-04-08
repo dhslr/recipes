@@ -1,10 +1,18 @@
 defmodule RecipesWeb.RecipeEditLive do
+  alias Recipes.Data.Recipe
   use RecipesWeb, :live_view
   require Logger
   alias Recipes.Data
 
+  @impl true
   def render(assigns) do
-    assigns = assign(assigns, form_data: to_form(assigns.changeset))
+    link =
+      if(assigns.live_action == :new,
+        do: ~p"/recipes",
+        else: ~p"/recipes/#{assigns.recipe.id}"
+      )
+
+    assigns = assign(assigns, form_data: to_form(assigns.changeset), back_link: link)
 
     ~H"""
     <.header class="text-center">
@@ -15,10 +23,10 @@ defmodule RecipesWeb.RecipeEditLive do
       for={@form_data}
       id="recipe_form"
       phx-change="validate_recipe"
-      phx-submit="update_recipe"
+      phx-submit="save_recipe"
       class="container mx-auto max-w-4xl"
     >
-      <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
+      <.back navigate={@back_link}><%= gettext("Back") %></.back>
       <.input field={@form_data[:title]} label={gettext("Title")} required />
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
       <h4><%= gettext("Ingredients") %></h4>
@@ -59,14 +67,35 @@ defmodule RecipesWeb.RecipeEditLive do
     """
   end
 
-  def mount(params, _session, socket) do
-    Logger.debug("Mount recipe edit : #{inspect(params)}")
-    recipe = Data.get_recipe!(params["id"])
-    changeset = Data.change_recipe(recipe)
-
-    {:ok, socket |> assign(changeset: changeset, recipe: recipe)}
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, socket}
   end
 
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :edit, %{"id" => id}) do
+    recipe = Data.get_recipe!(id)
+
+    socket
+    |> assign(:page_title, "Edit Recipe")
+    |> assign(:recipe, recipe)
+    |> assign(:changeset, Data.change_recipe(recipe))
+  end
+
+  defp apply_action(socket, :new, _params) do
+    recipe = %Recipe{}
+
+    socket
+    |> assign(:page_title, "New Recipe")
+    |> assign(:recipe, recipe)
+    |> assign(:changeset, Data.change_recipe(recipe))
+  end
+
+  @impl true
   def handle_event("validate_recipe", params, socket) do
     Logger.debug("Validate recipe : #{inspect(params)}")
 
@@ -74,17 +103,27 @@ defmodule RecipesWeb.RecipeEditLive do
     {:noreply, socket |> assign(:changeset, changeset)}
   end
 
-  def handle_event("update_recipe", params, socket) do
-    Logger.debug("Update recipe : #{inspect(params)}")
-
-    {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
-    {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
-  end
-
+  @impl true
   def handle_event("add_ingredient", _params, socket) do
     Logger.debug("Add ingredient")
 
     changeset = Data.add_ingredient(socket.assigns.recipe, "")
     {:noreply, socket |> assign(:changeset, changeset)}
+  end
+
+  @impl true
+  def handle_event("save_recipe", %{"recipe" => recipe_params}, socket) do
+    Logger.debug("Save recipe : #{inspect(recipe_params)}")
+
+    {:ok, recipe} = save_recipe(socket, socket.assigns.live_action, recipe_params)
+    {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
+  end
+
+  defp save_recipe(_socket, :new, recipe_params) do
+    Data.create_recipe(recipe_params)
+  end
+
+  defp save_recipe(socket, :edit, recipe_params) do
+    Data.update_recipe(socket.assigns.recipe, recipe_params)
   end
 end
