@@ -16,3 +16,12 @@ h3 {
 h4 {
     @apply text-lg;
 }
+
+
+.alert {
+    @apply text-red-700
+}
+
+.danger {
+    @apply text-red-700
+}

@@ -27,6 +27,7 @@ defmodule RecipesWeb.PhotoUploadLive do
         File.cp!(path, dest)
         {:ok, dest}
       end)
+
     {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
   end
 
