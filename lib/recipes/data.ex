@@ -141,6 +141,20 @@ defmodule Recipes.Data do
     |> Repo.insert()
   end
 
+  @doc """
+  Adds an ingredient to the recipe.
+
+  ## Examples
+
+      iex> add_ingredient(recipe, "Bananas")
+      %Ecto.Changeset{data: %Recipe{}}
+
+  """
+  def add_ingredient(recipe, ingredient_name) do
+    recipe
+    |> Ecto.Changeset.change(%{})
+    |> Ecto.Changeset.put_assoc(:ingredients, recipe.ingredients ++ [%{name: ingredient_name}])
+  end
 
   defp preload_h({:ok, entity}, what), do: {:ok, Repo.preload(entity, what)}
   defp preload_h(error, _), do: error

@@ -5,6 +5,5 @@ defmodule Recipes.Repo.Migrations.MakeNameNonNull do
     alter table(:ingredients) do
       modify :name, :string, null: false
     end
-
   end
 end
