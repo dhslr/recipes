@@ -4,6 +4,7 @@ defmodule Recipes.Data.Photo do
 
   schema "photos" do
     field :caption, :string
+    field :position, :integer, default: 0
     belongs_to :recipe, Recipes.Data.Recipe
 
     timestamps()
@@ -13,6 +14,13 @@ defmodule Recipes.Data.Photo do
   def changeset(photo, attrs) do
     photo
     |> cast(attrs, [:caption, :recipe_id])
+  end
+
+  def changeset(photo, attrs, position) do
+    photo
+    |> cast(attrs, [:caption, :recipe_id])
+    |> change(position: position)
+    |> foreign_key_constraint(:recipe_id)
   end
 
   def filename(photo) when is_nil(photo), do: nil

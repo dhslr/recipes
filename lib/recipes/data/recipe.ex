@@ -14,6 +14,7 @@ defmodule Recipes.Data.Recipe do
       on_replace: :delete_if_exists
 
     has_many :photos, Recipes.Data.Photo,
+      preload_order: [asc: :position],
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
@@ -31,7 +32,8 @@ defmodule Recipes.Data.Recipe do
     )
     |> cast_assoc(:photos,
       with: &Recipes.Data.Photo.changeset/2,
-      drop_param: :photos_drop
+      drop_param: :photos_drop,
+      sort_param: :photos_order
     )
     |> validate_required([:title])
   end
