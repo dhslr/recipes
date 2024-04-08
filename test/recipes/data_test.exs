@@ -22,10 +22,11 @@ defmodule DataTest do
       assert Data.get_recipe!(recipe.id) == recipe
     end
 
-    test "create_recipe/1 with valid data creates a recipe" do
+    test "create_recipe/1 with valid data creates a recipe with default servings" do
       assert {:ok, %Recipe{} = recipe} = Data.create_recipe(@valid_attrs)
       assert recipe.description == "some description"
       assert recipe.title == "some title"
+      assert recipe.servings == 1
     end
 
     test "create_recipe/1 with invalid data returns error changeset" do
