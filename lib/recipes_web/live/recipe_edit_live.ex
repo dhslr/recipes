@@ -93,8 +93,13 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("validate_recipe", params, socket) do
     Logger.debug("Validate recipe : #{inspect(params)}")
 
-    changeset = Recipes.Data.change_recipe(socket.assigns.recipe, params["recipe"])
-    {:noreply, socket |> assign(:form_data, to_form(changeset))}
+    form_data =
+      socket.assigns.recipe
+      |> Recipes.Data.change_recipe(params["recipe"])
+      |> struct!(action: :validate)
+      |> to_form()
+
+    {:noreply, socket |> assign(:form_data, form_data)}
   end
 
   @impl true
