@@ -1,0 +1,43 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/recipes_web/components/core_components.ex:474
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr ""
+
+#: lib/recipes_web/components/core_components.ex:76
+#: lib/recipes_web/components/core_components.ex:128
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr ""
+
+#: lib/recipes_web/live/user_confirmation_live.ex:20
+#, elixir-autogen, elixir-format
+msgid "Log in"
+msgstr ""
+
+#: lib/recipes_web/live/user_confirmation_live.ex:19
+#, elixir-autogen, elixir-format
+msgid "Register"
+msgstr ""
+
+#: lib/recipes_web/live/user_confirmation_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "User confirmation link is invalid or it has expired."
+msgstr ""
+
+#: lib/recipes_web/live/user_confirmation_live.ex:38
+#, elixir-autogen, elixir-format
+msgid "User confirmed successfully."
+msgstr ""
