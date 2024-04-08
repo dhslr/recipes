@@ -8,8 +8,7 @@ defmodule Recipes.Data.IngredientTest do
       description: "some description",
       quantity: 12.5,
       name: "Food",
-      recipe_id: 1,
-      position: 1
+      recipe_id: 1
     }
     @invalid_attrs_no_name %{description: "some description", recipe_id: 1}
     @invalid_attrs_quantity_no_number %{
@@ -21,6 +20,11 @@ defmodule Recipes.Data.IngredientTest do
 
     test "changeset with valid attributes" do
       changeset = Ingredient.changeset(%Ingredient{}, @valid_attrs)
+      assert changeset.valid?
+    end
+
+    test "changeset with valid attributes and position" do
+      changeset = Ingredient.changeset(%Ingredient{}, @valid_attrs, 1)
       assert changeset.valid?
     end
 
