@@ -5,7 +5,7 @@ defmodule Recipes.Data.Photo do
   schema "photos" do
     field :caption, :string
     field :position, :integer, default: 0
-    belongs_to :recipe, Recipes.Data.Recipe
+    belongs_to :recipe, Recipes.Data.Recipe, on_replace: :delete_if_exists
 
     timestamps()
   end

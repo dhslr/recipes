@@ -5,23 +5,9 @@ defmodule Recipes.Data do
 
   import Ecto.Query, warn: false
   alias Recipes.Repo
-  alias Recipes.Data.Food
   alias Recipes.Data.Photo
 
   require Logger
-
-  @doc """
-  Returns the list of food.
-
-  ## Examples
-
-      iex> list_food()
-      [%Food{}, ...]
-
-  """
-  def list_food do
-    Repo.all(Food)
-  end
 
   alias Recipes.Data.Recipe
 
@@ -209,6 +195,8 @@ defmodule Recipes.Data do
   end
 
   def create_photo(%{photo_file_path: path, recipe_id: recipe_id}) do
+    dbg(path)
+
     with {:ok, %Photo{} = photo} <-
            create_photo_entry(%{recipe_id: recipe_id}),
          {:ok, _} <- File.copy(path, filepath(photo)) do

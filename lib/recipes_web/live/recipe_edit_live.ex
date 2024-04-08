@@ -44,7 +44,7 @@ defmodule RecipesWeb.RecipeEditLive do
       <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
       <div class="flex gap-2">
         <.input type="number" field={@form_data[:servings]} label={gettext("Servings")} />
-        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories")} />
+        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per portion")} />
       </div>
 
       <h4><%= gettext("Photos") %></h4>
