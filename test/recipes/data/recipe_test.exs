@@ -51,14 +51,15 @@ defmodule Recipes.Data.RecipeTest do
       assert photos_changeset.valid?
     end
 
-    test "get first photo from recipe" do
+    test "get first photo from recipe by position" do
       photo =
         Recipe.first_photo(%Recipe{
           id: 1,
           title: "Title",
           photos: [
-            %Photo{caption: "first", recipe_id: 1},
-            %Photo{caption: "second", recipe_id: 1}
+            %Photo{caption: "second", recipe_id: 0, position: 1},
+            %Photo{caption: "first", recipe_id: 1, position: 0},
+            %Photo{caption: "third", recipe_id: 2, position: 2}
           ]
         })
 

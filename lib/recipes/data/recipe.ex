@@ -31,13 +31,16 @@ defmodule Recipes.Data.Recipe do
       sort_param: :ingredients_order
     )
     |> cast_assoc(:photos,
-      with: &Recipes.Data.Photo.changeset/2,
+      with: &Recipes.Data.Photo.changeset/3,
       drop_param: :photos_drop,
       sort_param: :photos_order
     )
     |> validate_required([:title])
   end
 
-  def first_photo(%Recipes.Data.Recipe{photos: [first | _t]}), do: first
+  def first_photo(%Recipes.Data.Recipe{photos: [h | _t] = photos}) do
+    Enum.min(photos, &(&1.position <= &2.position), h)
+  end
+
   def first_photo(_recipe), do: nil
 end
