@@ -19,4 +19,13 @@ defmodule Recipes.Data.Ingredient do
     |> validate_required([:name])
     |> foreign_key_constraint(:recipe_id)
   end
+
+  @doc false
+  def changeset(ingredient, _changes, position) do
+    dbg(ingredient)
+    dbg(position)
+
+    ingredient
+    |> change(position: position)
+  end
 end

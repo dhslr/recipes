@@ -16,6 +16,8 @@ defmodule Recipes.Data.Photo do
     |> validate_required([:recipe_id])
   end
 
+  def filename(photo) when is_nil(photo), do: nil
+
   def filename(photo) do
     "recipe_#{photo.recipe_id}_#{photo.id}.jpg"
   end

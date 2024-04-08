@@ -26,4 +26,7 @@ defmodule Recipes.Data.Recipe do
     )
     |> validate_required([:title])
   end
+
+  def first_photo(%Recipes.Data.Recipe{photos: [first | t]}), do: first
+  def first_photo(_recipe), do: nil
 end

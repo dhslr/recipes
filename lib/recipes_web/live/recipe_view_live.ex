@@ -9,19 +9,20 @@ defmodule RecipesWeb.RecipeViewLive do
     <.header class="text-center my-3">
       <h1><%= @recipe.title %></h1>
     </.header>
+    <div class="mx-auto container max-w-4xl">
+      <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
+      <.photos photos={@recipe.photos} class="my-3" />
+      <.description description={@recipe.description} class="my-3 container mx-auto" />
 
-    <.ingredients_list ingredients={@recipe.ingredients} class="my-3" />
-    <.photos photos={@recipe.photos} class="my-3" />
-    <.description description={@recipe.description} class="my-3" />
-
-    <div class="flex justify-between items-start align-baseline">
-      <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
-      <.label_button
-        icon="hero-pencil"
-        label={gettext("Edit")}
-        class="mt-16"
-        href={~p"/recipes/#{@recipe.id}/edit"}
-      />
+      <div class="flex justify-between items-start align-baseline">
+        <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
+        <.label_button
+          icon="hero-pencil"
+          label={gettext("Edit")}
+          class="mt-16"
+          href={~p"/recipes/#{@recipe.id}/edit"}
+        />
+      </div>
     </div>
     """
   end
@@ -34,8 +35,8 @@ defmodule RecipesWeb.RecipeViewLive do
     {:ok, socket}
   end
 
-  attr :class, :string, default: ""
-  attr :description, :string, required: true
+  attr(:class, :string, default: "")
+  attr(:description, :string, required: true)
 
   def description(assigns) do
     {:ok, html_doc, []} = Earmark.as_html(assigns.description, compact_output: true, eex: true)
@@ -47,8 +48,8 @@ defmodule RecipesWeb.RecipeViewLive do
     """
   end
 
-  attr :class, :string, default: ""
-  attr :photos, :list, required: true
+  attr(:class, :string, default: "")
+  attr(:photos, :list, required: true)
 
   defp photos(assigns) do
     ~H"""
@@ -60,8 +61,8 @@ defmodule RecipesWeb.RecipeViewLive do
     """
   end
 
-  attr :class, :string, default: ""
-  attr :ingredients, :list, required: true
+  attr(:class, :string, default: "")
+  attr(:ingredients, :list, required: true)
 
   defp ingredients_list(assigns) do
     ~H"""
@@ -81,8 +82,8 @@ defmodule RecipesWeb.RecipeViewLive do
     """
   end
 
-  attr :class, :string, default: ""
-  attr :text, :string, required: true
+  attr(:class, :string, default: "")
+  attr(:text, :string, required: true)
 
   defp sub_header(assigns) do
     ~H"""

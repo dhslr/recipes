@@ -1,16 +1,21 @@
 defmodule RecipesWeb.RecipesLive do
   use RecipesWeb, :live_view
   alias Recipes.Data
+  alias Recipes.Data.Recipe
+  alias Recipes.Data.Photo
 
   def render(assigns) do
-    ~H"""
+    photo = ~H"""
     <.header class="text-center"></.header>
 
-    <div class="flex">
-      <div :for={recipe <- @recipes} class="w-20 h-20 bg-sky-100 text-center">
-        <.link navigate={~p"/recipes/#{recipe.id}"} class="">
-          <%= recipe.title %>
-        </.link>
+    <div class="container mx-auto">
+      <div class="flex flex-wrap gap-2 justify-center">
+        <div :for={recipe <- @recipes} class="text-center">
+          <.link navigate={~p"/recipes/#{recipe.id}"}>
+            <img src={"/photos/#{Photo.filename(Recipe.first_photo(recipe))}"} width="250px" />
+            <%= recipe.title %>
+          </.link>
+        </div>
       </div>
     </div>
     """
