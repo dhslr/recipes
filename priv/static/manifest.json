@@ -1,0 +1,21 @@
+{
+    "name": "Recipes",
+    "short_name": "recipes",
+    "theme_color": "#f8962b",
+    "background_color": "#d3d3d3",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "https://recipes.dev.dhslr.de/recipes",
+    "description": "Manage your recipes online!",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "16x16 32x32 48x48 64x64 256x256"
+        },
+        {
+            "src": "images/ramen.png",
+            "sizes": "any"
+        }
+    ]
+}
