@@ -16,5 +16,4 @@ defmodule Recipes.Data.Food do
     |> validate_required([:name])
     |> unique_constraint([:name])
   end
-
 end

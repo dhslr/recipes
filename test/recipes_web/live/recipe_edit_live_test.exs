@@ -49,7 +49,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       assert html =~ "Cake"
     end
 
-    test "updates the recipe", %{
+    test "updates the recipe and redirects back", %{
       conn: conn,
       user: user
     } do
@@ -68,9 +68,11 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                title: "New Title",
                description: "New description"
              } = Data.get_recipe!(recipe.id)
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
     end
 
-    test "update ingredients", %{
+    test "update ingredients and redirects back", %{
       conn: conn,
       user: user
     } do
@@ -96,10 +98,44 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> live(~p"/recipes/#{recipe.id}/edit")
 
       lv
-      |> form("#recipe_form", ingredients: %{})
+      |> form("#recipe_form",
+        recipe: %{
+          title: "Currywurst",
+          description: "Lecker",
+          ingredients: %{
+            "0" => %{
+              description: "Viel",
+              food: %{name: "Ketchup"},
+              quantity: 0
+            },
+            "1" => %{
+              description: "g",
+              food: %{name: "Pommes"},
+              quantity: 200
+            }
+          }
+        }
+      )
       |> render_submit()
 
-      assert [] == Data.get_recipe!(recipe.id).ingredients
+      assert %Recipes.Data.Recipe{
+               title: "Currywurst",
+               description: "Lecker",
+               ingredients: [ketchup, pommes]
+             } = Data.get_recipe!(recipe.id)
+
+      assert %Recipes.Data.Ingredient{
+               food: %{name: "Ketchup"},
+               description: "Viel"
+             } = ketchup
+
+      assert %Recipes.Data.Ingredient{
+               food: %{name: "Pommes"},
+               quantity: 200.0,
+               description: "g"
+             } = pommes
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
     end
   end
 end

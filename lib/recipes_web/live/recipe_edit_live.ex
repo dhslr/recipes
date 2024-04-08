@@ -1,11 +1,15 @@
 defmodule RecipesWeb.RecipeEditLive do
   use RecipesWeb, :live_view
+  require Logger
   alias Recipes.Data
 
   def render(assigns) do
-    assigns = assign(assigns,
-    :form_data,
-      to_form(Data.change_recipe(assigns.recipe))) # todo better way to obtain changeset?
+    form_data =
+      assigns.recipe
+      |> Ecto.Changeset.change()
+      |> to_form()
+
+    assigns = assign(assigns, :form_data, form_data)
 
     ~H"""
     <.header class="text-center">
@@ -23,7 +27,7 @@ defmodule RecipesWeb.RecipeEditLive do
       <h4><%= gettext("Ingredients") %></h4>
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
-          <div class="columns-3">
+          <div class="flex justify-between">
             <.inputs_for :let={food} field={ingredient[:food]}>
               <.input type="text" field={food[:name]} />
             </.inputs_for>
@@ -37,15 +41,14 @@ defmodule RecipesWeb.RecipeEditLive do
         <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
     </.simple_form>
+    <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
     """
   end
 
   def mount(params, _session, socket) do
-    socket =
-      socket
-      |> assign(:recipe, Data.get_recipe!(params["id"]))
+    recipe = Data.get_recipe!(params["id"])
 
-    {:ok, socket}
+    {:ok, socket |> assign(:recipe, recipe)}
   end
 
   def handle_event("validate_recipe", _params, socket) do
@@ -53,10 +56,9 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   def handle_event("update_recipe", params, socket) do
-    dbg(params)
     {:ok, recipe} = Data.update_recipe(socket.assigns.recipe, params["recipe"])
 
-    {:noreply, assign(socket, recipe: recipe)}
+    Logger.debug("Recipe updated: #{inspect(recipe)}")
+    {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
   end
-
 end
