@@ -37,12 +37,14 @@ alias Recipes.Data
       Noch heiss in Gläser abfüllen und die Deckel schliessen. Sind die Twist-off Deckel fest verschlossen, hält es sich bei dunkler Lagerung sicher 3 - 4 Monate. Die Sauce kann auch zu Grillgerichten serviert werden. Für die Currywurst am Besten nochmals anwärmen und darüber geben und mit Currypulver bestäuben. Sie schmeckt aber auch kalt.
     """,
     ingredients: [
-      %{description: "Viel", food: %{name: "Ketchup"}},
+      %{description: "Viel", food_id: ketchup.id},
       %{
         quantity: 500,
         description: "Gramm",
-        food: %{name: "Pommes"}
-      }
+        food_id: pommes.id,
+      },
+      %{food_id: curry.id},
+      %{food_id: wurst.id}
     ]
   })
 
