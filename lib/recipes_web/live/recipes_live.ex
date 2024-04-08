@@ -24,17 +24,11 @@ defmodule RecipesWeb.RecipesLive do
   defp main_photo(assigns) do
     if assigns.photo do
       ~H"""
-      <img
-        src={"/photos/#{Photo.filename(@photo)}"}
-        width="250px"
-      />
+      <img src={"/photos/#{Photo.filename(@photo)}"} width="250px" />
       """
     else
       ~H"""
-      <img
-        src={"/images/meal_placeholder.jpg"}
-        width="250px"
-      />
+      <img src="/images/meal_placeholder.jpg" width="250px" />
       """
     end
   end
