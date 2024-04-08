@@ -9,7 +9,6 @@ defmodule Recipes.Datacraper do
   """
   @callback scrape(url()) :: {:ok, map()} | {:error, String.t()}
 
-
   def scrape(url), do: impl().scrape(url)
 
   defp impl(), do: Application.get_env(:recipes_backend, :recipe_scraper)

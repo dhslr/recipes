@@ -1,18 +1,17 @@
-defmodule RecipesWeb.UserSettingsLive do
+defmodule RecipesWeb.RecipesLive do
   use RecipesWeb, :live_view
-
 
   def render(assigns) do
     ~H"""
     <.header class="text-center"></.header>
 
-    <ul>
-      <li :for={recipe <- @recipes}>
-        <.link navigate={~p"/recipes/#{recipe.id}"}>
+    <div class="flex">
+      <div :for={recipe <- @recipes} class="w-20 h-20 bg-sky-100 text-center">
+        <.link navigate={~p"/recipes/#{recipe.id}"} class="">
           <%= recipe.title %>
         </.link>
-      </li>
-    </ul>
+      </div>
+    </div>
     """
   end
 

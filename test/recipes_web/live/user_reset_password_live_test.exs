@@ -39,9 +39,7 @@ defmodule RecipesWeb.UserResetPasswordLiveTest do
       result =
         lv
         |> element("#reset_password_form")
-        |> render_change(
-          user: %{"password" => "sec", "confirmation_password" => "sec!"}
-        )
+        |> render_change(user: %{"password" => "sec", "confirmation_password" => "sec!"})
 
       assert result =~ "should be at least 6 character"
       assert result =~ "does not match password"

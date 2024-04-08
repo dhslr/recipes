@@ -22,6 +22,7 @@ defmodule Recipes.Data.Photo do
   end
 
   def photos_dir() do
+    # TODO this is not correct
     Application.get_env(:recipes_backend, :photos_dir)
   end
 end
