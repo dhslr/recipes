@@ -63,9 +63,11 @@ defmodule RecipesWeb.RecipeEditLive do
       <.photo_upload uploads={@uploads} />
 
       <h4><%= gettext("Ingredients") %></h4>
-      <div data-test="ingredients" class="ml-3">
+      <div id="ingredients" data-test="ingredients" class="ml-3" phx-hook="Sortable">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
-          <div class="flex justify-between">
+          <div class="flex drag-item gap-3">
+            <input type="hidden" name="recipe[ingredients_order][]" value={ingredient.index} />
+            <.icon name="hero-bars-3" class="w-8 h-8 self-center" data-handle />
             <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
             <.input
               type="text"
@@ -88,14 +90,15 @@ defmodule RecipesWeb.RecipeEditLive do
             </label>
           </div>
         </.inputs_for>
+        <label class="block cursor-pointer my-2">
+          <input type="checkbox" name="recipe[ingredients_order][]" class="hidden" />
+          <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+        </label>
       </div>
-
       <:actions>
-        <.button type="button" phx-click="add_ingredient" phx-disable-with="Adding...">
-          <.icon name="hero-plus" class="bg-green-300" />
-        </.button>
         <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
+      <input type="hidden" name="recipe[ingredients_drop][]" />
     </.simple_form>
     """
   end
@@ -130,22 +133,8 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   @impl true
-  def handle_event("add_ingredient", _params, socket) do
-    Logger.debug("Add ingredient")
-
-    socket =
-      update(socket, :form_data, fn %{source: changeset} ->
-        existing = Ecto.Changeset.get_assoc(changeset, :ingredients)
-        changeset = Ecto.Changeset.put_assoc(changeset, :ingredients, existing ++ [%{name: ""}])
-        to_form(changeset)
-      end)
-
-    {:noreply, socket |> assign(:dirty, true)}
-  end
-
-  @impl true
-  def handle_event("save_recipe", %{"recipe" => recipe_params}, socket) do
-    Logger.debug("Save recipe : #{inspect(recipe_params)}")
+  def handle_event("save_recipe", %{"recipe" => recipe_params} = attrs, socket) do
+    Logger.debug("Save recipe : #{inspect(attrs)}")
 
     # TODO this does not work for new recipes yet (no id)
     _photos =
@@ -162,6 +151,12 @@ defmodule RecipesWeb.RecipeEditLive do
   @impl Phoenix.LiveView
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :photo, ref)}
+  end
+
+  @impl true
+  def handle_event("reposition", _params, socket) do
+    # handled by ecto via sort_param
+    {:noreply, socket}
   end
 
   defp photo_upload(assigns) do
@@ -200,6 +195,7 @@ defmodule RecipesWeb.RecipeEditLive do
           <p class="alert alert-danger"><%= error_to_string(err) %></p>
         <% end %>
       </ul>
+      <%!-- TODO use mechanism like in ingredients for adding --%>
       <.button type="button">
         <label>
           Add photo<.live_file_input upload={@uploads.photo} class="hidden" />
