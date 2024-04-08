@@ -39,7 +39,19 @@ defmodule Recipes.Accounts.User do
     |> cast(attrs, [:email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_enabled()
   end
+
+  defp validate_enabled(changeset) do
+    enabled = Recipes.config([:accounts, :registration_enabled])
+
+    if enabled do
+      changeset
+    else
+      add_error(changeset, :email, "registration is disabled")
+    end
+  end
+
 
   defp validate_email(changeset, opts) do
     changeset
