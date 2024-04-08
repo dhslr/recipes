@@ -196,11 +196,10 @@ defmodule RecipesWeb.RecipeEditLive do
         <% end %>
       </ul>
       <%!-- TODO use mechanism like in ingredients for adding --%>
-      <.button type="button">
-        <label>
-          Add photo<.live_file_input upload={@uploads.photo} class="hidden" />
-        </label>
-      </.button>
+      <label class="block cursor-pointer my-2">
+        <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+        <.live_file_input upload={@uploads.photo} class="hidden" />
+      </label>
     </section>
     """
   end
