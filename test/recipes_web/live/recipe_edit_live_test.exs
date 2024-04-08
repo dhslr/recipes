@@ -137,5 +137,116 @@ defmodule RecipesWeb.RecipeEditLiveTest do
 
       assert_redirect(lv, "/recipes/#{recipe.id}")
     end
+
+    test "removes ingredient and save recipe", %{
+      conn: conn,
+      user: user
+    } do
+      recipe =
+        recipe_fixture(%{
+          ingredients: [
+            %{
+              name: "Flour",
+              quantity: 100,
+              description: "g"
+            },
+            %{
+              name: "Sugar",
+              quantity: 50,
+              description: "g"
+            }
+          ]
+        })
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}/edit")
+
+      lv
+      |> form("#recipe_form", recipe: %{"ingredients_drop" => ["0"]})
+      |> render_submit()
+
+      assert %Recipes.Data.Recipe{
+               ingredients: [sugar]
+             } = Data.get_recipe!(recipe.id)
+
+      assert %Recipes.Data.Ingredient{
+               name: "Sugar",
+               quantity: 50.0,
+               description: "g"
+             } = sugar
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
+    end
+
+    test "removes all ingredients and save recipe", %{
+      conn: conn,
+      user: user
+    } do
+      recipe =
+        recipe_fixture(%{
+          ingredients: [
+            %{
+              name: "Flour",
+              quantity: 200,
+              description: "g"
+            },
+            %{
+              name: "Sugar",
+              quantity: 100,
+              description: "g"
+            }
+          ]
+        })
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}/edit")
+
+      lv
+      |> form("#recipe_form", recipe: %{"ingredients_drop" => ["0", "1"]})
+      |> render_submit()
+
+      assert %Recipes.Data.Recipe{
+               ingredients: []
+             } = Data.get_recipe!(recipe.id)
+
+      assert_redirect(lv, "/recipes/#{recipe.id}")
+    end
+
+    test "add ingredient to recipe", %{
+      conn: conn,
+      user: user
+    } do
+      recipe =
+        recipe_fixture(%{
+          ingredients: [
+            %{
+              name: "Flour",
+              quantity: 200,
+              description: "g"
+            }
+          ]
+        })
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}/edit")
+
+      refute lv
+             |> element("input[name=\"recipe[ingredients][1][name]\"]")
+             |> has_element?()
+
+      lv
+      |> element("button", "Add")
+      |> render_click()
+
+      assert lv
+             |> element("input[name=\"recipe[ingredients][1][name]\"]")
+             |> has_element?()
+    end
   end
 end
