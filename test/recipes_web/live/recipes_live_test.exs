@@ -54,6 +54,23 @@ defmodule RecipesWeb.RecipesLiveTest do
       refute html =~ "Currywurst"
     end
 
+    test "filtering recipes by query also works with sub strings", %{conn: conn, user: user} do
+      recipe_fixture(%{title: "Kirschtorte"})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      html =
+        lv
+        |> element("form")
+        |> render_change(%{query: "torte"})
+
+      assert html =~ "Kirschtorte"
+      refute html =~ "Currywurst"
+    end
+
     test "click on new recipe button opens recipe edit view", %{conn: conn, user: user} do
       recipe_fixture(%{title: "Kirschtorte"})
 
@@ -63,7 +80,7 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       lv
-      |> element("form a")
+      |> element("a", "New recipe")
       |> render_click()
 
       assert_redirect(lv, "/recipes/new")
