@@ -241,7 +241,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
              |> has_element?()
 
       lv
-      |> element("button", "Add")
+      |> element("button[phx-click=\"add_ingredient\"]")
       |> render_click()
 
       assert lv

@@ -23,9 +23,17 @@ defmodule RecipesWeb.RecipeEditLive do
       <div data-test="ingredients" class="ml-3">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
           <div class="flex justify-between">
-            <.input type="text" field={ingredient[:name]} />
-            <.input type="text" field={ingredient[:quantity]} />
-            <.input type="text" field={ingredient[:description]} />
+            <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
+            <.input
+              type="text"
+              field={ingredient[:quantity]}
+              placeholder={gettext("Quantity (opt.)")}
+            />
+            <.input
+              type="text"
+              field={ingredient[:description]}
+              placeholder={gettext("Description/Unit (opt.)")}
+            />
             <label class="self-center">
               <input
                 type="checkbox"
@@ -40,10 +48,10 @@ defmodule RecipesWeb.RecipeEditLive do
       </div>
 
       <:actions>
-        <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
         <.button type="button" phx-click="add_ingredient" phx-disable-with="Adding...">
-          <%= gettext("Add") %>
+          <.icon name="hero-plus" class="bg-green-300" />
         </.button>
+        <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
       </:actions>
     </.simple_form>
     <.back navigate={~p"/recipes/#{@recipe.id}"}><%= gettext("Back") %></.back>
@@ -75,7 +83,7 @@ defmodule RecipesWeb.RecipeEditLive do
   def handle_event("add_ingredient", _params, socket) do
     Logger.debug("Add ingredient")
 
-    changeset = Data.add_ingredient(socket.assigns.recipe, "New")
+    changeset = Data.add_ingredient(socket.assigns.recipe, "")
     {:noreply, socket |> assign(:changeset, changeset)}
   end
 end
