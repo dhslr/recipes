@@ -24,7 +24,7 @@ defmodule RecipesWeb.RecipesLive do
         <div :for={recipe <- @filtered_recipes}>
           <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block w-[320px]">
             <.main_photo photo={Recipe.first_photo(recipe)} />
-            <%= recipe.title %>
+            <div class="rounded-md text-center bg-slate-100 mt-1 p-1"><%= recipe.title %></div>
           </.link>
         </div>
       </div>
@@ -45,7 +45,7 @@ defmodule RecipesWeb.RecipesLive do
 
   defp main_photo(assigns) do
     ~H"""
-    <div class="overflow-hidden w-[320px] h-[240px] mx-auto">
+    <div class="overflow-hidden w-[320px] h-[240px] mx-auto rounded-xl">
       <img
         :if={assigns.photo}
         src={"/photos/#{Photo.filename(@photo)}"}
