@@ -11,5 +11,5 @@ defmodule Recipes.HttpClient do
 
   def get(url), do: impl().get(url)
 
-  defp impl(), do: Application.get_env(:recipes_backend, :http_client)
+  defp impl(), do: Application.get_env(:recipes, :http_client)
 end
