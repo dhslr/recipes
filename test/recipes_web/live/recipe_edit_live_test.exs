@@ -28,12 +28,12 @@ defmodule RecipesWeb.RecipeEditLiveTest do
           title: "Cake",
           ingredients: [
             %{
-              food: %{name: "Flour"},
+              name: "Flour",
               quantity: 100,
               description: "g"
             },
             %{
-              food: %{name: "Sugar"},
+              name: "Sugar",
               quantity: 50,
               description: "g"
             }
@@ -80,12 +80,12 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         recipe_fixture(%{
           ingredients: [
             %{
-              food: %{name: "Flour"},
+              name: "Flour",
               quantity: 100,
               description: "g"
             },
             %{
-              food: %{name: "Sugar"},
+              name: "Sugar",
               quantity: 50,
               description: "g"
             }
@@ -105,12 +105,12 @@ defmodule RecipesWeb.RecipeEditLiveTest do
           ingredients: %{
             "0" => %{
               description: "Viel",
-              food: %{name: "Ketchup"},
+              name: "Ketchup",
               quantity: 0
             },
             "1" => %{
               description: "g",
-              food: %{name: "Pommes"},
+              name: "Pommes",
               quantity: 200
             }
           }
@@ -125,12 +125,12 @@ defmodule RecipesWeb.RecipeEditLiveTest do
              } = Data.get_recipe!(recipe.id)
 
       assert %Recipes.Data.Ingredient{
-               food: %{name: "Ketchup"},
+               name: "Ketchup",
                description: "Viel"
              } = ketchup
 
       assert %Recipes.Data.Ingredient{
-               food: %{name: "Pommes"},
+               name: "Pommes",
                quantity: 200.0,
                description: "g"
              } = pommes

@@ -11,14 +11,6 @@
 # and so on) as they will fail if something goes wrong.
 alias Recipes.Data
 
-{:ok, _} = Data.create_food(%{name: "Salz"})
-{:ok, _} = Data.create_food(%{name: "Pfeffer"})
-{:ok, _} = Data.create_food(%{name: "Wasser"})
-{:ok, pommes} = Data.create_food(%{name: "Pommes"})
-{:ok, ketchup} = Data.create_food(%{name: "Ketchup"})
-{:ok, wurst} = Data.create_food(%{name: "Wurst"})
-{:ok, curry} = Data.create_food(%{name: "Curry"})
-
 {:ok, currywurst} =
   Data.create_recipe(%{
     title: "Title",
@@ -37,14 +29,14 @@ alias Recipes.Data
       Noch heiss in Gläser abfüllen und die Deckel schliessen. Sind die Twist-off Deckel fest verschlossen, hält es sich bei dunkler Lagerung sicher 3 - 4 Monate. Die Sauce kann auch zu Grillgerichten serviert werden. Für die Currywurst am Besten nochmals anwärmen und darüber geben und mit Currypulver bestäuben. Sie schmeckt aber auch kalt.
     """,
     ingredients: [
-      %{description: "Viel", food_id: ketchup.id},
+      %{description: "Viel", name: "Ketchup"},
       %{
         quantity: 500,
         description: "Gramm",
-        food_id: pommes.id,
+        name: "Pommes",
       },
-      %{food_id: curry.id},
-      %{food_id: wurst.id}
+      %{name: "Curry"},
+      %{name: "Wurst"}
     ]
   })
 

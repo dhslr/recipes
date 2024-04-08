@@ -17,9 +17,7 @@ defmodule Recipes.Data.Ingredient do
   @doc false
   def changeset(ingredient, attrs) do
     ingredient
-    |> cast(attrs, [:description, :quantity, :recipe_id, :food_id, :position, :name])
-    |> foreign_key_constraint(:food_id)
+    |> cast(attrs, [:description, :quantity, :recipe_id, :position, :name])
     |> foreign_key_constraint(:recipe_id)
-    #|> put_assoc(:food, parse_food(attrs), required: true)
   end
 end

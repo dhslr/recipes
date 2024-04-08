@@ -1,6 +1,7 @@
 defmodule Recipes.Repo.Migrations.MigrateFoodNameData do
   use Ecto.Migration
 
+  alias Recipes.Repo
   alias Recipes.Data
 
   def change do
@@ -8,10 +9,14 @@ defmodule Recipes.Repo.Migrations.MigrateFoodNameData do
   end
 
   def migrate_data() do
-    for recipe <- Data.list_recipes(),
-        ingredient <- recipe.ingredients do
-      food = ingredient.food
-      {:ok, _} = Data.update_ingredient(ingredient, %{name: food.name})
+    for food <- Data.list_food() do
+      food = Repo.preload(food, [:ingredients])
+
+      for ingredient <- food.ingredients do
+        unless ingredient.name do
+          {:ok, _} = Data.update_ingredient(ingredient, %{name: food.name})
+        end
+      end
     end
   end
 end
