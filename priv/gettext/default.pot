@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 
-#: lib/recipes_web/components/core_components.ex:501
+#: lib/recipes_web/components/core_components.ex:500
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr ""
@@ -42,8 +42,8 @@ msgstr ""
 msgid "User confirmed successfully."
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:58
-#: lib/recipes_web/live/recipe_view_live.ex:24
+#: lib/recipes_web/live/recipe_edit_live.ex:42
+#: lib/recipes_web/live/recipe_view_live.ex:17
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr ""
@@ -58,58 +58,90 @@ msgstr ""
 msgid "Current password"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:22
+#: lib/recipes_web/live/recipe_edit_live.ex:44
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:36
+#: lib/recipes_web/live/recipe_edit_live.ex:86
 #, elixir-autogen, elixir-format
 msgid "Description/Unit (opt.)"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_view_live.ex:27
+#: lib/recipes_web/live/recipe_view_live.ex:35
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:23
-#: lib/recipes_web/live/recipe_view_live.ex:13
+#: lib/recipes_web/live/recipe_edit_live.ex:71
+#: lib/recipes_web/live/recipe_view_live.ex:19
 #, elixir-autogen, elixir-format
 msgid "Ingredients"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_view_live.ex:52
+#: lib/recipes_web/live/recipe_view_live.ex:62
 #, elixir-autogen, elixir-format
 msgid "Preparation"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:31
+#: lib/recipes_web/live/recipe_edit_live.ex:81
 #, elixir-autogen, elixir-format
 msgid "Quantity (opt.)"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:55
+#: lib/recipes_web/live/recipe_edit_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr ""
 
-#: lib/recipes_web/live/recipes_live.ex:23
+#: lib/recipes_web/live/recipes_live.ex:39
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_view_live.ex:112
+#: lib/recipes_web/live/recipe_edit_live.ex:46
+#: lib/recipes_web/live/recipe_view_live.ex:142
 #, elixir-autogen, elixir-format
 msgid "Servings"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:21
+#: lib/recipes_web/live/recipe_edit_live.ex:43
 #, elixir-autogen, elixir-format
 msgid "Title"
 msgstr ""
 
-#: lib/recipes_web/live/recipe_edit_live.ex:27
+#: lib/recipes_web/live/recipe_edit_live.ex:77
 #, elixir-autogen, elixir-format
 msgid "What"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Calories"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:238
+#, elixir-autogen, elixir-format
+msgid "File too large"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "Photos"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:240
+#, elixir-autogen, elixir-format
+msgid "You have selected an unacceptable file type"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:239
+#, elixir-autogen, elixir-format
+msgid "You have selected too many files"
+msgstr ""
+
+#: lib/recipes_web/live/recipe_edit_live.ex:101
+#: lib/recipes_web/live/recipe_edit_live.ex:214
+#, elixir-autogen, elixir-format
+msgid "add"
 msgstr ""
