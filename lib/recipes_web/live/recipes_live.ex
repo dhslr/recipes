@@ -32,6 +32,7 @@ defmodule RecipesWeb.RecipesLive do
           icon="hero-plus"
           type="button"
           label="New"
+          color="emerald"
           class="min-w-32"
         />
       </:action>
@@ -40,6 +41,7 @@ defmodule RecipesWeb.RecipesLive do
           href={~p(/imports/new)}
           icon="hero-cloud-arrow-down"
           type="button"
+          color="emerald"
           label="Import"
           class="min-w-32"
         />

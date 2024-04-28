@@ -253,16 +253,27 @@ defmodule RecipesWeb.CoreComponents do
   attr :type, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
+  attr :color, :string, default: "gray", values: ["gray", "emerald"]
 
   slot :inner_block, required: true
 
   def button(assigns) do
+    colors =
+      case assigns.color do
+        # tailwind jit does not support dynamically building those classes
+        "gray" -> "bg-gray-600 hover:bg-gray-700 text-white active:text-white/80"
+        "red" -> "bg-red-600 hover:bg-red-700 text-white active:text-white/80"
+        "emerald" -> "bg-emerald-600 hover:bg-emerald-700 text-white active:text-white/80"
+      end
+
+    assigns = assigns |> assign(:colors, colors)
+
     ~H"""
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-800 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-lg py-2 px-3 text-sm font-semibold leading-6",
+        @colors,
         @class
       ]}
       {@rest}
@@ -285,7 +296,7 @@ defmodule RecipesWeb.CoreComponents do
   attr :href, :string, default: nil
   attr :type, :string, default: nil
   attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
+  attr :rest, :global, include: ~w(disabled form name value color)
 
   def label_button(assigns) do
     ~H"""
