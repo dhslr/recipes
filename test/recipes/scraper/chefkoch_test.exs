@@ -4,7 +4,7 @@ defmodule Recipes.Scraper.Chefkoch.Test do
 
   @url "http://chefkoch.de/rezepte/1234"
 
-  test "covnerts html file data into recipe" do
+  test "converts html file data into recipe" do
     Mox.expect(Recipes.HttpClient.Mock, :get, fn @url ->
       {:ok,
        %{status_code: 200, body: File.read!("test/support/fixtures/scraper/chefkoch/recipe.html")}}

@@ -10,6 +10,7 @@ defmodule Recipes.Scraper.Chefkoch do
 
   require Logger
 
+  @impl true
   def scrape(url) do
     with {:ok, %{body: body, status_code: 200}} <- HttpClient.get(url),
          {:ok, recipe_data} <- extract_recipe_data(body),
