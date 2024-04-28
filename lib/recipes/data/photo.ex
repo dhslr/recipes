@@ -1,4 +1,8 @@
 defmodule Recipes.Data.Photo do
+  @moduledoc """
+  Schema used for persisting uploaded photos.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

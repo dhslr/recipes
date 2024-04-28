@@ -1,4 +1,8 @@
 defmodule Recipes.HttpClient do
+  @moduledoc """
+  A behaviour for implementing a HTTP client.
+  """
+
   @typedoc """
   The url encoded as string
   """

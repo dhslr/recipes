@@ -1,4 +1,8 @@
 defmodule Recipes.Scraper do
+  @moduledoc """
+  A scraper takes a url of a recipe on the internet, parses it and creates a recipe entity out of it.
+  """
+
   @typedoc """
   The url encoded as string
   """

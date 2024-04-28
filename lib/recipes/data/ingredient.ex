@@ -1,4 +1,7 @@
 defmodule Recipes.Data.Ingredient do
+  @moduledoc """
+    Schema for persisting recipe ingredient data.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,9 @@
 defmodule RecipesWeb.UserAuth do
+  @moduledoc """
+  This module is responsible for managing sessions
+  and user authentication.
+  """
+
   use RecipesWeb, :verified_routes
 
   import Plug.Conn

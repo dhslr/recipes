@@ -1,4 +1,7 @@
 defmodule Recipes.Accounts.User do
+  @moduledoc """
+  Schema for persisting user information.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

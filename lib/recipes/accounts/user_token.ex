@@ -1,4 +1,7 @@
 defmodule Recipes.Accounts.UserToken do
+  @moduledoc """
+  Schema used to save user tokens and session information.
+  """
   use Ecto.Schema
   import Ecto.Query
   alias Recipes.Accounts.UserToken

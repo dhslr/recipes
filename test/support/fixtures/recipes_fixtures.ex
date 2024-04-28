@@ -1,4 +1,6 @@
 defmodule Recipes.RecipesFixtures do
+  @moduledoc false
+
   alias Recipes.Data
 
   def recipe_fixture(attrs \\ %{}) do
