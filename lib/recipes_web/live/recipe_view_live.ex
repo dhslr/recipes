@@ -10,10 +10,10 @@ defmodule RecipesWeb.RecipeViewLive do
       )
 
     ~H"""
-    <.header class="text-center my-3">
-      <h1><%= @recipe.title %></h1>
-    </.header>
-    <div class="mx-auto container max-w-4xl">
+    <.main_content>
+      <.header class="text-center my-3">
+        <h1><%= @recipe.title %></h1>
+      </.header>
       <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
       <.photos photos={@recipe.photos} class="my-3" />
       <.sub_header text={gettext("Ingredients")} />
@@ -37,7 +37,7 @@ defmodule RecipesWeb.RecipeViewLive do
           href={~p"/recipes/#{@recipe.id}/edit"}
         />
       </div>
-    </div>
+    </.main_content>
     """
   end
 

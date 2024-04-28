@@ -48,8 +48,8 @@ defmodule RecipesWeb.NewImportLiveTest do
                [
                  {"p", [{"class", "alert alert-danger"}],
                   [
-                    "\nError when importing the recipe: \n  ",
-                    {"emph", [], ["\nA helpful error message\n  "]}
+                    "\nError when importing the recipe: \n    ",
+                    {"emph", [], ["\nA helpful error message\n    "]}
                   ]}
                ]
     end

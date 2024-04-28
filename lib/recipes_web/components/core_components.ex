@@ -171,6 +171,42 @@ defmodule RecipesWeb.CoreComponents do
   end
 
   @doc """
+  A site container that is used to wrap the containt of a page.
+  """
+  slot :inner_block, required: true
+
+  slot :action, doc: "slot for actions that are displayed on the bottom, such as an edit button" do
+    attr :position, :string, required: true, values: ["right", "left"]
+  end
+
+  def main_content(assigns) do
+    action_left = Enum.filter(assigns.action, fn a -> a.position == "left" end)
+    action_right = Enum.filter(assigns.action, fn a -> a.position == "right" end)
+
+    assigns =
+      assigns
+      |> assign(:action_left, action_left)
+      |> assign(:action_right, action_right)
+      |> assign(:action_slot_class, "fixed bottom-4 flex gap-4 flex-col items-center")
+
+    ~H"""
+    <main class="mx-auto container max-w-4xl">
+      <%= render_slot(@inner_block) %>
+      <div class={[@action_slot_class, "left-4"]}>
+        <%= for action <- @action_left do %>
+          <%= render_slot(action) %>
+        <% end %>
+      </div>
+      <div class={[@action_slot_class, "right-4"]}>
+        <%= for action <- @action_right do %>
+          <%= render_slot(action) %>
+        <% end %>
+      </div>
+    </main>
+    """
+  end
+
+  @doc """
   Renders a simple form.
 
   ## Examples
@@ -225,7 +261,7 @@ defmodule RecipesWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-800 hover:bg-zinc-700 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
@@ -258,33 +294,6 @@ defmodule RecipesWeb.CoreComponents do
         <.icon :if={@icon} name={@icon} class="mr-1" />
         <label><%= @label %></label>
       </.button>
-    </.link>
-    """
-  end
-
-  @doc """
-  Renders a floating button with label and an optional href
-
-  """
-  attr :label, :string, required: true
-  attr :position, :string, default: "right", doc: "left, right"
-  attr :class, :string, default: nil
-  attr :href, :string, default: nil
-  attr :rest, :global, include: ~w(type disabled form name value)
-  def floating_button(assigns) do
-    assigns = assign(assigns, :position_class, "#{assigns.position}-4")
-
-    ~H"""
-    <.link navigate={@href}>
-      <div class={"fixed bottom-4 #{@position}"}>
-        <button class={[
-          "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg",
-          @position_class,
-          @class
-        ]} {@rest}>
-          <%= @label %>
-        </button>
-      </div>
     </.link>
     """
   end

@@ -80,7 +80,7 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       lv
-      |> element("a", "New recipe")
+      |> element("a", "New")
       |> render_click()
 
       assert_redirect(lv, "/recipes/new")
@@ -111,7 +111,7 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       lv
-      |> element("a", "Import recipe")
+      |> element("a", "Import")
       |> render_click()
 
       assert_redirect(lv, "/imports/new")

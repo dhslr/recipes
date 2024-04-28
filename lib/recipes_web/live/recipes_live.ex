@@ -16,9 +16,7 @@ defmodule RecipesWeb.RecipesLive do
       )
 
     ~H"""
-    <.header class="text-center"></.header>
-
-    <div class="container mx-auto">
+    <.main_content>
       <.search_bar form_data={@form_data} />
       <div class="flex flex-wrap gap-5 justify-evenly">
         <div :for={recipe <- @filtered_recipes}>
@@ -28,7 +26,25 @@ defmodule RecipesWeb.RecipesLive do
           </.link>
         </div>
       </div>
-    </div>
+      <:action position="right">
+        <.label_button
+          href={~p(/recipes/new)}
+          icon="hero-plus"
+          type="button"
+          label="New"
+          class="min-w-32"
+        />
+      </:action>
+      <:action position="right">
+        <.label_button
+          href={~p(/imports/new)}
+          icon="hero-cloud-arrow-down"
+          type="button"
+          label="Import"
+          class="min-w-32"
+        />
+      </:action>
+    </.main_content>
     """
   end
 
@@ -38,8 +54,6 @@ defmodule RecipesWeb.RecipesLive do
       <.simple_form for={@form_data} phx-change="change-query" class="flex-1">
         <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
       </.simple_form>
-      <.label_button href={~p(/recipes/new)} icon="hero-plus" type="button" label="New recipe" />
-      <.floating_button href={~p(/imports/new)} type="button" label="Import recipe" />
     </div>
     """
   end
