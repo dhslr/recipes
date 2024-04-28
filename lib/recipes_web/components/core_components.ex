@@ -263,6 +263,33 @@ defmodule RecipesWeb.CoreComponents do
   end
 
   @doc """
+  Renders a floating button with label and an optional href
+
+  """
+  attr :label, :string, required: true
+  attr :position, :string, default: "right", doc: "left, right"
+  attr :class, :string, default: nil
+  attr :href, :string, default: nil
+  attr :rest, :global, include: ~w(type disabled form name value)
+  def floating_button(assigns) do
+    assigns = assign(assigns, :position_class, "#{assigns.position}-4")
+
+    ~H"""
+    <.link navigate={@href}>
+      <div class={"fixed bottom-4 #{@position}"}>
+        <button class={[
+          "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg",
+          @position_class,
+          @class
+        ]} {@rest}>
+          <%= @label %>
+        </button>
+      </div>
+    </.link>
+    """
+  end
+
+  @doc """
   Renders an input with label and error messages.
 
   A `Phoenix.HTML.FormField` may be passed as argument,

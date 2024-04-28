@@ -103,5 +103,18 @@ defmodule RecipesWeb.RecipesLiveTest do
                |> render_click()
                |> follow_redirect(logged_in_con, "/recipes/#{recipe.id}")
     end
+
+    test "click on import recipe button opens import recipe view", %{conn: conn, user: user} do
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      lv
+      |> element("a", "Import recipe")
+      |> render_click()
+
+      assert_redirect(lv, "/imports/new")
+    end
   end
 end

@@ -39,6 +39,7 @@ defmodule RecipesWeb.RecipesLive do
         <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
       </.simple_form>
       <.label_button href={~p(/recipes/new)} icon="hero-plus" type="button" label="New recipe" />
+      <.floating_button href={~p(/imports/new)} type="button" label="Import recipe" />
     </div>
     """
   end
