@@ -9,6 +9,8 @@ services:
       - POSTGRES_PASSWORD
       - POSTGRES_DB
       - POSTGRES_USER
+    volumes:
+      - data:/var/lib/postgresql/data
   app:
     build: .
     user: 1001:1001
@@ -35,3 +37,4 @@ networks:
     external: true
 volumes:
   photos:
+  data:
