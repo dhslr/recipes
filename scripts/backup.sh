@@ -35,6 +35,6 @@ compose="docker-compose -f $RECIPES_DIR/docker-compose.yml"
 
 $compose start db
 $compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/pg_dump -h db --no-owner -U $POSTGRES_USER $POSTGRES_DB --no-password > "${BACKUP_DIR}/${RECIPES_DB_DUMP_FILE}"
-docker run --rm  -v "${BACKUP_DIR}:/backup-dir" -v "${BACKUP_DIR}/${RECIPES_DB_DUMP_FILE}:/tmp/recipes.sql:ro" -v "recipes_live_view_photos:/tmp/photos:ro" ubuntu:24.04 tar czfv "/backup-dir/${BACKUP_TAR_FILE}" -C /tmp recipes.sql ./photos
+docker run --rm  -v "${BACKUP_DIR}:/backup-dir" -v "${BACKUP_DIR}/${RECIPES_DB_DUMP_FILE}:/tmp/recipes.sql:ro" -v "recipes_live_view_photos:/tmp/photos:ro" ubuntu:24.04 tar czf "/backup-dir/${BACKUP_TAR_FILE}" -C /tmp recipes.sql ./photos
 
-echo "Backup ${BACKUP_DIR}/${BACKUP_TAR_FILE} completed successfully!"
+echo "${BACKUP_DIR}/${BACKUP_TAR_FILE}"
