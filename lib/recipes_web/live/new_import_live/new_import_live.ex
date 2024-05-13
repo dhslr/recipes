@@ -29,7 +29,6 @@ defmodule RecipesWeb.NewImportLive do
          {:ok, _updated_import} <-
            Recipes.Imports.update_import(import_data, %{recipe_id: recipe.id}) do
       {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
-
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
