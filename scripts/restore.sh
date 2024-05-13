@@ -26,10 +26,9 @@ fi
 tar xzfv $BACKUP_TAR_FILE -C $BACKUP_DIR
 compose start db
 compose stop app
-compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/dropdb -h db -U $POSTGRES_USER $POSTGRES_DB
-compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/createdb -h db -U $POSTGRES_USER $POSTGRES_DB
-compose run --rm -T -e PGPASSWORD="${POSTGRES_PASSWORD}" db /usr/bin/psql -h db -U $POSTGRES_USER $POSTGRES_DB < "${BACKUP_DIR}/${RECIPES_DB_DUMP_FILE}"
-docker run --rm  -v "${BACKUP_TAR_FILE}:/tmp/backup.tgz" -v "recipes_live_view_photos:/tmp/photos" ubuntu:24.04 tar xzfv /tmp/backup.tgz -C /tmp
-compose restart 
+compose run --rm -e PGPASSWORD="${POSTGRES_PASSWORD}" db sh -c "dropdb -h db -U $POSTGRES_USER $POSTGRES_DB && createdb -h db -U $POSTGRES_USER $POSTGRES_DB"
+compose run --rm -T -e PGPASSWORD="${POSTGRES_PASSWORD}" db psql -h db -U $POSTGRES_USER $POSTGRES_DB < "${BACKUP_DIR}/${RECIPES_DB_DUMP_FILE}"
+docker run --rm  -v "${BACKUP_TAR_FILE}:/tmp/backup.tgz" -v "recipes_live_view_photos:/tmp/photos" ubuntu:24.04 sh -c "rm -rf /tmp/photos/{*,.*}; tar xzfv /tmp/backup.tgz -C /tmp"
+compose restart
 
 rm -rf $BACKUP_DIR

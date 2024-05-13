@@ -71,7 +71,7 @@ defmodule RecipesWeb.RecipeViewLive do
     ~H"""
     <ul class="my-2 flex justify-evenly gap-y-2 flex-wrap" data-test="photos">
       <li :for={photo <- @photos} class="min-w-[200px] max-h-[400px] max-w-[400px]">
-        <img src={"/photos/#{Photo.filename(photo)}"} class="object-cover w-full h-full" />
+        <img src={~p"/photos/#{Photo.filename(photo)}"} class="object-cover w-full h-full" />
       </li>
     </ul>
     """
