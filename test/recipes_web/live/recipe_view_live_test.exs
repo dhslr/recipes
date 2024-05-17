@@ -120,7 +120,7 @@ defmodule RecipesWeb.RecipeLiveTest do
                {
                  "div",
                  [{"class", "text-gray-500"}, {"data-test", "kcal"}],
-                 [{"span", [], ["1337 kcal pro Portion"]}]
+                 [{"span", [], ["1337 kcal per serving"]}]
                }
              ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
     end

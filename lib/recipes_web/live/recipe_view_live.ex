@@ -149,7 +149,7 @@ defmodule RecipesWeb.RecipeViewLive do
   defp kcal(assigns) do
     ~H"""
     <div class="text-gray-500" data-test="kcal">
-      <span :if={@kcal}><%= @kcal %> kcal pro Portion</span>
+      <span :if={@kcal}><%= @kcal %> kcal <%= gettext("per serving") %></span>
     </div>
     """
   end

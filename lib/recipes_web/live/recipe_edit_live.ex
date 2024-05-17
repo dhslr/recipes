@@ -41,10 +41,10 @@ defmodule RecipesWeb.RecipeEditLive do
     >
       <.back navigate={@back_link}><%= gettext("Back") %></.back>
       <.input field={@form_data[:title]} label={gettext("Title")} required />
-      <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} />
+      <.input type="textarea" field={@form_data[:description]} label={gettext("Description")} rows="15" id="recipe_description"/>
       <div class="flex gap-2">
         <.input type="number" field={@form_data[:servings]} label={gettext("Servings")} />
-        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per portion")} />
+        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per serving")} />
       </div>
 
       <h4><%= gettext("Photos") %></h4>
