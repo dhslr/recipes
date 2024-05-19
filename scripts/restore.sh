@@ -16,7 +16,12 @@ BACKUP_DIR=$(mktemp -d)
 BACKUP_TAR_FILE="${2:-$1/backup.tgz}"
 RECIPES_DB_DUMP_FILE="recipes.sql"
 
-alias compose="docker-compose -f $RECIPES_DIR/docker-compose.yml"
+if command -v docker-compose >/dev/null 2>&1; then
+  alias compose="docker-compose -f $RECIPES_DIR/docker-compose.yml"
+else
+  alias compose="docker compose -f $RECIPES_DIR/docker-compose.yml"
+fi
+
 . $RECIPES_DIR/.env
 if [ -z "$POSTGRES_USER" ] || [ -z "$POSTGRES_PASSWORD" ] || [ -z "$POSTGRES_DB" ]; then
   echo "Make sure to set postgres environment variables in .env before running this script!"
