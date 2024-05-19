@@ -195,10 +195,19 @@ defmodule Recipes.Data do
   end
 
   def create_photo(%{photo_file_path: path, recipe_id: recipe_id}) do
-    with {:ok, %Photo{} = photo} <-
-           create_photo_entry(%{recipe_id: recipe_id}),
-         {:ok, _} <- File.copy(path, filepath(photo)) do
-      {:ok, photo}
+    {:ok, %Photo{} = photo} = create_photo_entry(%{recipe_id: recipe_id})
+
+    case File.copy(path, filepath(photo)) do
+      {:ok, _file} ->
+        {:ok, photo}
+
+      {:error, error} = err ->
+        Logger.error(
+          "Failed to create photo entry for uploaded photo at #{path} and recipe #{recipe_id}: #{IO.inspect(error)}"
+        )
+
+        delete_photo(photo)
+        err
     end
   end
 

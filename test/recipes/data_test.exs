@@ -121,6 +121,24 @@ defmodule DataTest do
                })
 
       assert File.exists?(Path.join(Photo.photos_dir(), Photo.filename(photo)))
+      assert Data.get_photo!(photo.id) != nil
+    end
+
+    test "create photo from uploaded file but file does not exist" do
+      recipe = recipe_fixture()
+      path = Path.join(Application.app_dir(:recipes), "/does_not_exist/nono.jpg")
+
+      photos = Repo.all(Photo)
+
+      assert {:error, :enoent} =
+               Data.create_photo(%{
+                 photo_file_path: path,
+                 recipe_id: recipe.id,
+                 position: 0
+               })
+
+      # no photo entry is saved for failed creation
+      assert photos == Repo.all(Photo)
     end
   end
 end
