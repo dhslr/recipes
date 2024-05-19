@@ -468,28 +468,29 @@ defmodule RecipesWeb.CoreComponents do
     """
   end
 
-
   @doc """
   Renders a textarea with rich text markdown support using tinymde.
   """
   attr :id, :any, default: nil
   attr :label, :string, default: nil
+
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
+
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
-                
+
   def markdown_textarea(assigns) do
     ~H"""
     <div>
       <.label for={@id}>
         <%= @label %>
       </.label>
-    <div class="border">
-      <div id={"#{@id}_command_bar"} />
-      <.input id={@id} phx-hook="TinyMDE" type="textarea" field={@field} {@rest} />
-    </div>
+      <div class="border">
+        <div id={"#{@id}_command_bar"} />
+        <.input id={@id} phx-hook="TinyMDE" type="textarea" field={@field} {@rest} />
+      </div>
     </div>
     """
   end
