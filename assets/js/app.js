@@ -42,6 +42,16 @@ const Hooks = {
       });
     },
   },
+  TinyMDE: {
+    mounted() {
+      const textareaId = this.el.id;
+      const commandBarId = `${this.el.id}_command_bar`;
+      const tinyMDE = new TinyMDE.Editor({textarea: textareaId});
+      console.log(textareaId)
+      console.log(commandBarId)
+      new TinyMDE.CommandBar({element: commandBarId, editor: tinyMDE});
+    }
+  }
 };
 
 const csrfToken = document
