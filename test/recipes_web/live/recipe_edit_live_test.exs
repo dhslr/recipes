@@ -70,7 +70,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                   {"phx-hook", "Sortable"}
                 ],
                 [
-                  {"label", [{"class", "block cursor-pointer my-2"}],
+                  {"label", [{"class", "float-right cursor-pointer my-2"}],
                    [
                      {"input",
                       [

@@ -68,35 +68,37 @@ defmodule RecipesWeb.RecipeEditLive do
 
       <.photo_upload uploads={@uploads} />
 
-      <h4><%= gettext("Ingredients") %></h4>
+      <h4 class="text-center"><%= gettext("Ingredients") %></h4>
       <div id="ingredients" data-test="ingredients" class="ml-3" phx-hook="Sortable">
         <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
-          <div class="flex drag-item gap-3">
+          <div class="flex drag-item justify-center content-center items-center mb-2 gap-1 even:bg-gray-50 odd:bg-white p-2 rounded-lg">
             <input type="hidden" name="recipe[ingredients_order][]" value={ingredient.index} />
-            <.icon name="hero-bars-3" class="w-8 h-8 self-center" data-handle />
-            <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
-            <.input
-              type="text"
-              field={ingredient[:quantity]}
-              placeholder={gettext("Quantity (opt.)")}
-            />
-            <.input
-              type="text"
-              field={ingredient[:description]}
-              placeholder={gettext("Description/Unit (opt.)")}
-            />
-            <label class="self-center">
-              <input
-                type="checkbox"
-                name="recipe[ingredients_drop][]"
-                value={ingredient.index}
-                class="hidden"
+            <.icon name="hero-bars-3" class="w-8 h-8" data-handle />
+            <div class="sm:flex gap-1">
+              <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
+              <.input
+                type="text"
+                field={ingredient[:quantity]}
+                placeholder={gettext("Quantity (opt.)")}
               />
-              <.trash_icon />
-            </label>
+              <.input
+                type="text"
+                field={ingredient[:description]}
+                placeholder={gettext("Description/Unit (opt.)")}
+              />
+              <label>
+                <input
+                  type="checkbox"
+                  name="recipe[ingredients_drop][]"
+                  value={ingredient.index}
+                  class="hidden"
+                />
+              </label>
+            </div>
+            <.trash_icon class="w-8 h-8" />
           </div>
         </.inputs_for>
-        <label class="block cursor-pointer my-2">
+        <label class="float-right cursor-pointer my-2">
           <input type="checkbox" name="recipe[ingredients_order][]" class="hidden" />
           <.icon name="hero-plus-circle" /> <%= gettext("add") %>
         </label>
@@ -204,7 +206,7 @@ defmodule RecipesWeb.RecipeEditLive do
         <% end %>
       </ul>
       <%!-- TODO use mechanism like in ingredients for adding --%>
-      <label class="block cursor-pointer my-2">
+      <label class="cursor-pointer float-right">
         <.icon name="hero-plus-circle" /> <%= gettext("add") %>
         <.live_file_input upload={@uploads.photo} class="hidden" />
       </label>

@@ -89,7 +89,10 @@ defmodule RecipesWeb.RecipeLiveTest do
       assert [
                {
                  "div",
-                 [{"class", "my-3 container mx-auto"}, {"data-test", "description"}],
+                 [
+                   {"class", "markdown-body markdown my-3 container mx-auto"},
+                   {"data-test", "description"}
+                 ],
                  [
                    {"p", [], [{"strong", [], ["Yummy Cake Recipe"]}]},
                    {"p", [], ["First put Flour. Then sugar."]},
