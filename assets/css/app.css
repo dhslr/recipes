@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "../../deps/github_markdown/github-markdown.css";
 
 /* This file is for your main application CSS */
 
@@ -17,11 +18,18 @@ h4 {
     @apply text-lg;
 }
 
-
 .alert {
     @apply text-red-700
 }
 
 .danger {
     @apply text-red-700
+}
+
+.markdown ol {
+    list-style: decimal;
+}
+
+.markdown ul {
+    list-style: unset;
 }

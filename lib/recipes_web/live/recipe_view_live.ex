@@ -60,7 +60,9 @@ defmodule RecipesWeb.RecipeViewLive do
 
     ~H"""
     <.sub_header text={gettext("Preparation")} class="my-3" />
-    <div class={[@class]} data-test="description"><%= raw(@description) %></div>
+    <div class={["markdown-body markdown", @class]} data-test="description">
+      <%= raw(@description) %>
+    </div>
     """
   end
 
