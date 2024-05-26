@@ -4,7 +4,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
 
   import Phoenix.LiveViewTest
   import Recipes.AccountsFixtures
-  import Recipes.RecipesFixtures
+  import Recipes.DataFixtures
 
   setup do
     %{user: user_fixture()}

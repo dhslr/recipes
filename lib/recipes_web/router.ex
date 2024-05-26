@@ -74,6 +74,12 @@ defmodule RecipesWeb.Router do
       live "/recipes/:id/edit", RecipeEditLive, :edit
       live "/recipes/:id", RecipeViewLive
 
+      live "/tags", TagLive.Index, :index
+      live "/tags/new", TagLive.Index, :new
+      live "/tags/:id/edit", TagLive.Index, :edit
+      live "/tags/:id", TagLive.Show, :show
+      live "/tags/:id/show/edit", TagLive.Show, :edit
+
       live "/imports/new", NewImportLive
     end
   end

@@ -22,7 +22,7 @@ defmodule Recipes.Data do
   """
   def list_recipes do
     Repo.all(Recipe)
-    |> Repo.preload([:ingredients, :photos])
+    |> Repo.preload([:ingredients, :photos, :tags])
     |> Enum.sort(&(&1.title <= &2.title))
   end
 
@@ -40,7 +40,7 @@ defmodule Recipes.Data do
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id), do: Repo.get!(Recipe, id) |> Repo.preload([:ingredients, :photos])
+  def get_recipe!(id), do: Repo.get!(Recipe, id) |> Repo.preload([:ingredients, :photos, :tags])
 
   @doc """
   Creates a recipe.
@@ -58,7 +58,7 @@ defmodule Recipes.Data do
     %Recipe{}
     |> Recipe.changeset(attrs)
     |> Repo.insert()
-    |> preload_h([:ingredients, :photos])
+    |> preload_h([:ingredients, :photos, :tags])
   end
 
   @doc """
@@ -77,7 +77,7 @@ defmodule Recipes.Data do
     recipe
     |> Recipe.changeset(attrs)
     |> Repo.update()
-    |> preload_h([:ingredients, :photos])
+    |> preload_h([:ingredients, :photos, :tags])
   end
 
   @doc """
@@ -159,10 +159,11 @@ defmodule Recipes.Data do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_ingredient(%Ingredient{} = ingredient, attrs) do
-    ingredient
-    |> Ingredient.changeset(attrs)
-    |> Repo.update()
+  def add_tag(recipe, tag_name) do
+    recipe
+    |> Ecto.Changeset.change(%{})
+    |> Ecto.Changeset.put_assoc(:tags, recipe.tags ++ [%{name: tag_name}])
+    |> Repo.insert_or_update()
   end
 
   @doc """
@@ -227,5 +228,101 @@ defmodule Recipes.Data do
 
   defp filepath(%Photo{} = photo) do
     Path.join(Photo.photos_dir(), Photo.filename(photo))
+  end
+
+  alias Recipes.Data.Tag
+
+  @doc """
+  Returns the list of tags.
+
+  ## Examples
+
+      iex> list_tags()
+      [%Tag{}, ...]
+
+  """
+  def list_tags do
+    Repo.all(Tag)
+  end
+
+  @doc """
+  Gets a single tag.
+
+  Raises `Ecto.NoResultsError` if the Tag does not exist.
+
+  ## Examples
+
+      iex> get_tag!(123)
+      %Tag{}
+
+      iex> get_tag!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_tag!(id), do: Repo.get!(Tag, id)
+
+  @doc """
+  Creates a tag.
+
+  ## Examples
+
+      iex> create_tag(%{field: value})
+      {:ok, %Tag{}}
+
+      iex> create_tag(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_tag(attrs \\ %{}) do
+    %Tag{}
+    |> Tag.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a tag.
+
+  ## Examples
+
+      iex> update_tag(tag, %{field: new_value})
+      {:ok, %Tag{}}
+
+      iex> update_tag(tag, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_tag(%Tag{} = tag, attrs) do
+    tag
+    |> Tag.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a tag.
+
+  ## Examples
+
+      iex> delete_tag(tag)
+      {:ok, %Tag{}}
+
+      iex> delete_tag(tag)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_tag(%Tag{} = tag) do
+    Repo.delete(tag)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking tag changes.
+
+  ## Examples
+
+      iex> change_tag(tag)
+      %Ecto.Changeset{data: %Tag{}}
+
+  """
+  def change_tag(%Tag{} = tag, attrs \\ %{}) do
+    Tag.changeset(tag, attrs)
   end
 end

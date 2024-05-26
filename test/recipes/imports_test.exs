@@ -7,7 +7,7 @@ defmodule Recipes.ImportsTest do
     alias Recipes.Imports.ImportData
 
     import Recipes.ImportsFixtures
-    import Recipes.RecipesFixtures
+    import Recipes.DataFixtures
 
     @invalid_attrs %{url: nil, recipe_id: nil}
 

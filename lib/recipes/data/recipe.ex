@@ -2,8 +2,8 @@ defmodule Recipes.Data.Recipe do
   @moduledoc """
   Schema for persisting recipe data.
   """
-
   use Ecto.Schema
+
   import Ecto.Changeset
 
   schema "recipes" do
@@ -22,6 +22,8 @@ defmodule Recipes.Data.Recipe do
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
+    many_to_many :tags, Recipes.Data.Tag, join_through: "recipes_tags", on_replace: :delete
+
     timestamps()
   end
 
@@ -29,6 +31,7 @@ defmodule Recipes.Data.Recipe do
   def changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:title, :description, :kcal, :servings])
+    |> validate_required([:title])
     |> cast_assoc(:ingredients,
       with: &Recipes.Data.Ingredient.changeset/3,
       drop_param: :ingredients_drop,
@@ -39,7 +42,11 @@ defmodule Recipes.Data.Recipe do
       drop_param: :photos_drop,
       sort_param: :photos_order
     )
-    |> validate_required([:title])
+    |> cast_assoc(:tags,
+      with: &Recipes.Data.Tag.changeset/2,
+      drop_param: :tags_drop,
+      sort_param: :tags_order
+    )
   end
 
   def first_photo(%Recipes.Data.Recipe{photos: [h | _t] = photos}) do
@@ -47,4 +54,5 @@ defmodule Recipes.Data.Recipe do
   end
 
   def first_photo(_recipe), do: nil
+
 end

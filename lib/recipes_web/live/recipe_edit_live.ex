@@ -14,7 +14,8 @@ defmodule RecipesWeb.RecipeEditLive do
      |> assign(:uploaded_files, [])
      |> assign(:dirty, false)
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic .png .gif), max_entries: 3)
-     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
+     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))
+     |> assign(:tag_form_data, to_form(%{"tags" => []}))}
   end
 
   @impl true
@@ -51,6 +52,9 @@ defmodule RecipesWeb.RecipeEditLive do
         <.input type="number" field={@form_data[:servings]} label={gettext("Servings")} />
         <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per serving")} />
       </div>
+
+      <h4 class="text-center"><%= gettext("Tags") %></h4>
+      <.input type="text" field={@tag_form_data[:tags]} placeholder={gettext("Tags")} />
 
       <h4><%= gettext("Photos") %></h4>
       <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">

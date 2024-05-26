@@ -3,7 +3,7 @@ defmodule RecipesWeb.RecipesLiveTest do
 
   import Phoenix.LiveViewTest
   import Recipes.AccountsFixtures
-  import Recipes.RecipesFixtures
+  import Recipes.DataFixtures
 
   setup do
     %{user: user_fixture(), recipe: recipe_fixture(%{title: "Currywurst"})}
