@@ -9,110 +9,19 @@ defmodule RecipesWeb.RecipeEditLive do
   def mount(params, _session, socket) do
     socket = apply_action(socket, socket.assigns.live_action, params)
 
+    link =
+      if(socket.assigns.live_action == :new,
+        do: ~p"/recipes",
+        else: ~p"/recipes/#{socket.assigns.recipe.id}"
+      )
+
     {:ok,
      socket
      |> assign(:uploaded_files, [])
      |> assign(:dirty, false)
+     |> assign(:back_link, link)
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic .png .gif), max_entries: 3)
-     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))
-     |> assign(:tag_form_data, to_form(%{"tags" => []}))}
-  end
-
-  @impl true
-  def render(assigns) do
-    link =
-      if(assigns.live_action == :new,
-        do: ~p"/recipes",
-        else: ~p"/recipes/#{assigns.recipe.id}"
-      )
-
-    assigns = assign(assigns, back_link: link)
-
-    ~H"""
-    <.header class="text-center">
-      <h1><%= @recipe.title %></h1>
-    </.header>
-
-    <.simple_form
-      for={@form_data}
-      id="recipe_form"
-      phx-change="validate_recipe"
-      phx-submit="save_recipe"
-      class="container mx-auto max-w-4xl"
-    >
-      <.back navigate={@back_link}><%= gettext("Back") %></.back>
-      <.input field={@form_data[:title]} label={gettext("Title")} required />
-      <.markdown_textarea
-        field={@form_data[:description]}
-        label={gettext("Description")}
-        rows="15"
-        id="recipe_description"
-      />
-      <div class="flex gap-2">
-        <.input type="number" field={@form_data[:servings]} label={gettext("Servings")} />
-        <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per serving")} />
-      </div>
-
-      <h4 class="text-center"><%= gettext("Tags") %></h4>
-      <.input type="text" field={@tag_form_data[:tags]} placeholder={gettext("Tags")} />
-
-      <h4><%= gettext("Photos") %></h4>
-      <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">
-        <.inputs_for :let={photo} field={@form_data[:photos]}>
-          <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative drag-item" data-handle>
-            <input type="hidden" name="recipe[photos_order][]" value={photo.index} />
-            <img src={"/photos/#{Photo.filename(photo.data)}"} class="object-cover w-full h-full" />
-            <label class="self-center absolute top-[85%] left-[88%]">
-              <input name="recipe[photos_drop][]" type="checkbox" value={photo.index} class="hidden" />
-              <.trash_icon />
-            </label>
-          </div>
-        </.inputs_for>
-      </div>
-
-      <.photo_upload uploads={@uploads} />
-
-      <h4 class="text-center"><%= gettext("Ingredients") %></h4>
-      <div id="ingredients" data-test="ingredients" class="ml-3" phx-hook="Sortable">
-        <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
-          <div class="flex drag-item justify-center content-center items-center mb-2 gap-1 even:bg-gray-50 odd:bg-white p-2 rounded-lg">
-            <input type="hidden" name="recipe[ingredients_order][]" value={ingredient.index} />
-            <.icon name="hero-bars-3" class="w-8 h-8" data-handle />
-            <div class="sm:flex gap-1">
-              <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
-              <.input
-                type="text"
-                field={ingredient[:quantity]}
-                placeholder={gettext("Quantity (opt.)")}
-              />
-              <.input
-                type="text"
-                field={ingredient[:description]}
-                placeholder={gettext("Description/Unit (opt.)")}
-              />
-              <label>
-                <input
-                  type="checkbox"
-                  name="recipe[ingredients_drop][]"
-                  value={ingredient.index}
-                  class="hidden"
-                />
-              </label>
-            </div>
-            <.trash_icon class="w-8 h-8" />
-          </div>
-        </.inputs_for>
-        <label class="float-right cursor-pointer my-2">
-          <input type="checkbox" name="recipe[ingredients_order][]" class="hidden" />
-          <.icon name="hero-plus-circle" /> <%= gettext("add") %>
-        </label>
-      </div>
-      <:actions>
-        <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
-      </:actions>
-      <input type="hidden" name="recipe[ingredients_drop][]" />
-    </.simple_form>
-    """
+     |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -158,7 +67,7 @@ defmodule RecipesWeb.RecipeEditLive do
 
     case save_recipe(socket, socket.assigns.live_action, recipe_params) do
       {:ok, recipe} -> {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
-      {:error, changeset} -> {:noreply, assign(socket, :form_data, to_form(changeset))}
+      {:error, changeset} -> {:noreply, assign(socket, :form_data, changeset |> dbg |> to_form)}
     end
   end
 

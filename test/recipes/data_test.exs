@@ -136,7 +136,8 @@ defmodule DataTest do
                new_tag
              ] = recipe.tags
 
-      assert existing_tag.id == tag.id # why new id? transaction?
+      # why new id? transaction?
+      assert existing_tag.id == tag.id
       assert new_tag.name == "New"
     end
 

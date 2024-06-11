@@ -19,5 +19,4 @@ defmodule Recipes.Data.Tag do
     |> validate_required([:name])
     |> unique_constraint(:name)
   end
-
 end

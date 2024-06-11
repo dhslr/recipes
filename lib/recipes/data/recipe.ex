@@ -54,5 +54,4 @@ defmodule Recipes.Data.Recipe do
   end
 
   def first_photo(_recipe), do: nil
-
 end

@@ -33,5 +33,4 @@ defmodule Recipes.DataFixtures do
 
     ingredient
   end
-
 end
