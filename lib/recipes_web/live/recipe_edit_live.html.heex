@@ -23,23 +23,15 @@
   </div>
 
   <h4 class="text-center"><%= gettext("Tags") %></h4>
-  <div class="flex flex-wrap gap-2">
-    <.inputs_for :let={tag} field={@form_data[:tags]}>
-      <span class="border rounded-xl p-1 bg-sky-100">
-        <input type="hidden" name="recipe[tags_order][]" value={tag.index} />
-        <.input type="text" field={tag[:name]} phx-debounce="500" />
-        <label>
-          <input type="checkbox" name="recipe[tags_drop][]" value={tag.index} class="hidden" />
-          <.trash_icon class="w-8 h-8" />
-        </label>
-      </span>
-    </.inputs_for>
+  <div class="flex flex-wrap gap-2" data-test="tags">
+    <div :for={tag <- @tags} class="border rounded-xl p-1 bg-sky-100">
+      <label><%= tag.name %></label>
+      <.trash_icon />
+    </div>
   </div>
-  <label class="float-right cursor-pointer my-2">
-    <input type="checkbox" name="recipe[tags_order][]" class="hidden" />
+  <button class="float-right cursor-pointer my-2" data-test="add-tag-button">
     <.icon name="hero-plus-circle" /> <%= gettext("add") %>
-  </label>
-  <input type="hidden" name="recipe[tags_drop][]" />
+  </button>
 
   <h4><%= gettext("Photos") %></h4>
   <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">

@@ -129,7 +129,7 @@ defmodule DataTest do
       tag = tag_fixture()
 
       {:ok, recipe} =
-        Data.update_recipe(recipe, %{tags: [%{id: tag.id, name: tag.name}, %{name: "New"}]})
+        Data.update_recipe(recipe, %{tags: [tag, %{name: "NewTag"}]})
 
       assert [
                existing_tag,
@@ -138,7 +138,7 @@ defmodule DataTest do
 
       # why new id? transaction?
       assert existing_tag.id == tag.id
-      assert new_tag.name == "New"
+      assert new_tag.name == "NewTag"
     end
 
     test "add ingredient changeset to recipe" do

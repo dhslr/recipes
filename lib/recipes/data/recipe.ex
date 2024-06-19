@@ -42,10 +42,9 @@ defmodule Recipes.Data.Recipe do
       drop_param: :photos_drop,
       sort_param: :photos_order
     )
-    |> cast_assoc(:tags,
-      with: &Recipes.Data.Tag.changeset/2,
-      drop_param: :tags_drop,
-      sort_param: :tags_order
+    |> put_assoc(
+      :tags,
+      attrs["tags"] || attrs[:tags] || []
     )
   end
 
@@ -54,4 +53,8 @@ defmodule Recipes.Data.Recipe do
   end
 
   def first_photo(_recipe), do: nil
+
+  def empty do
+    %Recipes.Data.Recipe{ingredients: [], tags: [], photos: []}
+  end
 end

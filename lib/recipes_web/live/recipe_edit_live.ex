@@ -144,6 +144,22 @@ defmodule RecipesWeb.RecipeEditLive do
     Data.update_recipe(socket.assigns.recipe, recipe_params)
   end
 
+  defp update_tags(current_tags) do
+    tag_name_map =
+      Data.list_tags()
+      |> Enum.reduce(%{}, fn tag, acc -> Map.put(acc, tag.name, tag) end)
+
+    Enum.map(current_tags, fn {_position, tag} ->
+      name = tag["name"]
+
+      if Map.has_key?(tag_name_map, name) do
+        %{tag | id: tag_name_map[name].id}
+      else
+        tag
+      end
+    end)
+  end
+
   defp error_to_string(:too_large), do: gettext("File too large")
   defp error_to_string(:too_many_files), do: gettext("You have selected too many files")
   defp error_to_string(:not_accepted), do: gettext("You have selected an unacceptable file type")

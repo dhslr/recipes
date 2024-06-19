@@ -277,5 +277,23 @@ defmodule RecipesWeb.RecipeEditLiveTest do
 
       assert_redirect(lv, "/recipes/#{recipe.id}")
     end
+
+    test "shows existing tags", %{
+      conn: conn,
+      user: user
+    } do
+      tag1 = tag_fixture(%{name: "Vegan"})
+      tag2 = tag_fixture(%{name: "Vegetarian"})
+      recipe = recipe_fixture(%{tags: [tag1, tag2]})
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}/edit")
+
+      assert [{"label", [], ["Vegan"]}, {"label", [], ["Vegetarian"]}] =
+               Floki.parse_document!(html)
+               |> Floki.find(~s([data-test="tags"] label))
+    end
   end
 end
