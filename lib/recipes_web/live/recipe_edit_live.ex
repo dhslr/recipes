@@ -20,6 +20,7 @@ defmodule RecipesWeb.RecipeEditLive do
      |> assign(:uploaded_files, [])
      |> assign(:dirty, false)
      |> assign(:back_link, link)
+     |> assign(:tags, socket.assigns.recipe.tags)
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic .png .gif), max_entries: 3)
      |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
   end
@@ -33,11 +34,9 @@ defmodule RecipesWeb.RecipeEditLive do
   end
 
   defp apply_action(socket, :new, _params) do
-    recipe = %Recipe{}
-
     socket
     |> assign(:page_title, "New Recipe")
-    |> assign(:recipe, recipe)
+    |> assign(:recipe, Recipe.empty())
   end
 
   @impl true
