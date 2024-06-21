@@ -51,6 +51,18 @@ defmodule Recipes.Data.RecipeTest do
       assert photos_changeset.valid?
     end
 
+    test "changeset with tags" do
+      changeset =
+        Recipe.changeset(%Recipe{}, %{
+          title: "A Title",
+          tags: [%{recipe_id: 1, name: "Healthy"}]
+        })
+
+      assert changeset.valid?
+      assert [tag_changeset] = changeset.changes.tags
+      assert tag_changeset.valid?
+    end
+
     test "get first photo from recipe by position" do
       photo =
         Recipe.first_photo(%Recipe{
