@@ -282,18 +282,45 @@ defmodule RecipesWeb.RecipeEditLiveTest do
       conn: conn,
       user: user
     } do
-      tag1 = tag_fixture(%{name: "Vegan"})
-      tag2 = tag_fixture(%{name: "Vegetarian"})
-      recipe = recipe_fixture(%{tags: [tag1, tag2]})
+      recipe = recipe_fixture(%{tags: [%{name: "Vegan"}, %{name: "Vegetarian"}]})
 
       {:ok, _lv, html} =
         conn
         |> log_in_user(user)
         |> live(~p"/recipes/#{recipe.id}/edit")
 
-      assert [{"label", [], ["Vegan"]}, {"label", [], ["Vegetarian"]}] =
-               Floki.parse_document!(html)
-               |> Floki.find(~s([data-test="tags"] label))
+      assert(
+        [
+          {
+            "input",
+            [
+              {"type", "text"},
+              {"name", "recipe[tags][0][name]"},
+              {"id", "recipe_tags_0_name"},
+              {"value", "Vegan"},
+              {"class",
+               "my-1 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"},
+              {"placeholder", "What"}
+            ],
+            []
+          },
+          {
+            "input",
+            [
+              {"type", "text"},
+              {"name", "recipe[tags][1][name]"},
+              {"id", "recipe_tags_1_name"},
+              {"value", "Vegetarian"},
+              {"class",
+               "my-1 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"},
+              {"placeholder", "What"}
+            ],
+            []
+          }
+        ] =
+          Floki.parse_document!(html)
+          |> Floki.find(~s([data-test="tags"] input[type="text"]))
+      )
     end
   end
 end

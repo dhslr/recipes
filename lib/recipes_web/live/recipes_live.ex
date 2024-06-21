@@ -76,6 +76,7 @@ defmodule RecipesWeb.RecipesLive do
   def mount(_params, _session, socket) do
     socket =
       socket
+      # {:ok, stream(socket, :tags, Data.list_tags())} TODO maybe stream recipes here?
       |> assign(:recipes, Data.list_recipes())
       |> assign(:query, "")
 

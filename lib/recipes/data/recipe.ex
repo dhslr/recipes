@@ -44,9 +44,11 @@ defmodule Recipes.Data.Recipe do
       drop_param: :photos_drop,
       sort_param: :photos_order
     )
-    |> put_assoc(
-      :tags,
-      attrs["tags"] || attrs[:tags] || []
+    |> cast_assoc(:tags,
+      with: &Recipes.Data.Tag.changeset/2,
+      # TODO does not work without sort_param, why?
+      sort_param: :tags_order,
+      drop_param: :tags_drop
     )
   end
 

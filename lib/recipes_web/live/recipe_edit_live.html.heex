@@ -23,17 +23,28 @@
   </div>
 
   <h4 class="text-center"><%= gettext("Tags") %></h4>
-  <div class="flex flex-wrap gap-2" data-test="tags">
-    <div :for={tag <- @tags} class="border rounded-xl p-1 bg-sky-100">
-      <label><%= tag.name %></label>
-      <.trash_icon />
+  <div data-test="tags">
+    <div class="flex flex-wrap gap-2 justify-center content-center items-center">
+      <.inputs_for :let={tag} field={@form_data[:tags]}>
+        <div class="">
+          <input type="hidden" name="recipe[tags_order][]" value={tag.index} />
+          <div class="flex gap-1 content-center items-center mb-2">
+            <.input type="text" field={tag[:name]} placeholder={gettext("What")} />
+            <label>
+              <input type="checkbox" name="recipe[tags_drop][]" value={tag.index} class="hidden" />
+              <.trash_icon class="w-8 h-8" />
+            </label>
+          </div>
+        </div>
+      </.inputs_for>
     </div>
+    <label class="float-right cursor-pointer my-2">
+      <input type="checkbox" name="recipe[tags_order][]" class="hidden" />
+      <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+    </label>
   </div>
-  <button class="float-right cursor-pointer my-2" data-test="add-tag-button">
-    <.icon name="hero-plus-circle" /> <%= gettext("add") %>
-  </button>
 
-  <h4><%= gettext("Photos") %></h4>
+  <h4 class="text-center"><%= gettext("Photos") %></h4>
   <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">
     <.inputs_for :let={photo} field={@form_data[:photos]}>
       <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative drag-item" data-handle>
