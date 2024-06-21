@@ -5,15 +5,11 @@ defmodule Recipes.Repo.Migrations.CreateTags do
     create table(:tags) do
       add :name, :string
       add :icon, :string
+      add :recipe_id, references(:recipes, on_delete: :delete_all), null: false
 
       timestamps()
     end
 
-    create table(:recipes_tags, primary_key: false) do
-      add :recipe_id, references(:recipes)
-      add :tag_id, references(:tags)
-    end
-
-    create unique_index("tags", [:name])
+    create index(:tags, [:recipe_id])
   end
 end

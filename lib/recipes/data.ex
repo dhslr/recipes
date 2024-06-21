@@ -152,25 +152,6 @@ defmodule Recipes.Data do
 
   ## Examples
 
-      iex> update_ingredient(ingredient, %{field: new_value})
-      {:ok, %Ingredient{}}
-
-      iex> update_ingredient(ingredient, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def add_tag(recipe, tag_name) do
-    recipe
-    |> Ecto.Changeset.change(%{})
-    |> Ecto.Changeset.put_assoc(:tags, recipe.tags ++ [%{name: tag_name}])
-    |> Repo.insert_or_update()
-  end
-
-  @doc """
-  Deletes a ingredient.
-
-  ## Examples
-
       iex> delete_ingredient(ingredient)
       {:ok, %Ingredient{}}
 
@@ -277,52 +258,5 @@ defmodule Recipes.Data do
     %Tag{}
     |> Tag.changeset(attrs)
     |> Repo.insert()
-  end
-
-  @doc """
-  Updates a tag.
-
-  ## Examples
-
-      iex> update_tag(tag, %{field: new_value})
-      {:ok, %Tag{}}
-
-      iex> update_tag(tag, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_tag(%Tag{} = tag, attrs) do
-    tag
-    |> Tag.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a tag.
-
-  ## Examples
-
-      iex> delete_tag(tag)
-      {:ok, %Tag{}}
-
-      iex> delete_tag(tag)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_tag(%Tag{} = tag) do
-    Repo.delete(tag)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking tag changes.
-
-  ## Examples
-
-      iex> change_tag(tag)
-      %Ecto.Changeset{data: %Tag{}}
-
-  """
-  def change_tag(%Tag{} = tag, attrs \\ %{}) do
-    Tag.changeset(tag, attrs)
   end
 end

@@ -22,7 +22,9 @@ defmodule Recipes.Data.Recipe do
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
-    many_to_many :tags, Recipes.Data.Tag, join_through: "recipes_tags", on_replace: :delete
+    has_many :tags, Recipes.Data.Tag,
+      on_delete: :delete_all,
+      on_replace: :delete_if_exists
 
     timestamps()
   end

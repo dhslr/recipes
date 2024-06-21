@@ -126,7 +126,7 @@ defmodule DataTest do
 
     test "update recipe with existing tags" do
       recipe = recipe_fixture()
-      tag = tag_fixture()
+      tag = tag_fixture(%{recipe_id: recipe.id})
 
       {:ok, recipe} =
         Data.update_recipe(recipe, %{tags: [tag, %{name: "NewTag"}]})
@@ -183,20 +183,23 @@ defmodule DataTest do
   end
 
   describe "tags" do
-    @invalid_attrs %{icon: nil, name: nil}
+    @invalid_attrs %{name: nil}
 
     test "list_tags/0 returns all tags" do
-      tag = tag_fixture()
+      recipe = recipe_fixture()
+      tag = tag_fixture(%{recipe_id: recipe.id})
       assert Data.list_tags() == [tag]
     end
 
     test "get_tag!/1 returns the tag with given id" do
-      tag = tag_fixture()
+      recipe = recipe_fixture()
+      tag = tag_fixture(%{recipe_id: recipe.id})
       assert Data.get_tag!(tag.id) == tag
     end
 
     test "create_tag/1 with valid data creates a tag" do
-      valid_attrs = %{icon: "some icon", name: "some name"}
+      recipe = recipe_fixture()
+      valid_attrs = %{icon: "some icon", name: "some name", recipe_id: recipe.id}
 
       assert {:ok, %Tag{} = tag} = Data.create_tag(valid_attrs)
       assert tag.icon == "some icon"
@@ -205,32 +208,6 @@ defmodule DataTest do
 
     test "create_tag/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Data.create_tag(@invalid_attrs)
-    end
-
-    test "update_tag/2 with valid data updates the tag" do
-      tag = tag_fixture()
-      update_attrs = %{icon: "some updated icon", name: "some updated name"}
-
-      assert {:ok, %Tag{} = tag} = Data.update_tag(tag, update_attrs)
-      assert tag.icon == "some updated icon"
-      assert tag.name == "some updated name"
-    end
-
-    test "update_tag/2 with invalid data returns error changeset" do
-      tag = tag_fixture()
-      assert {:error, %Ecto.Changeset{}} = Data.update_tag(tag, @invalid_attrs)
-      assert tag == Data.get_tag!(tag.id)
-    end
-
-    test "delete_tag/1 deletes the tag" do
-      tag = tag_fixture()
-      assert {:ok, %Tag{}} = Data.delete_tag(tag)
-      assert_raise Ecto.NoResultsError, fn -> Data.get_tag!(tag.id) end
-    end
-
-    test "change_tag/1 returns a tag changeset" do
-      tag = tag_fixture()
-      assert %Ecto.Changeset{} = Data.change_tag(tag)
     end
   end
 end
