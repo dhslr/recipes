@@ -358,5 +358,37 @@ defmodule RecipesWeb.RecipeLiveTest do
                 ]}
              ] == Floki.parse_document!(html) |> Floki.find(~s([data-test="photos"]))
     end
+
+    test "shows tags of recipe", %{
+      conn: conn,
+      user: user
+    } do
+      recipe = recipe_fixture(%{tags: [%{name: "Healthy"}, %{name: "Quick"}]})
+      [tag1, tag2] = recipe.tags
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes/#{recipe.id}")
+
+      assert [
+               {"div", [{"class", "text-center mt-4"}, {"data-test", "tags"}],
+                [
+                  {"ul", [{"class", "flex gap-1"}],
+                   [
+                     {"li", [{"class", ""}],
+                      [
+                        {"span", [{"class", "font-small bg-zinc-100 rounded-xl border p-1"}],
+                         [tag1.name]}
+                      ]},
+                     {"li", [{"class", ""}],
+                      [
+                        {"span", [{"class", "font-small bg-zinc-100 rounded-xl border p-1"}],
+                         [tag2.name]}
+                      ]}
+                   ]}
+                ]}
+             ] == Floki.parse_document!(html) |> Floki.find(~s([data-test="tags"]))
+    end
   end
 end

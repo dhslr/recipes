@@ -28,7 +28,7 @@ defmodule RecipesWeb.RecipeViewLive do
 
       <.description description={@recipe.description} class="my-3 container mx-auto" />
       <.kcal :if={@recipe.kcal} kcal={@recipe.kcal} />
-
+      <.tags_list :if={@recipe.tags} tags={@recipe.tags} class="mt-4" />
       <div class="flex justify-between items-start align-baseline">
         <.label_button
           icon="hero-pencil"
@@ -93,6 +93,21 @@ defmodule RecipesWeb.RecipeViewLive do
             <span><%= adjust_quantity(ingredient.quantity, @adjust_factor) %></span>
             <span><%= ingredient.description %></span>
           </span>
+        </li>
+      </ul>
+    </div>
+    """
+  end
+
+  attr(:tags, :list, required: true)
+  attr(:class, :string)
+
+  defp tags_list(assigns) do
+    ~H"""
+    <div class={["text-center", @class]} data-test="tags">
+      <ul class="flex gap-1">
+        <li :for={tag <- @tags} class="">
+          <span class="font-small bg-zinc-100 rounded-xl border p-1"><%= tag.name %></span>
         </li>
       </ul>
     </div>
