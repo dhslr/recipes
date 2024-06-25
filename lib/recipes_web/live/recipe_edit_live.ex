@@ -2,8 +2,8 @@ defmodule RecipesWeb.RecipeEditLive do
   use RecipesWeb, :live_view
   require Logger
   alias Recipes.Data
-  alias Recipes.Data.Recipe
   alias Recipes.Data.Photo
+  alias Recipes.Data.Recipe
 
   @impl true
   def mount(params, _session, socket) do
@@ -65,7 +65,7 @@ defmodule RecipesWeb.RecipeEditLive do
 
     case save_recipe(socket, socket.assigns.live_action, recipe_params) do
       {:ok, recipe} -> {:noreply, push_navigate(socket, to: ~p"/recipes/#{recipe.id}")}
-      {:error, changeset} -> {:noreply, assign(socket, :form_data, changeset |> dbg |> to_form)}
+      {:error, changeset} -> {:noreply, assign(socket, :form_data, changeset |> to_form)}
     end
   end
 
