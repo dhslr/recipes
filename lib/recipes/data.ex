@@ -4,8 +4,8 @@ defmodule Recipes.Data do
   """
 
   import Ecto.Query, warn: false
-  alias Recipes.Repo
   alias Recipes.Data.Photo
+  alias Recipes.Repo
 
   require Logger
 
@@ -24,6 +24,18 @@ defmodule Recipes.Data do
     Repo.all(Recipe)
     |> Repo.preload([:ingredients, :photos, :tags])
     |> Enum.sort(&(&1.title <= &2.title))
+  end
+
+  def list_recipes_by_tag_or_title(tag_or_title) do
+    escaped_tag_or_title = "%#{String.replace(tag_or_title, "%", "\\%")}%"
+
+    query =
+      from r in Recipe,
+        join: t in assoc(r, :tags),
+        where: like(t.name, ^escaped_tag_or_title) or like(r.title, ^escaped_tag_or_title),
+        preload: [:ingredients, :photos, :tags]
+
+    Repo.all(query)
   end
 
   @doc """

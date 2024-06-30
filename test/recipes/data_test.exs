@@ -3,8 +3,9 @@ defmodule DataTest do
   use Recipes.DataCase
 
   alias Recipes.Data
-  alias Data.Recipe
+
   alias Data.Ingredient
+  alias Data.Recipe
   alias Data.Tag
 
   import Recipes.DataFixtures
@@ -17,6 +18,46 @@ defmodule DataTest do
     test "list_recipes/0 returns all recipes" do
       recipe = recipe_fixture()
       assert Data.list_recipes() == [recipe]
+    end
+
+    test "list_recipes_by_tag_or_title returns recipe for matching title" do
+      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+      _recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
+
+      assert Data.list_recipes_by_tag_or_title("Kirschtorte") == [recipe1]
+    end
+
+    test "list_recipes_by_tag_or_title returns recipe for matching tag" do
+      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+      _recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
+
+      assert Data.list_recipes_by_tag_or_title("Lunch") == [recipe1]
+    end
+
+    test "list_recipes_by_tag_or_title returns recipe for partial matching tag" do
+      recipe1 =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}, %{name: "Fruits"}]})
+
+      recipe2 =
+        recipe_fixture(%{
+          title: "Kirschmarmelade",
+          tags: [%{name: "Breakfast"}, %{name: "Fruits"}]
+        })
+
+      assert Data.list_recipes_by_tag_or_title("Fru") == [recipe1, recipe2]
+    end
+
+    test "list_recipes_by_tag_or_title returns recipe for partial matching title" do
+      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+      recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
+
+      assert Data.list_recipes_by_tag_or_title("Kirsch") == [recipe1, recipe2]
+    end
+
+    test "list_recipes_by_tag_or_title returns empty list for no match" do
+      _recipe = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+
+      assert Data.list_recipes_by_tag_or_title("Himbeerkuchen") == []
     end
 
     test "get_recipe!/1 returns the recipe with given id" do

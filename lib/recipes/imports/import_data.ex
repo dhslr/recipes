@@ -1,4 +1,8 @@
 defmodule Recipes.Imports.ImportData do
+  @moduledoc """
+  Schema for the import_data table.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

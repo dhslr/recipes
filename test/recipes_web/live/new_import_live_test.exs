@@ -1,6 +1,5 @@
 defmodule RecipesWeb.NewImportLiveTest do
   use RecipesWeb.ConnCase
-
   import Phoenix.LiveViewTest
   import Recipes.AccountsFixtures
 
