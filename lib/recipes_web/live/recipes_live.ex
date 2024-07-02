@@ -1,8 +1,18 @@
 defmodule RecipesWeb.RecipesLive do
   use RecipesWeb, :live_view
+
   alias Recipes.Data
-  alias Recipes.Data.Recipe
+
   alias Recipes.Data.Photo
+  alias Recipes.Data.Recipe
+
+  defp filtered_recipes(%{query: query, recipes: recipes}) do
+    if String.length(query) > 0 do
+      Data.list_recipes_by_tag_or_title(query)
+    else
+      recipes
+    end
+  end
 
   def render(assigns) do
     assigns =
@@ -10,9 +20,7 @@ defmodule RecipesWeb.RecipesLive do
       |> assign(:form_data, to_form(%{"query" => assigns.query}))
       |> assign(
         :filtered_recipes,
-        Enum.filter(assigns.recipes, fn recipe ->
-          String.contains?(String.upcase(recipe.title), String.upcase(assigns.query))
-        end)
+        filtered_recipes(assigns)
       )
 
     ~H"""
