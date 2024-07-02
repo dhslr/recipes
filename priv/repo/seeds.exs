@@ -11,7 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 alias Recipes.Data
 
-{:ok, currywurst} =
+{:ok, _recipe} =
   Data.create_recipe(%{
     title: "Title",
     kcal: 2001,
@@ -31,11 +31,12 @@ alias Recipes.Data
     ]
   })
 
-{:ok, _} =
+{:ok, _user} =
   Recipes.Accounts.register_user(%{
     email: "admin@dhslr.de",
-    password: "supers3cret!",
+    password: "SuperS3cret!",
     is_admin: true
   })
 
-{:ok, _} = Recipes.Accounts.register_user(%{email: "user@dhslr.de", password: "s3cret!"})
+{:ok, _user} =
+  Recipes.Accounts.register_user(%{email: "user@dhslr.de", password: "AlsoVeryS3cret!"})
