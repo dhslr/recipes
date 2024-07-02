@@ -59,7 +59,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> live(~p"/recipes/new")
 
       assert has_element?(lv, "button", "Save")
-      assert has_element?(lv, "h4", "Ingredients")
+      assert has_element?(lv, "label", "Ingredients")
 
       assert [
                {"div",
@@ -95,7 +95,7 @@ defmodule RecipesWeb.RecipeEditLiveTest do
         |> live(~p"/recipes/new")
 
       assert has_element?(lv, "button", "Save")
-      assert has_element?(lv, "h4", "Ingredients")
+      assert has_element?(lv, "label", "Ingredients")
 
       lv
       |> form("#recipe_form",
