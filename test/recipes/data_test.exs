@@ -21,14 +21,18 @@ defmodule DataTest do
     end
 
     test "list_recipes_by_tag_or_title returns recipe for matching title" do
-      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+      recipe1 =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}, %{name: "Sweet"}]})
+
       _recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
 
       assert Data.list_recipes_by_tag_or_title("Kirschtorte") == [recipe1]
     end
 
     test "list_recipes_by_tag_or_title returns recipe for matching tag" do
-      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
+      recipe1 =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}, %{name: "Sweet"}]})
+
       _recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
 
       assert Data.list_recipes_by_tag_or_title("Lunch") == [recipe1]
@@ -52,6 +56,13 @@ defmodule DataTest do
       recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
 
       assert Data.list_recipes_by_tag_or_title("Kirsch") == [recipe1, recipe2]
+    end
+
+    test "list_recipes_by_tag_or_title returns recipe for matching tag and title" do
+      recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Kirschtorte"}]})
+
+      assert Data.list_recipes_by_tag_or_title("Kirschtorte") == [recipe1]
+      assert Data.list_recipes_by_tag_or_title("Kirsch") == [recipe1]
     end
 
     test "list_recipes_by_tag_or_title returns empty list for no match" do

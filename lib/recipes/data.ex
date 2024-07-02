@@ -29,11 +29,17 @@ defmodule Recipes.Data do
   def list_recipes_by_tag_or_title(tag_or_title) do
     escaped_tag_or_title = "%#{String.replace(tag_or_title, "%", "\\%")}%"
 
-    query =
+    query_title =
       from r in Recipe,
         join: t in assoc(r, :tags),
-        where: like(t.name, ^escaped_tag_or_title) or like(r.title, ^escaped_tag_or_title),
+        where: like(t.name, ^escaped_tag_or_title),
         preload: [:ingredients, :photos, :tags]
+
+    query =
+      from r in Recipe,
+        where: like(r.title, ^escaped_tag_or_title),
+        preload: [:ingredients, :photos, :tags],
+        union: ^query_title
 
     Repo.all(query)
   end
@@ -197,7 +203,7 @@ defmodule Recipes.Data do
 
       {:error, error} = err ->
         Logger.error(
-          "Failed to create photo entry for uploaded photo at #{path} and recipe #{recipe_id}: #{IO.inspect(error)}"
+          "Failed to create photo entry for uploaded photo at #{path} and recipe #{recipe_id}: #{error}"
         )
 
         delete_photo(photo)
