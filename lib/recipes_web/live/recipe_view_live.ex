@@ -1,7 +1,7 @@
 defmodule RecipesWeb.RecipeViewLive do
   use RecipesWeb, :live_view
-  alias Recipes.Data.Photo
   alias Recipes.Data
+  alias Recipes.Data.Photo
 
   def render(assigns) do
     assigns =
