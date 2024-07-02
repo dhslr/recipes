@@ -71,6 +71,16 @@ defmodule DataTest do
       assert Data.list_recipes_by_tag_or_title("Himbeerkuchen") == []
     end
 
+    test "list_recipes_by_tag_or_title returns recipe for matching title, should not be case sensitive" do
+      recipe1 =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}, %{name: "Sweet"}]})
+
+      recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
+
+      assert Data.list_recipes_by_tag_or_title("kirsch") == [recipe1, recipe2]
+      assert Data.list_recipes_by_tag_or_title("break") == [recipe2]
+    end
+
     test "get_recipe!/1 returns the recipe with given id" do
       recipe = recipe_fixture()
       assert Data.get_recipe!(recipe.id) == recipe

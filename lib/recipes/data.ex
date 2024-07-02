@@ -32,12 +32,12 @@ defmodule Recipes.Data do
     query_title =
       from r in Recipe,
         join: t in assoc(r, :tags),
-        where: like(t.name, ^escaped_tag_or_title),
+        where: ilike(t.name, ^escaped_tag_or_title),
         preload: [:ingredients, :photos, :tags]
 
     query =
       from r in Recipe,
-        where: like(r.title, ^escaped_tag_or_title),
+        where: ilike(r.title, ^escaped_tag_or_title),
         preload: [:ingredients, :photos, :tags],
         union: ^query_title
 
