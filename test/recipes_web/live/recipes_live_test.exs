@@ -16,29 +16,76 @@ defmodule RecipesWeb.RecipesLiveTest do
       assert {:redirect, %{to: "/users/log_in"}} = redirect
     end
 
-    test "renders the recipes overview containing a recipe", %{conn: conn, user: user} do
+    test "renders the recipes overview containing a single recipe", %{
+      conn: conn,
+      user: user,
+      recipe: currywurst
+    } do
       {:ok, _lv, html} =
         conn
         |> log_in_user(user)
         |> live(~p"/recipes")
 
-      assert html =~ "Currywurst"
+      assert Floki.parse_document!(html)
+             |> Floki.find(~s([data-test="recipe"] label))
+             |> Floki.text() =~
+               currywurst.title
     end
 
-    test "renders the recipes overview containing two recipes", %{conn: conn, user: user} do
-      recipe_fixture(%{title: "Kirschtorte"})
+    test "renders the recipes overview containing two recipes", %{
+      conn: conn,
+      user: user,
+      recipe: currywurst
+    } do
+      kirschtorte = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Dessert"}]})
 
       {:ok, _lv, html} =
         conn
         |> log_in_user(user)
         |> live(~p"/recipes")
 
-      assert html =~ "Currywurst"
-      assert html =~ "Kirschtorte"
+      titles =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="recipe"] label))
+        |> Floki.text()
+
+      tags =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="tags"]))
+        |> Floki.text()
+
+      assert titles =~ currywurst.title
+      assert titles =~ kirschtorte.title
+      assert tags =~ "Dessert"
     end
 
-    test "filters the recipes by typing into the input field", %{conn: conn, user: user} do
-      recipe_fixture(%{title: "Kirschtorte"})
+    test "renders the recipes overview with tags of recipe", %{
+      conn: conn,
+      user: user
+    } do
+      %{tags: [vegetarian, dessert]} =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Vegetarian"}, %{name: "Dessert"}]})
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      tags =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="tags"]))
+        |> Floki.text()
+
+      assert tags =~ vegetarian.name
+      assert tags =~ dessert.name
+    end
+
+    test "filters the recipes by typing into the input field", %{
+      conn: conn,
+      user: user,
+      recipe: currywurst
+    } do
+      kirschtorte = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Dessert"}]})
 
       {:ok, lv, _html} =
         conn
@@ -50,12 +97,34 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> element("form")
         |> render_change(%{query: "Kirsch"})
 
-      assert html =~ "Kirschtorte"
-      refute html =~ "Currywurst"
+      titles =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="recipe"] label))
+        |> Floki.text()
+
+      assert titles =~ kirschtorte.title
+      refute titles =~ currywurst.title
+
+      html =
+        lv
+        |> element("form")
+        |> render_change(%{query: "Dessert"})
+
+      titles =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="recipe"] label))
+        |> Floki.text()
+
+      assert titles =~ kirschtorte.title
+      refute titles =~ currywurst.title
     end
 
-    test "filtering recipes by query also works with sub strings", %{conn: conn, user: user} do
-      recipe_fixture(%{title: "Kirschtorte"})
+    test "filtering recipes by query also works with sub strings", %{
+      conn: conn,
+      user: user,
+      recipe: currywurst
+    } do
+      kirschtorte = recipe_fixture(%{title: "Kirschtorte"})
 
       {:ok, lv, _html} =
         conn
@@ -67,13 +136,11 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> element("form")
         |> render_change(%{query: "torte"})
 
-      assert html =~ "Kirschtorte"
-      refute html =~ "Currywurst"
+      assert html =~ kirschtorte.title
+      refute html =~ currywurst.title
     end
 
     test "click on new recipe button opens recipe edit view", %{conn: conn, user: user} do
-      recipe_fixture(%{title: "Kirschtorte"})
-
       {:ok, lv, _html} =
         conn
         |> log_in_user(user)
@@ -99,7 +166,7 @@ defmodule RecipesWeb.RecipesLiveTest do
 
       assert {:ok, _lv, _html} =
                lv
-               |> element("a", "Currywurst")
+               |> element("a", recipe.title)
                |> render_click()
                |> follow_redirect(logged_in_con, "/recipes/#{recipe.id}")
     end

@@ -24,7 +24,7 @@
 
   <.label for="tags"><%= gettext("Tags") %></.label>
   <div data-test="tags">
-    <div class="flex flex-wrap gap-2 justify-center content-center items-center">
+    <div class="flex flex-wrap gap-2">
       <.inputs_for :let={tag} field={@form_data[:tags]}>
         <input type="hidden" name="recipe[tags_order][]" value={tag.index} />
         <div class="flex gap-1 content-center items-center mb-2">

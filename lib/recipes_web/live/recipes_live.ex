@@ -27,10 +27,20 @@ defmodule RecipesWeb.RecipesLive do
     <.main_content>
       <.search_bar form_data={@form_data} />
       <div class="flex flex-wrap gap-5 justify-evenly">
-        <div :for={recipe <- @filtered_recipes}>
+        <div
+          :for={recipe <- @filtered_recipes}
+          id={"recipe_#{recipe.id}"}
+          class="bg-slate-100 p-2 rounded-xl"
+          data-test="recipe"
+        >
           <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block w-[320px]">
             <.main_photo photo={Recipe.first_photo(recipe)} />
-            <div class="rounded-md text-center bg-slate-100 mt-1 p-1"><%= recipe.title %></div>
+            <label class="text-center mt-1 p-1" for={"recipe_#{recipe.id}"}>
+              <%= recipe.title %>
+            </label>
+            <div class="text-sm text-slate-600" data-test="tags">
+              <%= Enum.map(recipe.tags, & &1.name) |> Enum.join(", ") %>
+            </div>
           </.link>
         </div>
       </div>
