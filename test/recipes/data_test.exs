@@ -48,14 +48,14 @@ defmodule DataTest do
           tags: [%{name: "Breakfast"}, %{name: "Fruits"}]
         })
 
-      assert Data.list_recipes_by_tag_or_title("Fru") == [recipe1, recipe2]
+      assert Data.list_recipes_by_tag_or_title("Fru") == [recipe2, recipe1]
     end
 
     test "list_recipes_by_tag_or_title returns recipe for partial matching title" do
       recipe1 = recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Lunch"}]})
       recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
 
-      assert Data.list_recipes_by_tag_or_title("Kirsch") == [recipe1, recipe2]
+      assert Data.list_recipes_by_tag_or_title("Kirsch") == [recipe2, recipe1]
     end
 
     test "list_recipes_by_tag_or_title returns recipe for matching tag and title" do
@@ -77,7 +77,7 @@ defmodule DataTest do
 
       recipe2 = recipe_fixture(%{title: "Kirschmarmelade", tags: [%{name: "Breakfast"}]})
 
-      assert Data.list_recipes_by_tag_or_title("kirsch") == [recipe1, recipe2]
+      assert Data.list_recipes_by_tag_or_title("kirsch") == [recipe2, recipe1]
       assert Data.list_recipes_by_tag_or_title("break") == [recipe2]
     end
 

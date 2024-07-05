@@ -29,19 +29,22 @@ defmodule Recipes.Data do
   def list_recipes_by_tag_or_title(tag_or_title) do
     escaped_tag_or_title = "%#{String.replace(tag_or_title, "%", "\\%")}%"
 
-    query_title =
+    title_query =
       from r in Recipe,
         join: t in assoc(r, :tags),
-        where: ilike(t.name, ^escaped_tag_or_title),
-        preload: [:ingredients, :photos, :tags]
+        where: ilike(t.name, ^escaped_tag_or_title)
 
-    query =
+    tag_query_union =
       from r in Recipe,
         where: ilike(r.title, ^escaped_tag_or_title),
-        preload: [:ingredients, :photos, :tags],
-        union: ^query_title
+        union: ^title_query
 
-    Repo.all(query)
+    Repo.all(
+      from(r in subquery(tag_query_union),
+        order_by: r.title,
+        preload: [:ingredients, :photos, :tags]
+      )
+    )
   end
 
   @doc """
