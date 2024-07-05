@@ -8,7 +8,7 @@ defmodule Recipes.Repo.Migrations.CreateUsersAuthTables do
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
-
+      add :is_admin, :boolean, default: false
       timestamps()
     end
 
@@ -19,7 +19,6 @@ defmodule Recipes.Repo.Migrations.CreateUsersAuthTables do
       add :token, :binary, null: false
       add :context, :string, null: false
       add :sent_to, :string
-
       timestamps(updated_at: false)
     end
 
