@@ -689,6 +689,19 @@ defmodule RecipesWeb.CoreComponents do
     """
   end
 
+  @doc """
+  Renders a tag with a given name. Can be reused to have same look and feel.
+  """
+
+  attr :name, :string, required: true
+  attr :class, :string, default: nil
+
+  def tag(assigns) do
+    ~H"""
+    <span class={[@class, "font-small bg-zinc-100 rounded-xl border p-1"]}><%= @name %></span>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

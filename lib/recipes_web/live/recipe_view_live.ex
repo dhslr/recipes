@@ -107,7 +107,7 @@ defmodule RecipesWeb.RecipeViewLive do
     <div class={["text-center", @class]} data-test="tags">
       <ul class="flex gap-1">
         <li :for={tag <- @tags} class="">
-          <span class="font-small bg-zinc-100 rounded-xl border p-1"><%= tag.name %></span>
+          <.tag name={tag.name} />
         </li>
       </ul>
     </div>
