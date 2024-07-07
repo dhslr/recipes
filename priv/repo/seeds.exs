@@ -28,7 +28,8 @@ alias Recipes.Data
       },
       %{name: "Curry"},
       %{name: "Wurst"}
-    ]
+    ],
+    tags: [%{name: "Schwein"}, %{name: "Traditionell"}, %{name: "Kult"}]
   })
 
 {:ok, _user} =

@@ -85,6 +85,9 @@ defmodule RecipesWeb.RecipesLive do
       <.simple_form for={@form_data} phx-change="change-query" class="flex-1">
         <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
       </.simple_form>
+      <button type="button" phx-click="clear-search" data-test="clear-search-button">
+        <.icon name="hero-x-mark" />
+      </button>
     </div>
     """
   end
@@ -119,5 +122,9 @@ defmodule RecipesWeb.RecipesLive do
 
   def handle_event("change-query", %{"query" => query}, socket) do
     {:noreply, socket |> assign(:query, query)}
+  end
+
+  def handle_event("clear-search", _, socket) do
+    {:noreply, socket |> assign(:query, "")}
   end
 end

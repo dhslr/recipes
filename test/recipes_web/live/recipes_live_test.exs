@@ -182,6 +182,34 @@ defmodule RecipesWeb.RecipesLiveTest do
       refute html =~ currywurst.title
     end
 
+    test "click on clear icon clears the search query value", %{
+      conn: conn,
+      user: user
+    } do
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      html =
+        lv
+        |> element("form")
+        |> render_change(%{query: "old query"})
+
+      assert Floki.parse_document!(html)
+             |> Floki.find(~s([data-test="search-bar"] input))
+             |> Floki.attribute("value") == ["old query"]
+
+      html =
+        lv
+        |> element(~s([data-test="clear-search-button"]))
+        |> render_click()
+
+      assert Floki.parse_document!(html)
+             |> Floki.find(~s([data-test="search-bar"] input))
+             |> Floki.attribute("value") == [""]
+    end
+
     test "click on new recipe button opens recipe edit view", %{conn: conn, user: user} do
       {:ok, lv, _html} =
         conn
