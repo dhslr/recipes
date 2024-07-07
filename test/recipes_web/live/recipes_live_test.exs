@@ -59,7 +59,7 @@ defmodule RecipesWeb.RecipesLiveTest do
       assert tags =~ "Dessert"
     end
 
-    test "renders the recipes overview with tags of recipe", %{
+    test "renders the recipes overview with tags of recipe and tag cloud", %{
       conn: conn,
       user: user
     } do
@@ -78,6 +78,48 @@ defmodule RecipesWeb.RecipesLiveTest do
 
       assert tags =~ vegetarian.name
       assert tags =~ dessert.name
+    end
+
+    test "renders the recipes tag cloud", %{
+      conn: conn,
+      user: user
+    } do
+      %{tags: [vegetarian, dessert]} =
+        recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Vegetarian"}, %{name: "Dessert"}]})
+
+      {:ok, _lv, html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      tag_cloud =
+        Floki.parse_document!(html)
+        |> Floki.find(~s([data-test="tag-cloud"] a))
+        |> Floki.text()
+
+      assert tag_cloud == vegetarian.name <> dessert.name
+    end
+
+    test "click on tag in the recipes tag cloud sets the search query", %{
+      conn: conn,
+      user: user
+    } do
+      recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Vegetarian"}, %{name: "Dessert"}]})
+      recipe_fixture(%{title: "Chili", tags: [%{name: "Ragout"}, %{name: "Spicy"}]})
+
+      {:ok, lv, _html} =
+        conn
+        |> log_in_user(user)
+        |> live(~p"/recipes")
+
+      html =
+        lv
+        |> element(~s([data-test="tag-cloud"] a), "Vegetarian")
+        |> render_click()
+
+      assert Floki.parse_document!(html)
+             |> Floki.find(~s([data-test="search-bar"] input))
+             |> Floki.attribute("value") == ["Vegetarian"]
     end
 
     test "filters the recipes by typing into the input field", %{

@@ -26,6 +26,7 @@ defmodule RecipesWeb.RecipesLive do
     ~H"""
     <.main_content>
       <.search_bar form_data={@form_data} />
+      <.tags tags={@tags} />
       <div class="flex flex-wrap gap-5 justify-evenly">
         <div
           :for={recipe <- @filtered_recipes}
@@ -68,9 +69,19 @@ defmodule RecipesWeb.RecipesLive do
     """
   end
 
+  defp tags(assigns) do
+    ~H"""
+    <div class="flex gap-2 justify-center max-w-40 mb-10" data-test="tag-cloud">
+      <a :for={tag <- @tags} phx-click="click-tag" phx-value-tag-name={tag.name} href="#">
+        <.tag name={tag.name} />
+      </a>
+    </div>
+    """
+  end
+
   defp search_bar(assigns) do
     ~H"""
-    <div class="flex gap-2 mb-12 items-baseline content-center">
+    <div data-test="search-bar" class="flex gap-2 mb-2 items-baseline content-center">
       <.simple_form for={@form_data} phx-change="change-query" class="flex-1">
         <.input type="text" field={@form_data[:query]} placeholder={gettext("Search")} />
       </.simple_form>
@@ -97,8 +108,13 @@ defmodule RecipesWeb.RecipesLive do
       # {:ok, stream(socket, :tags, Data.list_tags())} TODO maybe stream recipes here?
       |> assign(:recipes, Data.list_recipes())
       |> assign(:query, "")
+      |> assign(:tags, Data.list_tags())
 
     {:ok, socket}
+  end
+
+  def handle_event("click-tag", %{"tag-name" => name}, socket) do
+    {:noreply, socket |> assign(:query, name)}
   end
 
   def handle_event("change-query", %{"query" => query}, socket) do
