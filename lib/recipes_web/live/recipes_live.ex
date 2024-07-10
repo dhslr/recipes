@@ -26,7 +26,7 @@ defmodule RecipesWeb.RecipesLive do
     ~H"""
     <.main_content>
       <.search_bar form_data={@form_data} />
-      <.tags tags={@tags} />
+      <.tag_cloud tags={@tags} />
       <div class="flex flex-wrap gap-5 justify-evenly">
         <div
           :for={recipe <- @filtered_recipes}
@@ -69,9 +69,9 @@ defmodule RecipesWeb.RecipesLive do
     """
   end
 
-  defp tags(assigns) do
+  defp tag_cloud(assigns) do
     ~H"""
-    <div class="flex gap-2 justify-center max-w-40 mb-10" data-test="tag-cloud">
+    <div class="flex gap-3 justify-center max-w-40 mb-10 flex-wrap" data-test="tag-cloud">
       <a :for={tag <- @tags} phx-click="click-tag" phx-value-tag-name={tag.name} href="#">
         <.tag name={tag.name} />
       </a>
@@ -111,7 +111,7 @@ defmodule RecipesWeb.RecipesLive do
       # {:ok, stream(socket, :tags, Data.list_tags())} TODO maybe stream recipes here?
       |> assign(:recipes, Data.list_recipes())
       |> assign(:query, "")
-      |> assign(:tags, Data.list_tags())
+      |> assign(:tags, Data.list_tags() |> Enum.uniq_by(& &1.name))
 
     {:ok, socket}
   end

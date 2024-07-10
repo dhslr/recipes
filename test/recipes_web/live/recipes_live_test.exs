@@ -59,7 +59,7 @@ defmodule RecipesWeb.RecipesLiveTest do
       assert tags =~ "Dessert"
     end
 
-    test "renders the recipes overview with tags of recipe and tag cloud", %{
+    test "renders the recipes overview with tags of recipe", %{
       conn: conn,
       user: user
     } do
@@ -80,12 +80,14 @@ defmodule RecipesWeb.RecipesLiveTest do
       assert tags =~ dessert.name
     end
 
-    test "renders the recipes tag cloud", %{
+    test "renders the recipes tag cloud without duplicated tags", %{
       conn: conn,
       user: user
     } do
       %{tags: [vegetarian, dessert]} =
         recipe_fixture(%{title: "Kirschtorte", tags: [%{name: "Vegetarian"}, %{name: "Dessert"}]})
+
+      recipe_fixture(%{title: "Sahneschnitte", tags: [%{name: "Dessert"}]})
 
       {:ok, _lv, html} =
         conn
