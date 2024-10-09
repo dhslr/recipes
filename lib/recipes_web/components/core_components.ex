@@ -17,7 +17,7 @@ defmodule RecipesWeb.CoreComponents do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import RecipesWeb.Gettext
+  use Gettext, backend: RecipesWeb.Gettext
 
   @doc """
   Renders a modal.

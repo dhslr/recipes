@@ -38,12 +38,13 @@ defmodule RecipesWeb do
 
   def controller do
     quote do
+      use Gettext, backend: RecipesWeb.Gettext
+
       use Phoenix.Controller,
         formats: [:html, :json],
         layouts: [html: RecipesWeb.Layouts]
 
       import Plug.Conn
-      import RecipesWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -81,11 +82,12 @@ defmodule RecipesWeb do
 
   defp html_helpers do
     quote do
+      use Gettext, backend: RecipesWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
       import RecipesWeb.CoreComponents
-      import RecipesWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
