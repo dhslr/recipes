@@ -76,16 +76,16 @@
             field={ingredient[:description]}
             placeholder={gettext("Description/Unit (opt.)")}
           />
-          <label>
+          <label class="flex items-center">
             <input
               type="checkbox"
               name="recipe[ingredients_drop][]"
               value={ingredient.index}
               class="hidden"
             />
+            <.trash_icon class="w-8 h-8" />
           </label>
         </div>
-        <.trash_icon class="w-8 h-8" />
       </div>
     </.inputs_for>
     <label class="float-right cursor-pointer my-2">
@@ -96,5 +96,4 @@
   <:actions>
     <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
   </:actions>
-  <input type="hidden" name="recipe[ingredients_drop][]" />
 </.simple_form>
