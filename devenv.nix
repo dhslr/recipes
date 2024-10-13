@@ -10,4 +10,8 @@
     '';
   };
   dotenv.disableHint = true;
+  packages = [
+    pkgs.chromium
+    pkgs.chromedriver
+  ];
 }
