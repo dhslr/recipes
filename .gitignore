@@ -43,6 +43,9 @@ npm-debug.log
 .env
 .direnv
 
+# wallaby screenshots
+/screenshots/
+
 backup.tgz
 
 # Devenv

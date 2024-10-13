@@ -44,3 +44,4 @@ config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
 # Wallaby needs to know the endpoint
 config :wallaby, otp_app: :recipes
 config :wallaby, driver: Wallaby.Chrome
+config :wallaby, screenshot_on_failure: true
