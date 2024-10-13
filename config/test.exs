@@ -21,7 +21,7 @@ config :recipes, Recipes.Repo,
 config :recipes, RecipesWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "UyeYu3L4cel7JejeNYhU2O0ci2Tm1XL7yXGbVYfEEtu9h9nWVMkTOz3lpefqv2Uv",
-  server: false
+  server: true
 
 config :recipes, http_client: Recipes.HttpClient.Mock
 config :recipes, recipe_scraper: Recipes.Scraper.Mock

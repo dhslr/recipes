@@ -1,6 +1,6 @@
 defmodule RecipesWeb.NewImportLive do
-  alias Recipes.Imports.ImportData
   alias Recipes.Imports
+  alias Recipes.Imports.ImportData
   use RecipesWeb, :live_view
   alias Recipes.Scraper
 
@@ -34,7 +34,7 @@ defmodule RecipesWeb.NewImportLive do
         {:noreply, assign_form(socket, changeset)}
 
       {:error, err} ->
-        {:noreply, assign(socket, :error, IO.inspect(err))}
+        {:noreply, assign(socket, :error, err)}
     end
   end
 
