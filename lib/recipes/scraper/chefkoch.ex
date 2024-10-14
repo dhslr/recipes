@@ -33,7 +33,7 @@ defmodule Recipes.Scraper.Chefkoch do
   defp get_recipe_json_data([_ | [{_, _, [recipe_data]}]]), do: {:ok, recipe_data}
   defp get_recipe_json_data(_), do: {:error, "Data is not in expected format!"}
 
-  defp to_scraped_recipe(chefkoch_recipe = %{}) do
+  defp to_scraped_recipe(%{} = chefkoch_recipe) do
     Logger.debug("Scraped recipe #{inspect(chefkoch_recipe)}")
 
     ingredients =
@@ -171,8 +171,7 @@ defmodule Recipes.Scraper.Chefkoch do
 
   defp filter_empty_or_nil(map) do
     map
-    |> Enum.reject(fn {_, v} -> is_binary(v) and String.length(v) == 0 end)
-    |> Enum.reject(fn {_, v} -> is_nil(v) end)
+    |> Enum.reject(fn {_, v} -> (is_binary(v) and String.length(v) == 0) or is_nil(v) end)
     |> Map.new()
   end
 end

@@ -15,5 +15,5 @@ defmodule Recipes.Scraper do
 
   def scrape(url), do: impl().scrape(url)
 
-  defp impl(), do: Application.get_env(:recipes, :recipe_scraper)
+  defp impl, do: Application.get_env(:recipes, :recipe_scraper)
 end

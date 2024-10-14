@@ -33,7 +33,7 @@ defmodule Recipes.Data.Photo do
     "recipe_#{photo.recipe_id}_#{photo.id}.jpg"
   end
 
-  def photos_dir() do
+  def photos_dir do
     Path.join(Application.app_dir(:recipes), "/priv/static/photos")
   end
 end
