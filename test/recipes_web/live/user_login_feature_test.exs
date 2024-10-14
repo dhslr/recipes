@@ -1,4 +1,4 @@
-defmodule RecipesWeb.RecipeEditUiTest do
+defmodule RecipesWeb.UserLoginFeatureTest do
   use ExUnit.Case, async: true
   use Wallaby.Feature
   import Recipes.AccountsFixtures
