@@ -1,4 +1,9 @@
 defmodule Recipes.Accounts.UserToken do
+  @moduledoc """
+    This module provides functions to generate and verify tokens for users
+    and for mail verification.
+  """
+
   use Ecto.Schema
   import Ecto.Query
   alias Recipes.Accounts.UserToken

@@ -1,4 +1,7 @@
 defmodule RecipesWeb.UserAuth do
+  @moduledoc """
+    This module provides authentication helpers for the application.
+  """
   use RecipesWeb, :verified_routes
 
   import Plug.Conn

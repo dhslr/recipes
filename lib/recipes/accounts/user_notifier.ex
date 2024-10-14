@@ -1,4 +1,7 @@
 defmodule Recipes.Accounts.UserNotifier do
+  @moduledoc """
+    Modul for sending user emails.
+  """
   import Swoosh.Email
 
   alias Recipes.Mailer
