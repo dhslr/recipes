@@ -52,6 +52,14 @@ defmodule Recipes.Data do
     Repo.all(Ingredient)
     |> Enum.map(fn i -> i.name end)
     |> Enum.uniq()
+    |> Enum.sort()
+  end
+
+  def get_ingredient_descriptions do
+    Repo.all(Ingredient)
+    |> Enum.map(fn i -> i.description end)
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 
   @doc """

@@ -21,6 +21,7 @@ defmodule RecipesWeb.RecipeEditLive do
      |> assign(:dirty, false)
      |> assign(:back_link, link)
      |> assign(:ingredient_names, Data.get_ingredient_names())
+     |> assign(:ingredient_descriptions, Data.get_ingredient_descriptions())
      |> allow_upload(:photo, accept: ~w(.jpg .jpeg .heic .png .gif), max_entries: 3)
      |> assign(:form_data, to_form(Data.change_recipe(socket.assigns.recipe)))}
   end

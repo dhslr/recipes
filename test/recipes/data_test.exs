@@ -275,15 +275,26 @@ defmodule DataTest do
   end
 
   describe "ingredients" do
-    test "ingredient_names\0 returns all ingredient names" do
+    test "ingredient_names\0 returns all ingredient names sorted" do
       recipe = recipe_fixture()
-      sugar = ingredient_fixture(%{name: "Sugar", recipe_id: recipe.id})
       wheat = ingredient_fixture(%{name: "Wheat", recipe_id: recipe.id})
+      sugar = ingredient_fixture(%{name: "Sugar", recipe_id: recipe.id})
       assert Data.get_ingredient_names() == [sugar.name, wheat.name]
     end
 
     test "ingredient_names\0 returns empty list if there is no data" do
       assert Data.get_ingredient_names() == []
+    end
+
+    test "ingredient_descriptions\0 returns all descriptions sorted" do
+      recipe = recipe_fixture()
+      water = ingredient_fixture(%{name: "Water", description: "ml", recipe_id: recipe.id})
+      sugar = ingredient_fixture(%{name: "Sugar", description: "g", recipe_id: recipe.id})
+      assert Data.get_ingredient_descriptions() == [sugar.description, water.description]
+    end
+
+    test "description_names\0 returns empty list if there is no data" do
+      assert Data.get_ingredient_descriptions() == []
     end
   end
 end

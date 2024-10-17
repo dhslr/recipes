@@ -80,6 +80,7 @@
             type="text"
             field={ingredient[:description]}
             placeholder={gettext("Description/Unit (opt.)")}
+            list="ingredient_descriptions"
           />
           <label class="flex items-center">
             <input
@@ -99,6 +100,7 @@
     </label>
   </div>
   <.datalist id="ingredient_names" options={@ingredient_names} />
+  <.datalist id="ingredient_descriptions" options={@ingredient_descriptions} />
 
   <:actions>
     <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
