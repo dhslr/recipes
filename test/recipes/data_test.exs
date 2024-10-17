@@ -273,4 +273,17 @@ defmodule DataTest do
       assert {:error, %Ecto.Changeset{}} = Data.create_tag(@invalid_attrs)
     end
   end
+
+  describe "ingredients" do
+    test "ingredient_names\0 returns all ingredient names" do
+      recipe = recipe_fixture()
+      sugar = ingredient_fixture(%{name: "Sugar", recipe_id: recipe.id})
+      wheat = ingredient_fixture(%{name: "Wheat", recipe_id: recipe.id})
+      assert Data.get_ingredient_names() == [sugar.name, wheat.name]
+    end
+
+    test "ingredient_names\0 returns empty list if there is no data" do
+      assert Data.get_ingredient_names() == []
+    end
+  end
 end

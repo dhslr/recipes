@@ -4,6 +4,7 @@ defmodule Recipes.Data do
   """
 
   import Ecto.Query, warn: false
+  alias Recipes.Data.Ingredient
   alias Recipes.Data.Photo
   alias Recipes.Repo
 
@@ -45,6 +46,12 @@ defmodule Recipes.Data do
         preload: [:ingredients, :photos, :tags]
       )
     )
+  end
+
+  def get_ingredient_names do
+    Repo.all(Ingredient)
+    |> Enum.map(fn i -> i.name end)
+    |> Enum.uniq()
   end
 
   @doc """

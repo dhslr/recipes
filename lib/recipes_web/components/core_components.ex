@@ -638,6 +638,25 @@ defmodule RecipesWeb.CoreComponents do
   end
 
   @doc """
+  Renders a datalist containing the given options.
+  This can then used in an input field to provide a list of options.
+
+  ## Example
+
+        <.datalist id="my-datalist" options={["Option 1", "Option 2", "Option 3"]} />
+  """
+  attr :id, :string, required: true
+  attr :options, :list, required: true
+
+  def datalist(assigns) do
+    ~H"""
+    <datalist id={@id}>
+      <option :for={option <- @options} value={option} />
+    </datalist>
+    """
+  end
+
+  @doc """
   Renders a back navigation link.
 
   ## Examples

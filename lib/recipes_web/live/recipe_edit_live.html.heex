@@ -65,7 +65,12 @@
         <input type="hidden" name="recipe[ingredients_order][]" value={ingredient.index} />
         <.icon name="hero-bars-3" class="w-8 h-8" data-handle />
         <div class="sm:flex gap-1">
-          <.input type="text" field={ingredient[:name]} placeholder={gettext("What")} />
+          <.input
+            type="text"
+            field={ingredient[:name]}
+            placeholder={gettext("What")}
+            list="ingredient_names"
+          />
           <.input
             type="text"
             field={ingredient[:quantity]}
@@ -93,6 +98,8 @@
       <.icon name="hero-plus-circle" /> <%= gettext("add") %>
     </label>
   </div>
+  <.datalist id="ingredient_names" options={@ingredient_names} />
+
   <:actions>
     <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
   </:actions>
