@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  languages.javascript.enable = true;
+  languages.javascript.npm.enable = true;
   dotenv.enable = true;
   services.postgres = {
     enable = true;
