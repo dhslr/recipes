@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  languages.elixir.enable = true;
   dotenv.enable = true;
   services.postgres = {
     enable = true;
@@ -13,5 +12,7 @@
   packages = [
     pkgs.chromium
     pkgs.chromedriver
+    pkgs.elixir
+    pkgs.erlang
   ];
 }
