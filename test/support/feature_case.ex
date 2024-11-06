@@ -32,4 +32,17 @@ defmodule RecipesWeb.FeatureCase do
     user = Recipes.AccountsFixtures.user_fixture(%{password: password})
     {:ok, user: user, password: password}
   end
+
+  @doc """
+    This helper goes to the login page, fills in the email and password
+    and clicks the login button.
+  """
+  @spec login(Wallaby.Session.t(), String.t(), String.t()) :: Wallaby.Session.t()
+  def login(session, user_email, password) do
+    session
+    |> Wallaby.Browser.visit("/users/log_in")
+    |> Wallaby.Browser.fill_in(Wallaby.Query.text_field("user_email"), with: user_email)
+    |> Wallaby.Browser.fill_in(Wallaby.Query.text_field("user_password"), with: password)
+    |> Wallaby.Browser.click(Wallaby.Query.button("Log in"))
+  end
 end
