@@ -96,11 +96,11 @@ defmodule RecipesWeb.RecipeEditLive do
                 max="100"
                 class="absolute top-[93%] w-full p-[5px] opacity-60"
               >
-                <%= entry.progress %>%
+                {entry.progress}%
               </progress>
             </div>
             <div class="flex justify-between">
-              <figcaption><%= entry.client_name %></figcaption>
+              <figcaption>{entry.client_name}</figcaption>
               <button type="button" phx-click="cancel-upload" phx-value-ref={entry.ref}>
                 <.trash_icon />
               </button>
@@ -109,18 +109,18 @@ defmodule RecipesWeb.RecipeEditLive do
           <div class="flex my-6">
             <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
             <%= for err <- upload_errors(@uploads.photo, entry) do %>
-              <p class="alert alert-danger"><%= error_to_string(err) %></p>
+              <p class="alert alert-danger">{error_to_string(err)}</p>
             <% end %>
           </div>
         </li>
         <%!-- Phoenix.Component.upload_errors/1 returns a list of error atoms --%>
         <%= for err <- upload_errors(@uploads.photo) do %>
-          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+          <p class="alert alert-danger">{error_to_string(err)}</p>
         <% end %>
       </ul>
       <%!-- TODO use mechanism like in ingredients for adding --%>
       <label class="cursor-pointer float-right">
-        <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+        <.icon name="hero-plus-circle" /> {gettext("add")}
         <.live_file_input upload={@uploads.photo} class="hidden" />
       </label>
     </section>

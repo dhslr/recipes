@@ -12,9 +12,9 @@ defmodule RecipesWeb.RecipeViewLive do
     ~H"""
     <.main_content>
       <.header class="text-center my-3">
-        <h1><%= @recipe.title %></h1>
+        <h1>{@recipe.title}</h1>
       </.header>
-      <.back navigate={~p"/recipes"}><%= gettext("Back") %></.back>
+      <.back navigate={~p"/recipes"}>{gettext("Back")}</.back>
       <.photos photos={@recipe.photos} class="my-3" />
       <.sub_header text={gettext("Ingredients")} />
       <.ingredients_list
@@ -61,7 +61,7 @@ defmodule RecipesWeb.RecipeViewLive do
     ~H"""
     <.sub_header text={gettext("Preparation")} class="my-3" />
     <div class={["markdown-body markdown", @class]} data-test="description">
-      <%= raw(@description) %>
+      {raw(@description)}
     </div>
     """
   end
@@ -88,10 +88,10 @@ defmodule RecipesWeb.RecipeViewLive do
     <div class={["text-center", @class]} data-test="ingredients">
       <ul class="inline-block">
         <li :for={ingredient <- @ingredients} class="flex justify-between gap-10">
-          <span class="font-medium text-left"><%= ingredient.name %></span>
+          <span class="font-medium text-left">{ingredient.name}</span>
           <span class="text-right">
-            <span><%= adjust_quantity(ingredient.quantity, @adjust_factor) %></span>
-            <span><%= ingredient.description %></span>
+            <span>{adjust_quantity(ingredient.quantity, @adjust_factor)}</span>
+            <span>{ingredient.description}</span>
           </span>
         </li>
       </ul>
@@ -126,7 +126,7 @@ defmodule RecipesWeb.RecipeViewLive do
     ~H"""
     <div class={["flex justify-evenly gap-6 items-center", @class]}>
       <div class="border border-solid h-[1px] flex-1"></div>
-      <h3 class="text-center"><%= @text %></h3>
+      <h3 class="text-center">{@text}</h3>
       <div class="border border-solid h-[1px] flex-1"></div>
     </div>
     """
@@ -146,7 +146,7 @@ defmodule RecipesWeb.RecipeViewLive do
         >
           <.icon name="hero-minus-circle w-8 h-8" />
         </button>
-        <span class="w-8 text-center"><%= @servings %></span>
+        <span class="w-8 text-center">{@servings}</span>
         <button
           name="increase-servings"
           type="button"
@@ -156,7 +156,7 @@ defmodule RecipesWeb.RecipeViewLive do
           <.icon name="hero-plus-circle  w-8 h-8" />
         </button>
       </div>
-      <div class="text-center"><%= gettext("Servings") %></div>
+      <div class="text-center">{gettext("Servings")}</div>
     </div>
     """
   end
@@ -166,7 +166,7 @@ defmodule RecipesWeb.RecipeViewLive do
   defp kcal(assigns) do
     ~H"""
     <div class="text-gray-500" data-test="kcal">
-      <span :if={@kcal}><%= @kcal %> kcal <%= gettext("per serving") %></span>
+      <span :if={@kcal}>{@kcal} kcal {gettext("per serving")}</span>
     </div>
     """
   end

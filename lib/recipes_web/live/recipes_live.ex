@@ -37,10 +37,10 @@ defmodule RecipesWeb.RecipesLive do
           <.link navigate={~p"/recipes/#{recipe.id}"} class="text-center break-words block w-[320px]">
             <.main_photo photo={Recipe.first_photo(recipe)} />
             <label class="text-center mt-1 p-1" for={"recipe_#{recipe.id}"}>
-              <%= recipe.title %>
+              {recipe.title}
             </label>
             <div class="text-sm text-slate-600" data-test="tags">
-              <%= Enum.map(recipe.tags, & &1.name) |> Enum.join(", ") %>
+              {Enum.map(recipe.tags, & &1.name) |> Enum.join(", ")}
             </div>
           </.link>
         </div>

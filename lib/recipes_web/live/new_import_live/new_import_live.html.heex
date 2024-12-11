@@ -12,11 +12,11 @@
   </div>
 
   <p :if={@error} class="alert alert-danger">
-    <%= gettext("Error when importing the recipe: ") %>
+    {gettext("Error when importing the recipe: ")}
     <emph>
-      <%= @error %>
+      {@error}
     </emph>
   </p>
 
-  <.back navigate={~p"/recipes"}><%= gettext("Back to recipes") %></.back>
+  <.back navigate={~p"/recipes"}>{gettext("Back to recipes")}</.back>
 </.main_content>

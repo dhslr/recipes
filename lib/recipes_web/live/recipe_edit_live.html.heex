@@ -1,5 +1,5 @@
 <.header class="text-center">
-  <h1><%= @recipe.title %></h1>
+  <h1>{@recipe.title}</h1>
 </.header>
 
 <.simple_form
@@ -9,7 +9,7 @@
   phx-submit="save_recipe"
   class="container mx-auto max-w-4xl"
 >
-  <.back navigate={@back_link}><%= gettext("Back") %></.back>
+  <.back navigate={@back_link}>{gettext("Back")}</.back>
   <.input field={@form_data[:title]} label={gettext("Title")} required />
   <.markdown_textarea
     field={@form_data[:description]}
@@ -22,7 +22,7 @@
     <.input type="number" field={@form_data[:kcal]} label={gettext("Calories per serving")} />
   </div>
 
-  <.label for="tags"><%= gettext("Tags") %></.label>
+  <.label for="tags">{gettext("Tags")}</.label>
   <div data-test="tags">
     <div class="flex flex-wrap gap-2">
       <.inputs_for :let={tag} field={@form_data[:tags]}>
@@ -38,11 +38,11 @@
     </div>
     <label class="float-right cursor-pointer my-2">
       <input type="checkbox" name="recipe[tags_order][]" class="hidden" />
-      <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+      <.icon name="hero-plus-circle" /> {gettext("add")}
     </label>
   </div>
 
-  <.label for="photos"><%= gettext("Photos") %></.label>
+  <.label for="photos">{gettext("Photos")}</.label>
   <div id="photos" data-test="photos" class="flex gap-2" phx-hook="Sortable">
     <.inputs_for :let={photo} field={@form_data[:photos]}>
       <div class="min-w-[200px] max-h-[400px] max-w-[400px] relative drag-item" data-handle>
@@ -58,7 +58,7 @@
 
   <.photo_upload uploads={@uploads} />
 
-  <.label for="ingredients"><%= gettext("Ingredients") %></.label>
+  <.label for="ingredients">{gettext("Ingredients")}</.label>
   <div id="ingredients" data-test="ingredients" class="ml-3" phx-hook="Sortable">
     <.inputs_for :let={ingredient} field={@form_data[:ingredients]}>
       <div class="flex drag-item justify-center content-center items-center mb-2 gap-1 even:bg-gray-50 odd:bg-white p-2 rounded-lg">
@@ -96,13 +96,13 @@
     </.inputs_for>
     <label class="float-right cursor-pointer my-2">
       <input type="checkbox" name="recipe[ingredients_order][]" class="hidden" />
-      <.icon name="hero-plus-circle" /> <%= gettext("add") %>
+      <.icon name="hero-plus-circle" /> {gettext("add")}
     </label>
   </div>
   <.datalist id="ingredient_names" options={@ingredient_names} />
   <.datalist id="ingredient_descriptions" options={@ingredient_descriptions} />
 
   <:actions>
-    <.button phx-disable-with="Saving..."><%= gettext("Save") %></.button>
+    <.button phx-disable-with="Saving...">{gettext("Save")}</.button>
   </:actions>
 </.simple_form>

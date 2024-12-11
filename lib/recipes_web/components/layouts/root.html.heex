@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <.live_title>
-      <%= assigns[:page_title] || "Recipes" %>
+      {assigns[:page_title] || "Recipes"}
     </.live_title>
     <link rel="manifest" href="/manifest.json" />
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
@@ -23,7 +23,7 @@
     <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
       <%= if @current_user do %>
         <li class="text-[0.8125rem] leading-6 text-zinc-900">
-          <%= @current_user.email %>
+          {@current_user.email}
         </li>
         <li>
           <.link
@@ -61,6 +61,6 @@
         </li>
       <% end %>
     </ul>
-    <%= @inner_content %>
+    {@inner_content}
   </body>
 </html>

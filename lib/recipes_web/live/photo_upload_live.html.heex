@@ -10,12 +10,12 @@
     <article class="upload-entry">
       <figure class="max-w-[400px] py-4">
         <.live_img_preview entry={entry} />
-        <figcaption><%= entry.client_name %></figcaption>
+        <figcaption>{entry.client_name}</figcaption>
       </figure>
 
       <div class="flex gap-1">
         <%!-- entry.progress will update automatically for in-flight entries --%>
-        <progress value={entry.progress} max="100"><%= entry.progress %>%</progress>
+        <progress value={entry.progress} max="100">{entry.progress}%</progress>
 
         <%!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --%>
         <button
@@ -30,7 +30,7 @@
 
         <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
         <%= for err <- upload_errors(@uploads.photo, entry) do %>
-          <p class="alert alert-danger"><%= error_to_string(err) %></p>
+          <p class="alert alert-danger">{error_to_string(err)}</p>
         <% end %>
       </div>
     </article>
@@ -38,6 +38,6 @@
 
   <%!-- Phoenix.Component.upload_errors/1 returns a list of error atoms --%>
   <%= for err <- upload_errors(@uploads.photo) do %>
-    <p class="alert alert-danger"><%= error_to_string(err) %></p>
+    <p class="alert alert-danger">{error_to_string(err)}</p>
   <% end %>
 </section>

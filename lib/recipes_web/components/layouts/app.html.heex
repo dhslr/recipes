@@ -5,12 +5,12 @@
         <img src={~p"/images/ramen.png"} width="36" class="rounded-lg" />
       </a>
       <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:recipes, :vsn) %>
+        v{Application.spec(:recipes, :vsn)}
       </p>
     </div>
   </div>
 </header>
 <main class="px-4 py-20 sm:px-6 lg:px-8">
   <.flash_group flash={@flash} />
-  <%= @inner_content %>
+  {@inner_content}
 </main>

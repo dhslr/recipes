@@ -45,11 +45,14 @@ defmodule RecipesWeb.NewImportLiveTest do
              |> Floki.parse_document!()
              |> Floki.find("p.alert") ==
                [
-                 {"p", [{"class", "alert alert-danger"}],
-                  [
-                    "\nError when importing the recipe: \n    ",
-                    {"emph", [], ["\nA helpful error message\n    "]}
-                  ]}
+                 {
+                   "p",
+                   [{"class", "alert alert-danger"}],
+                   [
+                     "\n    Error when importing the recipe: \n    ",
+                     {"emph", [], ["\n      A helpful error message\n    "]}
+                   ]
+                 }
                ]
     end
 
