@@ -53,7 +53,7 @@ defmodule Recipes.MixProject do
        depth: 1},
       {:github_markdown,
        github: "sindresorhus/github-markdown-css",
-       tag: "v2.1.1",
+       tag: "v5.8.1",
        app: false,
        compile: false,
        depth: 1},
