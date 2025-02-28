@@ -44,7 +44,7 @@ config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
 # Wallaby configuration
 config :wallaby,
   otp_app: :recipes,
-  driver: Wallaby.Firefox,
+  driver: Wallaby.Selenium,
   screenshot_on_failure: true,
   js_errors: true,
   firefox: [
