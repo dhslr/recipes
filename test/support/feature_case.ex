@@ -24,7 +24,7 @@ defmodule RecipesWeb.FeatureCase do
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Recipes.Repo, self())
     {:ok, session} = Wallaby.start_session(
       metadata: metadata,
-      browser: Wallaby.Chrome,
+      browser: Wallaby.Firefox,
       window_size: [width: 1400, height: 1400]
     )
 

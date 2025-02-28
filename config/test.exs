@@ -44,10 +44,10 @@ config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
 # Wallaby configuration
 config :wallaby,
   otp_app: :recipes,
-  driver: Wallaby.Chrome,
+  driver: Wallaby.Firefox,
   screenshot_on_failure: true,
   js_errors: true,
-  chrome: [
+  firefox: [
     headless: true,
     window_size: [width: 1400, height: 1400]
   ]
