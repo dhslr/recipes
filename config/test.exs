@@ -47,7 +47,11 @@ config :wallaby,
   driver: Wallaby.Selenium,
   screenshot_on_failure: true,
   js_errors: true,
+  selenium: [
+    server_url: "http://localhost:4444/wd/hub"
+  ],
   firefox: [
     headless: true,
     window_size: [width: 1400, height: 1400]
+  ]
   ]
