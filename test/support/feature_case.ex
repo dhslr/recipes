@@ -22,7 +22,11 @@ defmodule RecipesWeb.FeatureCase do
     end
 
     metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Recipes.Repo, self())
-    {:ok, session} = Wallaby.start_session(metadata: metadata)
+    {:ok, session} = Wallaby.start_session(
+      metadata: metadata,
+      browser: Wallaby.Browser,
+      window_size: [width: 1400, height: 1400]
+    )
 
     {:ok, session: session}
   end
