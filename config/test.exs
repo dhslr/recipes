@@ -41,7 +41,13 @@ config :phoenix, :plug_init_mode, :runtime
 # Use ecto's sandbox feature in tests for wallaby
 config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
 
-# Wallaby needs to know the endpoint
-config :wallaby, otp_app: :recipes
-config :wallaby, driver: Wallaby.Chrome
-config :wallaby, screenshot_on_failure: true
+# Wallaby configuration
+config :wallaby,
+  otp_app: :recipes,
+  driver: Wallaby.Chrome,
+  screenshot_on_failure: true,
+  js_errors: true,
+  chrome: [
+    headless: true,
+    window_size: [width: 1400, height: 1400]
+  ]
