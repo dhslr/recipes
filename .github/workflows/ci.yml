@@ -16,6 +16,8 @@ jobs:
 
     # Service containers to run with `deps`
     services:
+      selenium:
+        image: selenium/standalone-firefox
       postgres:
         image: postgres
         env:
