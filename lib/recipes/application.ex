@@ -21,6 +21,7 @@ defmodule Recipes.Application do
       # Start a worker by calling: Recipes.Worker.start_link(arg)
       # {Recipes.Worker, arg}
     ]
+    children = if Mix.env() == :test, do: [Recipes.SeleniumServer | children], else: children
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
