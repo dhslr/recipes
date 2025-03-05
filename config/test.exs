@@ -50,8 +50,6 @@ config :wallaby,
   selenium: [
     server_url: "http://localhost:4444/wd/hub"
   ],
-  # Add health check timeout
-  hackney: [pool: :wallaby_pool, timeout: 10000, recv_timeout: 10000],
   firefox: [
     headless: true,
     window_size: [width: 1400, height: 1400]
