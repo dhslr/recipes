@@ -54,4 +54,3 @@ config :wallaby,
     headless: true,
     window_size: [width: 1400, height: 1400]
   ]
-  ]
