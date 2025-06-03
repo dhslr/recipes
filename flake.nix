@@ -39,9 +39,10 @@
                     '';
                   };
                   packages = [
-                      pkgs.chromedriver
                       pkgs.elixir
                       pkgs.erlang
+                      pkgs.selenium-server-standalone
+                      pkgs.geckodriver
                   ];
                 }
               ];
