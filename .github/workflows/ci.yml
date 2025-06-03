@@ -36,7 +36,7 @@ jobs:
       - uses: erlef/setup-beam@v1
         with:
           otp-version: '28'
-          elixir-version: '1.18'
+          elixir-version: '1.18.4'
 
       # Step: Define how to cache deps. Restores existing cache if present.
       - name: Cache deps
