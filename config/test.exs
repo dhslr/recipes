@@ -48,7 +48,7 @@ config :wallaby,
   screenshot_on_failure: true,
   js_errors: true,
   selenium: [
-    server_url: "http://localhost:4444/wd/hub"
+    server_url: "http://localhost:4444"
   ],
   firefox: [
     headless: true,
