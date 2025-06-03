@@ -8,13 +8,10 @@ on:
 
 env:
   MIX_ENV: test
-
-
+  
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    # Service containers to run with `deps`
     services:
       selenium:
         image: selenium/standalone-firefox
@@ -38,8 +35,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: '26.2'
-          elixir-version: '1.16'
+          otp-version: '28'
+          elixir-version: '1.18'
 
       # Step: Define how to cache deps. Restores existing cache if present.
       - name: Cache deps
