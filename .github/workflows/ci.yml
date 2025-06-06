@@ -8,16 +8,11 @@ on:
 
 env:
   MIX_ENV: test
-  
+
 jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      selenium:
-        image: selenium/standalone-firefox
-        ports: 
-          - 4444:4444
-        options: --shm-size="2g"
       postgres:
         image: postgres
         env:
@@ -32,11 +27,14 @@ jobs:
         ports:
           - 5432:5432
     steps:
+      - name: Install OpenSSL
+        run: sudo apt-get update && sudo apt-get install -y openssl chromium-browser chromium-chromedriver
+
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: '27'
-          elixir-version: '1.18'
+          otp-version: "27"
+          elixir-version: "1.18"
 
       # Step: Define how to cache deps. Restores existing cache if present.
       - name: Cache deps

@@ -41,8 +41,7 @@
                   packages = [
                       pkgs.elixir
                       pkgs.erlang
-                      pkgs.selenium-server-standalone
-                      pkgs.geckodriver
+                      pkgs.electron-chromedriver_34
                   ];
                 }
               ];
