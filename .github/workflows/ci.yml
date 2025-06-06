@@ -28,7 +28,15 @@ jobs:
           - 5432:5432
     steps:
       - name: Install OpenSSL
-        run: sudo apt-get update && sudo apt-get install -y openssl chromium-browser chromium-chromedriver
+        run: |
+          sudo apt-get update && sudo apt-get install -y chromium-browser
+          chromium_version=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+\.\d+' | head -1)
+          major_version=$(echo $chromium_version | cut -d. -f1)
+          driver_version=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$major_version")
+          wget -N "https://chromedriver.storage.googleapis.com/${driver_version}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/local/bin/
 
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
