@@ -58,7 +58,7 @@ defmodule Recipes.MixProject do
        compile: false,
        depth: 1},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
