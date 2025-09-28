@@ -6,6 +6,8 @@ defmodule Recipes.Data.Recipe do
 
   import Ecto.Changeset
 
+  @type t :: %{title: String.t(), description: String.t(), kcal: integer(), servings: integer()}
+
   schema "recipes" do
     field :title, :string
     field :description, :string, default: ""

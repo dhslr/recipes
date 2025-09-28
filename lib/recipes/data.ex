@@ -76,6 +76,7 @@ defmodule Recipes.Data do
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_recipe!(id: integer()) :: Recipe.t()
   def get_recipe!(id), do: Repo.get!(Recipe, id) |> Repo.preload([:ingredients, :photos, :tags])
 
   @doc """

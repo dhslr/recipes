@@ -1,4 +1,6 @@
 defmodule Recipes.Scraper do
+  alias Recipes.Data.Recipe
+
   @moduledoc """
   A scraper takes a url of a recipe on the internet, parses it and creates a recipe entity out of it.
   """
