@@ -68,7 +68,8 @@ defmodule Recipes.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:earmark, "~> 1.4"},
       {:mox, "~> 1.1", only: :test},
-      {:wallaby, "~> 0.30", runtime: false, only: :test}
+      {:wallaby, "~> 0.30", runtime: false, only: :test},
+      {:dialyxir, "~> 1.3", only: :dev, runtime: false}
     ]
   end
 

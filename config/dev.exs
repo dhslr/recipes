@@ -2,9 +2,9 @@ import Config
 
 # Configure your database
 config :recipes, Recipes.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
+  username: "recipes",
+  password: "recipes",
+  hostname: "postgresql",
   database: "recipes_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
