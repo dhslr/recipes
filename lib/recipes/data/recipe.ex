@@ -19,6 +19,11 @@ defmodule Recipes.Data.Recipe do
       on_delete: :delete_all,
       on_replace: :delete_if_exists
 
+    has_many :ingredient_groups, Recipes.Data.IngredientGroup,
+      preload_order: [asc: :position],
+      on_delete: :delete_all,
+      on_replace: :delete_if_exists
+
     has_many :photos, Recipes.Data.Photo,
       preload_order: [asc: :position],
       on_delete: :delete_all,

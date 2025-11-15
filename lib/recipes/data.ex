@@ -5,6 +5,7 @@ defmodule Recipes.Data do
 
   import Ecto.Query, warn: false
   alias Recipes.Data.Ingredient
+  alias Recipes.Data.IngredientGroup
   alias Recipes.Data.Photo
   alias Recipes.Repo
 
@@ -23,7 +24,7 @@ defmodule Recipes.Data do
   """
   def list_recipes do
     Repo.all(Recipe)
-    |> Repo.preload([:ingredients, :photos, :tags])
+    |> Repo.preload([:ingredients, :ingredient_groups, :photos, :tags])
     |> Enum.sort(&(&1.title <= &2.title))
   end
 
@@ -43,7 +44,7 @@ defmodule Recipes.Data do
     Repo.all(
       from(r in subquery(tag_query_union),
         order_by: r.title,
-        preload: [:ingredients, :photos, :tags]
+        preload: [:ingredients, :ingredient_groups, :photos, :tags]
       )
     )
   end
@@ -77,7 +78,8 @@ defmodule Recipes.Data do
 
   """
   @spec get_recipe!(id: integer()) :: Recipe.t()
-  def get_recipe!(id), do: Repo.get!(Recipe, id) |> Repo.preload([:ingredients, :photos, :tags])
+  def get_recipe!(id),
+    do: Repo.get!(Recipe, id) |> Repo.preload([:ingredients, :ingredient_groups, :photos, :tags])
 
   @doc """
   Creates a recipe.
@@ -95,7 +97,7 @@ defmodule Recipes.Data do
     %Recipe{}
     |> Recipe.changeset(attrs)
     |> Repo.insert()
-    |> preload_h([:ingredients, :photos, :tags])
+    |> preload_h([:ingredients, :ingredient_groups, :photos, :tags])
   end
 
   @doc """
@@ -114,7 +116,7 @@ defmodule Recipes.Data do
     recipe
     |> Recipe.changeset(attrs)
     |> Repo.update()
-    |> preload_h([:ingredients, :photos, :tags])
+    |> preload_h([:ingredients, :ingredient_groups, :photos, :tags])
   end
 
   @doc """
@@ -167,6 +169,24 @@ defmodule Recipes.Data do
   end
 
   @doc """
+  Creates a ingredient group.
+
+  ## Examples
+
+      iex> create_ingredient_group(%{recipe_id: 1, title: "Sauce"})
+      {:ok, %Ingredient{}}
+
+      iex> create_ingredient(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_ingredient_group(attrs) do
+    %IngredientGroup{}
+    |> IngredientGroup.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
   Adds an ingredient to the recipe.
 
   ## Examples
@@ -198,6 +218,22 @@ defmodule Recipes.Data do
   """
   def delete_ingredient(%Ingredient{} = ingredient) do
     Repo.delete(ingredient)
+  end
+
+  @doc """
+  Updates a ingredient.
+
+  ## Examples
+
+      iex> delete_ingredient_group(ingredient_group)
+      {:ok, %Ingredient{}}
+
+      iex> delete_ingredient_group(ingredient_group)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_ingredient_group(%IngredientGroup{} = ingredient_group) do
+    Repo.delete(ingredient_group)
   end
 
   @doc """

@@ -1,12 +1,11 @@
 defmodule DataTest do
-  alias Recipes.Data.Photo
-  use Recipes.DataCase
-
   alias Recipes.Data
-
-  alias Data.Ingredient
-  alias Data.Recipe
-  alias Data.Tag
+  alias Recipes.Data.Ingredient
+  alias Recipes.Data.IngredientGroup
+  alias Recipes.Data.Photo
+  alias Recipes.Data.Recipe
+  alias Recipes.Data.Tag
+  use Recipes.DataCase
 
   import Recipes.DataFixtures
 
@@ -295,6 +294,34 @@ defmodule DataTest do
 
     test "description_names\0 returns empty list if there is no data" do
       assert Data.get_ingredient_descriptions() == []
+    end
+  end
+
+  describe "ingredient_group" do
+    test "create_ingredient_group\0 creates ingredient group" do
+      recipe = recipe_fixture()
+
+      assert {:ok, %IngredientGroup{} = ingredient_group} =
+               Data.create_ingredient_group(%{recipe_id: recipe.id, title: "Sauce"})
+
+      assert ingredient_group.title == "Sauce"
+      assert ingredient_group.recipe_id == recipe.id
+    end
+
+    test "create_ingredient_group\0 invalid attrs, fails" do
+      recipe = recipe_fixture()
+
+      assert {:error, %Ecto.Changeset{errors: _}} =
+               Data.create_ingredient_group(%{recipe_id: recipe.id})
+    end
+
+    test "delete_ingredient_group\0 deletes the ingredient group" do
+      recipe = recipe_fixture()
+
+      assert {:ok, %IngredientGroup{} = ingredient_group} =
+               Data.create_ingredient_group(%{recipe_id: recipe.id, title: "Sauce"})
+
+      {:ok, %IngredientGroup{}} = Data.delete_ingredient_group(ingredient_group)
     end
   end
 end
