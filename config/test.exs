@@ -38,12 +38,8 @@ config :logger, level: :warning
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
 
-# Use ecto's sandbox feature in tests for wallaby
-config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
-
-# Wallaby configuration
-config :wallaby,
+config :phoenix_test,
   otp_app: :recipes,
-  driver: Wallaby.Chrome,
-  screenshot_on_failure: true,
-  js_errors: true
+  endpoint: RecipesWeb.Endpoint
+
+config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox

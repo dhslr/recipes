@@ -69,6 +69,7 @@ defmodule Recipes.MixProject do
       {:earmark, "~> 1.4"},
       {:mox, "~> 1.1", only: :test},
       {:wallaby, "~> 0.30", runtime: false, only: :test},
+      {:phoenix_test_playwright, "~> 0.4", only: :test, runtime: false},
       {:dialyxir, "~> 1.3", only: :dev, runtime: false}
     ]
   end

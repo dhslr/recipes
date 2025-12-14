@@ -9,46 +9,21 @@ defmodule RecipesWeb.FeatureCase do
   using do
     quote do
       import RecipesWeb.FeatureCase
-      import Wallaby.Feature
-      use Wallaby.DSL
+
+      use PhoenixTest.Playwright.Case, async: true, headless: false, slow_mo: :timer.seconds(1)
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Recipes.Repo)
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Recipes.Repo, shared: not tags[:async])
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Recipes.Repo, {:shared, self()})
-    end
-
-    metadata = Phoenix.Ecto.SQL.Sandbox.metadata_for(Recipes.Repo, self())
-
-    {:ok, session} =
-      Wallaby.start_session(
-        metadata: metadata,
-        browser: Wallaby.Firefox,
-        window_size: [width: 1400, height: 1400]
-      )
-
-    {:ok, session: session}
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 
   setup do
     password = :crypto.strong_rand_bytes(12) |> Base.url_encode64()
     user = Recipes.AccountsFixtures.user_fixture(%{password: password})
     {:ok, user: user, password: password}
-  end
-
-  @doc """
-    This helper goes to the login page, fills in the email and password
-    and clicks the login button.
-  """
-  @spec login(Wallaby.Session.t(), String.t(), String.t()) :: Wallaby.Session.t()
-  def login(session, user_email, password) do
-    session
-    |> Wallaby.Browser.visit("/users/log_in")
-    |> Wallaby.Browser.fill_in(Wallaby.Query.text_field("user_email"), with: user_email)
-    |> Wallaby.Browser.fill_in(Wallaby.Query.text_field("user_password"), with: password)
-    |> Wallaby.Browser.click(Wallaby.Query.button("Log in"))
   end
 end

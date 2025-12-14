@@ -55,6 +55,10 @@ defmodule RecipesWeb do
       use Phoenix.LiveView,
         layout: {RecipesWeb.Layouts, :app}
 
+      if Application.compile_env(:recipes, :sandbox) do
+        on_mount RecipesWeb.Hooks.AllowEctoSandbox
+      end
+
       unquote(html_helpers())
     end
   end

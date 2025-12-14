@@ -41,7 +41,6 @@
                   packages = [
                       pkgs.elixir
                       pkgs.erlang
-                      pkgs.electron-chromedriver_35
                   ];
                 }
               ];
