@@ -10,7 +10,8 @@ defmodule RecipesWeb.FeatureCase do
     quote do
       import RecipesWeb.FeatureCase
 
-      use PhoenixTest.Playwright.Case, async: true, headless: false, slow_mo: :timer.seconds(1)
+      use PhoenixTest.Playwright.Case, async: true, headless: true
+      # use PhoenixTest.Playwright.Case, async: true, headless: false, slow_mo: :timer.seconds(1)
     end
   end
 

@@ -44,7 +44,7 @@ defmodule RecipesWeb.RecipesFeatureTest do
     |> login(user.email, password)
     |> visit("/recipes")
     |> assert_has("input[placeholder='Search']")
-    |> type("input[placeholder='Search']", "Burritos")
+    |> type("input[placeholder='Search']", "Burritos", delay: 5)
     |> assert_has("[data-test='recipe']", text: "Burritos")
     |> assert_has("[data-test='tags']", text: "Spicy")
     |> refute_has("[data-test='recipe']", text: "Cake")
