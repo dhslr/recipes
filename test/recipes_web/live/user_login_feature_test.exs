@@ -1,39 +1,42 @@
 defmodule RecipesWeb.UserLoginFeatureTest do
-  use RecipesWeb.FeatureCase, async: true
+  use RecipesWeb.FeatureCase
 
-  @login_link Query.link("Log in")
-  @logout_link Query.link("Log out")
-  @flash Query.css("#flash")
-
-  feature "a user trying to access recipes overview is redirected to login and redirected back after successful login",
-          %{
-            session: session,
-            user: user,
-            password: password
-          } do
-    assert session
+  test "a user trying to access recipes overview is redirected to login and redirected back after successful login",
+       %{
+         conn: conn,
+         user: user,
+         password: password
+       } do
+    assert conn
            |> visit("/recipes")
-           |> current_path() == "/users/log_in"
+           |> assert_path("/users/log_in")
 
-    assert session
+    assert conn
            |> login(user.email, password)
-           |> current_path() == "/recipes"
+           |> assert_path("/recipes")
   end
 
-  feature "a user can log out of their session",
-          %{
-            session: session,
-            user: user,
-            password: password
-          } do
-    assert session
+  test "a user can log out of their session",
+       %{
+         conn: conn,
+         user: user,
+         password: password
+       } do
+    assert conn
            |> visit("/recipes")
            |> login(user.email, password)
-           |> assert_has(@flash)
-           |> click(@flash)
-           |> assert_has(@logout_link)
-           |> click(@logout_link)
-           |> assert_has(@login_link)
-           |> current_path() == "/"
+           |> assert_has("#flash")
+           |> click("#flash")
+           |> click_link("Log out")
+           |> assert_has("a", text: "Log in")
+           |> assert_path("/")
+  end
+
+  defp login(conn, username, password) do
+    conn
+    |> visit("/users/log_in")
+    |> fill_in("Email", with: username)
+    |> fill_in("Password", with: password)
+    |> click_button("Log in")
   end
 end
