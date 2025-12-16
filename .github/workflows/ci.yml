@@ -36,9 +36,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: lts/*
-      - name: Install Playwright Browsers
-        run: npm --prefix assets install playwright
-
+      - name: Install Playwright
+        run: npx playwright install
       # Step: Define how to cache deps. Restores existing cache if present.
       - name: Cache deps
         id: cache-deps
