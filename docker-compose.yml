@@ -29,7 +29,7 @@ services:
       - DATABASE_URL
       - SECRET_KEY_BASE
     volumes:
-      - photos:/app/lib/recipes-0.4.0/priv/static/photos
+      - photos:/app/lib/recipes-0.4.1/priv/static/photos
 
 networks:
   default:
