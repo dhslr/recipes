@@ -11,7 +11,7 @@ config :bcrypt_elixir, :log_rounds, 1
 config :recipes, Recipes.Repo,
   username: "recipes",
   password: "recipes",
-  hostname: "postgresql",
+  hostname: System.get_env("POSTGRES_HOST") || "postgresql",
   database: "recipes_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 20
