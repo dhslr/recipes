@@ -10,8 +10,8 @@ defmodule Recipes.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader],
-      compilers: [:phoenix_live_view] ++ Mix.compilers()
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -34,7 +34,6 @@ defmodule Recipes.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bcrypt_elixir, "~> 3.0"},
       {:phoenix, "~> 1.8"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
@@ -46,7 +45,7 @@ defmodule Recipes.MixProject do
       {:floki, ">= 0.30.0"},
       {:httpoison, "~> 2.2"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
-      {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      {:bcrypt_elixir, "~> 3.0"},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -61,6 +60,7 @@ defmodule Recipes.MixProject do
        compile: false,
        depth: 1},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.13"},
