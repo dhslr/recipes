@@ -26,9 +26,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes")
 
-      assert Floki.parse_document!(html)
-             |> Floki.find(~s([data-test="recipe"] label))
-             |> Floki.text() =~
+      assert LazyHTML.from_fragment(html)
+             |> LazyHTML.query(~s([data-test="recipe"] label))
+             |> LazyHTML.text() =~
                currywurst.title
     end
 
@@ -45,14 +45,14 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       titles =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="recipe"] label))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="recipe"] label))
+        |> LazyHTML.text()
 
       tags =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="tags"]))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="tags"]))
+        |> LazyHTML.text()
 
       assert titles =~ currywurst.title
       assert titles =~ kirschtorte.title
@@ -72,9 +72,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       tags =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="tags"]))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="tags"]))
+        |> LazyHTML.text()
 
       assert tags =~ vegetarian.name
       assert tags =~ dessert.name
@@ -95,9 +95,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> live(~p"/recipes")
 
       tag_cloud =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="tag-cloud"] a))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="tag-cloud"] a))
+        |> LazyHTML.text()
 
       assert tag_cloud == vegetarian.name <> dessert.name
     end
@@ -119,9 +119,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> element(~s([data-test="tag-cloud"] a), "Vegetarian")
         |> render_click()
 
-      assert Floki.parse_document!(html)
-             |> Floki.find(~s([data-test="search-bar"] input))
-             |> Floki.attribute("value") == ["Vegetarian"]
+      assert LazyHTML.from_fragment(html)
+             |> LazyHTML.query(~s([data-test="search-bar"] input))
+             |> LazyHTML.attribute("value") == ["Vegetarian"]
     end
 
     test "filters the recipes by typing into the input field", %{
@@ -142,9 +142,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> render_change(%{query: "Kirsch"})
 
       titles =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="recipe"] label))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="recipe"] label))
+        |> LazyHTML.text()
 
       assert titles =~ kirschtorte.title
       refute titles =~ currywurst.title
@@ -155,9 +155,9 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> render_change(%{query: "Dessert"})
 
       titles =
-        Floki.parse_document!(html)
-        |> Floki.find(~s([data-test="recipe"] label))
-        |> Floki.text()
+        LazyHTML.from_fragment(html)
+        |> LazyHTML.query(~s([data-test="recipe"] label))
+        |> LazyHTML.text()
 
       assert titles =~ kirschtorte.title
       refute titles =~ currywurst.title
@@ -198,18 +198,18 @@ defmodule RecipesWeb.RecipesLiveTest do
         |> element("form")
         |> render_change(%{query: "old query"})
 
-      assert Floki.parse_document!(html)
-             |> Floki.find(~s([data-test="search-bar"] input))
-             |> Floki.attribute("value") == ["old query"]
+      assert LazyHTML.from_fragment(html)
+             |> LazyHTML.query(~s([data-test="search-bar"] input))
+             |> LazyHTML.attribute("value") == ["old query"]
 
       html =
         lv
         |> element(~s([data-test="clear-search-button"]))
         |> render_click()
 
-      assert Floki.parse_document!(html)
-             |> Floki.find(~s([data-test="search-bar"] input))
-             |> Floki.attribute("value") == [""]
+      assert LazyHTML.from_fragment(html)
+             |> LazyHTML.query(~s([data-test="search-bar"] input))
+             |> LazyHTML.attribute("value") == [""]
     end
 
     test "click on new recipe button opens recipe edit view", %{conn: conn, user: user} do

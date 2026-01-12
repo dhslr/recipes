@@ -8,12 +8,17 @@ defmodule CoreComponentsTest do
       html =
         render_component(&CoreComponents.datalist/1, id: "testid", options: ["Sugar", "Wheat"])
 
-      parsed_html = Floki.parse_document!(html)
+      parsed_html = LazyHTML.from_fragment(html) |> LazyHTML.to_tree()
 
       assert parsed_html ==
                [
                  {"datalist", [{"id", "testid"}],
-                  [{"option", [{"value", "Sugar"}], []}, {"option", [{"value", "Wheat"}], []}]}
+                  [
+                    "\n  ",
+                    {"option", [{"value", "Sugar"}], []},
+                    {"option", [{"value", "Wheat"}], []},
+                    "\n"
+                  ]}
                ]
     end
   end

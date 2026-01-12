@@ -58,7 +58,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                   {"span", [{"class", "text-right"}],
                    [{"span", [], ["50.0"]}, {"span", [], ["g"]}]}
                 ]}
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"] ul li))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="ingredients"] ul li))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipes details containing description as markdown", %{
@@ -105,7 +108,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                     ]}
                  ]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="description"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="description"]))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipes details containing kcal", %{
@@ -125,7 +131,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                  [{"class", "text-gray-500"}, {"data-test", "kcal"}],
                  [{"span", [], ["1337 kcal per serving"]}]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="kcal"]))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipes details without kcal", %{
@@ -139,7 +148,10 @@ defmodule RecipesWeb.RecipeLiveTest do
         |> log_in_user(user)
         |> live(~p"/recipes/#{recipe.id}")
 
-      assert [] == Floki.parse_document!(html) |> Floki.find(~s([data-test="kcal"]))
+      assert [] ==
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="kcal"]))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipes details containing servings", %{
@@ -181,7 +193,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                    }
                  ]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="servings"]))
+               |> LazyHTML.to_tree()
     end
 
     test "can increase recipe servings", %{
@@ -228,7 +243,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                    }
                  ]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="servings"]))
+               |> LazyHTML.to_tree()
     end
 
     test "can decrease recipe servings", %{
@@ -275,7 +293,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                    }
                  ]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="servings"]))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipes details containing servings with adjusted servings in URL", %{
@@ -317,7 +338,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                    }
                  ]
                }
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="servings"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="servings"]))
+               |> LazyHTML.to_tree()
     end
 
     test "shows photos of recipe", %{
@@ -356,7 +380,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                       ], []}
                    ]}
                 ]}
-             ] == Floki.parse_document!(html) |> Floki.find(~s([data-test="photos"]))
+             ] ==
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="photos"]))
+               |> LazyHTML.to_tree()
     end
 
     test "shows tags of recipe", %{
@@ -388,7 +415,10 @@ defmodule RecipesWeb.RecipeLiveTest do
                       ]}
                    ]}
                 ]}
-             ] == Floki.parse_document!(html) |> Floki.find(~s([data-test="tags"]))
+             ] ==
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="tags"]))
+               |> LazyHTML.to_tree()
     end
   end
 end

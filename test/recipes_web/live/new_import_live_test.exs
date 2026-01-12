@@ -42,8 +42,9 @@ defmodule RecipesWeb.NewImportLiveTest do
       assert lv
              |> form("#import-form", import_data: @create_attrs)
              |> render_submit()
-             |> Floki.parse_document!()
-             |> Floki.find("p.alert") ==
+             |> LazyHTML.from_fragment()
+             |> LazyHTML.query("p.alert")
+             |> LazyHTML.to_tree() ==
                [
                  {
                    "p",

@@ -82,7 +82,10 @@ defmodule RecipesWeb.RecipeEditLiveTest do
                      " add\n    "
                    ]}
                 ]}
-             ] = Floki.parse_document!(html) |> Floki.find(~s([data-test="ingredients"]))
+             ] =
+               LazyHTML.from_fragment(html)
+               |> LazyHTML.query(~s([data-test="ingredients"]))
+               |> LazyHTML.to_tree()
     end
 
     test "renders the recipe edit view for new recipe, can edit and save", %{
@@ -294,9 +297,9 @@ defmodule RecipesWeb.RecipeEditLiveTest do
           "Vegan",
           "Vegetarian"
         ] =
-          Floki.parse_document!(html)
-          |> Floki.find(~s([data-test="tags"] input[type="text"]))
-          |> Floki.attribute("value")
+          LazyHTML.from_fragment(html)
+          |> LazyHTML.query(~s([data-test="tags"] input[type="text"]))
+          |> LazyHTML.attribute("value")
       )
 
       lv

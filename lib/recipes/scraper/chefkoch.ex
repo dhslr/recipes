@@ -25,8 +25,9 @@ defmodule Recipes.Scraper.Chefkoch do
 
   defp extract_recipe_data(document) do
     document
-    |> Floki.parse_document!()
-    |> Floki.find("head > script[type='application/ld+json']")
+    |> LazyHTML.from_document()
+    |> LazyHTML.query("head > script[type='application/ld+json']")
+    |> LazyHTML.to_tree()
     |> get_recipe_json_data()
   end
 
