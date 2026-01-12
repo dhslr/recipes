@@ -41,9 +41,7 @@ defmodule Recipes.MixProject do
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
-      {:lazy_html, ">= 0.0.0", only: :test},
-      {:floki, ">= 0.30.0"},
-      {:httpoison, "~> 2.2"},
+      {:lazy_html, ">= 0.0.0"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:bcrypt_elixir, "~> 3.0"},
       {:heroicons,
@@ -71,7 +69,7 @@ defmodule Recipes.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:earmark, "~> 1.4"},
       {:mox, "~> 1.1", only: :test},
-      {:phoenix_test_playwright, "~> 0.4", only: :test, runtime: false},
+      {:phoenix_test_playwright, "~> 0.9", only: :test, runtime: false},
       {:dialyxir, "~> 1.3", only: :dev, runtime: false}
     ]
   end
