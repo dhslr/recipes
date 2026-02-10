@@ -1,6 +1,7 @@
 defmodule RecipesWeb.UserLoginFeatureTest do
   use RecipesWeb.FeatureCase
 
+  @tag ecto_sandbox_stop_owner_delay: 100
   test "a user trying to access recipes overview is redirected to login and redirected back after successful login",
        %{
          conn: conn,
@@ -16,6 +17,7 @@ defmodule RecipesWeb.UserLoginFeatureTest do
            |> assert_path("/recipes")
   end
 
+  @tag ecto_sandbox_stop_owner_delay: 100
   test "a user can log out of their session",
        %{
          conn: conn,

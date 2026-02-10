@@ -43,8 +43,3 @@ config :phoenix_test,
   endpoint: RecipesWeb.Endpoint
 
 config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
-
-config :phoenix_test,
-  playwright: [
-    ecto_sandbox_stop_owner_delay: 50
-  ]

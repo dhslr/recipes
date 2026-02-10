@@ -9,6 +9,7 @@ defmodule RecipesWeb.RecipesFeatureTest do
     }
   end
 
+  @tag ecto_sandbox_stop_owner_delay: 100
   test "in browser, a user can see recipes in the overview", %{
     conn: conn,
     user: user,
@@ -35,6 +36,7 @@ defmodule RecipesWeb.RecipesFeatureTest do
     |> click_button("Log in")
   end
 
+  @tag ecto_sandbox_stop_owner_delay: 100
   test "a user can search for recipes in the overview", %{
     conn: conn,
     user: user,
@@ -51,6 +53,7 @@ defmodule RecipesWeb.RecipesFeatureTest do
     |> refute_has("[data-test='tags']", text: "Sweet")
   end
 
+  @tag ecto_sandbox_stop_owner_delay: 100
   test "a user can click on recipe in the overview", %{
     conn: conn,
     user: user,

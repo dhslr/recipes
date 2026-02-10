@@ -31,13 +31,6 @@
               modules = [{
                   languages.javascript.enable = true;
                   languages.javascript.npm.enable = true;
-                  services.postgres = {
-                    enable = true;
-                    package = pkgs.postgresql_15;
-                    initialScript = ''
-                      CREATE ROLE postgres WITH CREATEDB LOGIN PASSWORD 'postgres';
-                    '';
-                  };
                   packages = [
                       pkgs.elixir
                       pkgs.erlang
