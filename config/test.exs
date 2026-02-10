@@ -43,3 +43,15 @@ config :phoenix_test,
   endpoint: RecipesWeb.Endpoint
 
 config :recipes, :sandbox, Ecto.Adapters.SQL.Sandbox
+
+config :phoenix_test,
+  otp_app: :recipes,
+  playwright: [
+    browser_pool: :chromium_pool,
+    browser_pools: [
+      [id: :chromium_pool, browser: :chromium],
+      [id: :firefox_pool, browser: :firefox]
+    ],
+    js_logger: false,
+    browser_launch_timeout: 10_000
+  ]
